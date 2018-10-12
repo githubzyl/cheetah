@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: cheetah-module-zuul
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: cheetah-module-config
+      profile: dev
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:9091/eureka/
+server:
+  port: 9093
+ribbon:
+  ReadTimeout: 600000
+  ConnectTimeout: 600000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 600000
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+zuul:
+  host:
+    max-total-connections: 800
+    max-per-route-connections: 200
+    socket-timeout-millis: 600000
+    connect-timeout-millis: 600000
+  sensitive-headers:
+  routes:
+    app-service-fundmgr:
+      path: /cheetah-web-backstage/**
+      service-id: cheetah-web-backstage
+      strip-prefix: true

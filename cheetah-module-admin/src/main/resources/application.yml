@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: admin
+  boot:
+    admin:
+      routes:
+        endpoints: env,metrics,trace,dump,jolokia,info,configprops,trace,logfile
+server:
+  port: 9090
+eureka: 
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:9091/eureka/
+  instance:
+    prefer-ip-address: true

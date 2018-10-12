@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: cheetah-module-config
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/configs
+server:
+  port: 9092
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:9091/eureka/
+  instance:
+    prefer-ip-address: true

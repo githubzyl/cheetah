@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
+	<springProperty scope="context" name="LOG_HOME" source="logback.fileDir"/>
+	
+	<!-- 日志文件的名称 -->
+	<property name="LOG_FILE_NAME" value="config_daily" />
+	<!-- 日志压缩类型 -->
+	<property name="COMPRESSION_TYPE" value="zip" />
+	<!-- 最大文件大小 -->
+	<property name="MAX_FILE_SIZE" value="100MB" />
+	<!-- 日志保留天数 -->
+	<property name="MAX_HISTORY" value="30" />
+
+	<!-- Console 输出设置 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder charset="UTF-8">
+			<!-- 显示毫秒数 -->
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n
+			</pattern>
+			<!-- 不显示毫秒数 -->
+			<!-- <pattern>%d{HH:mm:ss} %-5level [%thread] %logger - %msg%n</pattern> -->
+		</encoder>
+	</appender>
+	<!-- 按照每天生成日志文件 -->
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/${LOG_FILE_NAME}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--日志文件输出的文件名 -->
+			<FileNamePattern>${LOG_HOME}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}.%i.${COMPRESSION_TYPE}
+			</FileNamePattern>
+			<!--日志文件保留天数 -->
+			<MaxHistory>${MAX_HISTORY}</MaxHistory>
+			<!--日志文件最大的大小 -->
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<!--日志文件最大的大小 -->
+		<!-- <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"> 
+			<MaxFileSize>${MAX_FILE_SIZE}</MaxFileSize> </triggeringPolicy> -->
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50}
+				-%msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.springframework" level="ERROR" />
+    <logger name="org.apache" level="ERROR" />
+    <logger name="net.sf" level="ERROR" />
+    <logger name="com.alibaba" level="ERROR" />
+    <logger name="org.quartz" level="ERROR" />
+    <logger name="com.mchange" level="ERROR" />
+    <logger name="springfox.documentation" level="ERROR" />
+    <logger name="org.thymeleaf" level="ERROR" />
+    <logger name="org.hibernate" level="ERROR" />
+    <logger name="org.apache.catalina.session.StandardManager" level="OFF" />
+	
+
+	<!-- * 通配符 设置log打印级别 对所有类有效TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF -->
+	<!--将上面的appender添加到root -->
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</root>
+
+</configuration>  

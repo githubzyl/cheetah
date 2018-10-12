@@ -1,0 +1,4 @@
+logback:
+  fileDir: E:/workspace/web/WorkSpace/logs/cheetah-web-backstage
+test:
+  message: hello world!

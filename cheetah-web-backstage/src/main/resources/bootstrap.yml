@@ -1,0 +1,20 @@
+#系统级别参数，不会经常变动
+spring:
+  application:
+    name: cheetah-web-backstage
+  cloud:
+    config:
+      discovery:
+          enabled: true
+          service-id: cheetah-module-config
+      fail-fast: true
+      retry:
+        initial-interval: 2000
+        max-attempts: 5
+      profile: dev
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:9091/eureka/
+server:
+  port: 9095
