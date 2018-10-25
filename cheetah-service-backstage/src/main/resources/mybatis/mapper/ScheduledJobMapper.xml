@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zylsite.cheetah.backstage.mapper.ScheduledJobMapper">
+  <resultMap id="BaseResultMap" type="top.zylsite.cheetah.backstage.model.ScheduledJob">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="vc_job_name" jdbcType="VARCHAR" property="vcJobName" />
+    <result column="vc_jobgroup_name" jdbcType="VARCHAR" property="vcJobgroupName" />
+    <result column="vc_trigger_name" jdbcType="VARCHAR" property="vcTriggerName" />
+    <result column="vc_triggergroup_name" jdbcType="VARCHAR" property="vcTriggergroupName" />
+    <result column="vc_jobclass_name" jdbcType="VARCHAR" property="vcJobclassName" />
+    <result column="vc_cron_expression" jdbcType="VARCHAR" property="vcCronExpression" />
+    <result column="c_status" jdbcType="CHAR" property="cStatus" />
+    <result column="c_exec_on_startup" jdbcType="CHAR" property="cExecOnStartup" />
+    <result column="l_last_start_time" jdbcType="BIGINT" property="lLastStartTime" />
+    <result column="l_last_end_time" jdbcType="BIGINT" property="lLastEndTime" />
+    <result column="l_last_exec_status" jdbcType="CHAR" property="lLastExecStatus" />
+    <result column="l_event_id" jdbcType="INTEGER" property="lEventId" />
+  </resultMap>
+</mapper>

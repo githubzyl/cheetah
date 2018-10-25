@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zylsite.cheetah.backstage.mapper.PermissionMapper">
+  <resultMap id="BaseResultMap" type="top.zylsite.cheetah.backstage.model.Permission">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="vc_code" jdbcType="VARCHAR" property="vcCode" />
+    <result column="vc_name" jdbcType="VARCHAR" property="vcName" />
+    <result column="vc_url" jdbcType="VARCHAR" property="vcUrl" />
+    <result column="vc_icon" jdbcType="VARCHAR" property="vcIcon" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="c_enable" jdbcType="CHAR" property="cEnable" />
+    <result column="l_sort" jdbcType="INTEGER" property="lSort" />
+    <result column="c_resource_type" jdbcType="CHAR" property="cResourceType" />
+    <result column="parent_ids" jdbcType="VARCHAR" property="parentIds" />
+    <result column="c_target_blank" jdbcType="CHAR" property="cTargetBlank" />
+  </resultMap>
+</mapper>
