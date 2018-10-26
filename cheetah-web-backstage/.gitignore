@@ -1,6 +1,10 @@
 /.mvn/
 /.settings/
 /target/
+/.apt_generated/
+/.apt_generated_tests/
+/LOG_HOME_IS_UNDEFINED/
 .classpath
 .project
 .springBeans
+.factorypath

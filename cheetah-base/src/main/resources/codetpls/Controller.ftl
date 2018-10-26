@@ -18,7 +18,7 @@ import tk.mybatis.mapper.entity.Example;
 import top.zylsite.cheetah.base.common.BaseService;
 import top.zylsite.cheetah.base.common.BaseRequestController;
 import top.zylsite.cheetah.base.common.QueryParameter;
-import ${basePackage}.service.I${bigClassName}Service;
+import ${servicePackage}.I${bigClassName}Service;
 import ${modelName};
 
 @RestController

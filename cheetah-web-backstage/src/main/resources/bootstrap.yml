@@ -4,20 +4,11 @@ spring:
     name: cheetah-web-backstage
   cloud:
     config:
-      discovery:
-          enabled: true
-          service-id: cheetah-module-config
-      fail-fast: true
-      retry:
-        initial-interval: 2000
-        max-attempts: 5
+      uri: http://cheetah.zylsite.top/config
       profile: dev
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://127.0.0.1:9091/eureka/
+      defaultZone: http://cheetah.zylsite.top/eureka/
 server:
   port: 9095
-mybatis:
-  mapperLocations: classpath*:mybatis/mapper/*Mapper.xml
-  config-location: classpath:mybatis-config.xml

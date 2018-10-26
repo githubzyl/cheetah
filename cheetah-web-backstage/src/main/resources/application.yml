@@ -1,7 +1,45 @@
 spring:
+  aop:
+    auto: true
+    proxy-target-class: true
   datasource:
-      type: com.alibaba.druid.pool.DruidDataSource
-      driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://127.0.0.1:3306/cheetah?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true
-      username: root
-      password: 123456
+      master:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://47.98.113.109:8732/cheetah?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;useSSL=false
+        username: root
+        password: 123456
+      druid:
+        initial-size: 1
+        min-idle: 1
+        max-active: 20
+        max-wait: 60000
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 300000
+        validation-query: SELECT 'x'
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        pool-prepared-statements: false
+        filters: stat,wall, slf4j
+        filter:
+          stat:
+            db-type: mysql
+            log-slow-sql: true
+            merge-sql: true
+            slow-sql-millis: 10000
+          wall: 
+            enabled: true
+            db-type: mysql
+            log-violation: true
+            throw-exception: true
+          slf4j:
+            enabled: true
+        web-stat-filter: 
+          session-stat-enable: true
+          session-stat-max-count: 20
+          principal-session-name: sessionUser
+          profile-enable: true
+          exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,*.woff2,*.woff,*.ttf,*.svg,*.eot,/druid/*'
+        stat-view-servlet: 
+          reset-enable: false

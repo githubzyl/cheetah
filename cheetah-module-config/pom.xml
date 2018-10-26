@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.cheetah.config</groupId>
+	<groupId>top.zylsite.cheetah.config</groupId>
 	<artifactId>cheetah-module-config</artifactId>
 	<packaging>jar</packaging>
 
@@ -12,7 +12,7 @@
 	<description>the project for cheetah-module-config</description>
 
 	<parent>
-		<groupId>com.zylsite.cheetah</groupId>
+		<groupId>top.zylsite.cheetah</groupId>
 		<artifactId>cheetah</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>

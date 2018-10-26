@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
 import freemarker.template.Configuration;
@@ -31,14 +30,24 @@ public class MyGeneratorTool {
 		}
 	}
 
-	public static void createServiceAndServiceImpl(String modelPackage, boolean overwrite) {
+	/**
+	 * 
+	 * @param modelPackage
+	 * @param mapperPackage
+	 * @param servicePackage
+	 * @param overwrite
+	 */
+	public static void createServiceAndServiceImpl(String basePackage, String modelPackage, String mapperPackage,
+			String servicePackage, boolean overwrite) {
 		Set<Class<?>> list = getClassesByPackage(modelPackage);
 		if (!CollectionUtils.isEmpty(list)) {
 			for (Class<?> clazz : list) {
 				try {
-					GeneratorClassInfo info = new GeneratorClassInfo(clazz);
-					createFile(info, "IService.ftl", "src/main/java/{0}/service/I{1}Service.java", overwrite);
-					createFile(info, "ServiceImpl.ftl", "src/main/java/{0}/service/impl/{1}ServiceImpl.java",
+					GeneratorClassInfo info = new GeneratorClassInfo(clazz, basePackage, mapperPackage, servicePackage,
+							null);
+					String serviceFolder = servicePackage.replace(".", "/");
+					createFile(info, "IService.ftl", "src/main/java/" + serviceFolder + "/I{1}Service.java", overwrite);
+					createFile(info, "ServiceImpl.ftl", "src/main/java/" + serviceFolder + "/impl/{1}ServiceImpl.java",
 							overwrite);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,23 +56,18 @@ public class MyGeneratorTool {
 		}
 	}
 
-	public static void createController(String modelPackage, String controllerPackage, boolean overwrite)
-			throws Exception {
+	public static void createController(String basePackage, String modelPackage, String servicePackage,
+			String controllerPackage, boolean overwrite) throws Exception {
 		Set<Class<?>> list = getClassesByPackage(modelPackage);
 		if (!CollectionUtils.isEmpty(list)) {
 			for (Class<?> clazz : list) {
 				try {
-					if (StringUtils.isBlank(controllerPackage)) {
-						GeneratorClassInfo info = new GeneratorClassInfo(clazz);
-						createFile(info, "Controller.ftl", "src/main/java/{0}/controller/{1}Controller.java",
-								overwrite);
-					} else {
-						GeneratorClassInfo info = new GeneratorClassInfo(clazz, controllerPackage);
-						// 生成controller
-						String controlleFolder = controllerPackage.replace(".", "/");
-						createFile(info, "Controller.ftl", "src/main/java/" + controlleFolder + "/{1}Controller.java",
-								overwrite);
-					}
+					GeneratorClassInfo info = new GeneratorClassInfo(clazz, basePackage, null, servicePackage,
+							controllerPackage);
+					// 生成controller
+					String controlleFolder = controllerPackage.replace(".", "/");
+					createFile(info, "Controller.ftl", "src/main/java/" + controlleFolder + "/{1}Controller.java",
+							overwrite);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

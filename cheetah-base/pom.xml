@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.cheetah.base</groupId>
+	<groupId>top.zylsite.cheetah.base</groupId>
 	<artifactId>cheetah-base</artifactId>
 	<packaging>jar</packaging>
 
@@ -12,7 +12,7 @@
 	<description>the project for cheetah-base</description>
 
 	<parent>
-		<groupId>com.zylsite.cheetah</groupId>
+		<groupId>top.zylsite.cheetah</groupId>
 		<artifactId>cheetah</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
@@ -33,6 +33,7 @@
 		<tk.mybatis.version>1.1.7</tk.mybatis.version>
 		<mybatis.pagehelper.version>5.0.0</mybatis.pagehelper.version>
 		<mysql-connector.version>5.1.47</mysql-connector.version>
+		<lombok.version>1.16.18</lombok.version>
 	</properties>
 
 	<dependencies>
@@ -128,6 +129,13 @@
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
+		</dependency>
+
+		<!-- lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version><!--$NO-MVN-MAN-VER$ -->
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->

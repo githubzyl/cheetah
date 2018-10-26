@@ -18,8 +18,6 @@ import tk.mybatis.mapper.entity.Example;
  */
 public abstract class BaseServiceImpl<T> extends BaseParamHandler implements BaseService<T> {
 
-	protected Class<T> clazz;
-
 	public int insertInfo(T entity) {
 		return getBaseMapper().insert(entity);
 	}

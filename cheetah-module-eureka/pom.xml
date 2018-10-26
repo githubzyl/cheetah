@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.cheetah.eureka</groupId>
+	<groupId>top.zylsite.cheetah.eureka</groupId>
 	<artifactId>cheetah-module-eureka</artifactId>
 	<packaging>jar</packaging>
 
@@ -11,7 +11,7 @@
 	<description>the project for cheetah-module-eureka</description>
 
 	<parent>
-		<groupId>com.zylsite.cheetah</groupId>
+		<groupId>top.zylsite.cheetah</groupId>
 		<artifactId>cheetah</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>

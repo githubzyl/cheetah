@@ -1,4 +1,4 @@
-package ${basePackage}.service;
+package ${servicePackage};
  
 import top.zylsite.cheetah.base.common.BaseService;
 import ${modelName};

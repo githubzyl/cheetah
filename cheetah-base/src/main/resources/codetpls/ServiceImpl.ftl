@@ -1,12 +1,12 @@
-package ${basePackage}.service.impl;
+package ${servicePackage}.impl;
  
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import top.zylsite.cheetah.base.common.BaseServiceImpl;
 import top.zylsite.cheetah.base.common.BaseMapper;
-import ${basePackage}.service.I${bigClassName}Service;
-import ${basePackage}.mapper.${bigClassName}Mapper;
+import ${servicePackage}.I${bigClassName}Service;
+import ${mapperPackage}.${bigClassName}Mapper;
 import ${modelName};
 
 @Service
