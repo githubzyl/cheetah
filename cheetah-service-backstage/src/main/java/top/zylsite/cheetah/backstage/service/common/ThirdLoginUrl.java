@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 
 /**
  * Description: 第三方登录的URL获取类
+ * 
  * @author jason 2018年10月28日
  * @version 1.0
  */
@@ -38,7 +39,6 @@ public class ThirdLoginUrl {
 			url = github();
 			break;
 		default:
-			
 			break;
 		}
 		return url;
@@ -46,61 +46,64 @@ public class ThirdLoginUrl {
 
 	private static String qq() {
 		StringBuilder sb = new StringBuilder(LoginConstants.QQ_DOMAIN);
-		sb.append("/oauth2.0/authorize?response_type=code");
-		sb.append("&client_id=" + LoginConstants.QQ_CLIENT_ID);
-		sb.append("&redirect_uri=" + LoginConstants.QQ_AUTH_REDIRECT_URI);
-		sb.append("&state=" + LoginConstants.QQ_STATE);
-		sb.append("&scope=get_user_info,list_album,upload_pic,do_like");
+		sb.append("/oauth2.0/authorize?")
+		   .append("?client_id=").append(LoginConstants.QQ_CLIENT_ID)
+		   .append("&redirect_uri=").append(getRedirectUrl(LoginConstants.QQ_AUTH_REDIRECT_URI))
+		   .append("&state=" + LoginConstants.QQ_STATE)
+		   .append("&response_type=code&scope=get_user_info,list_album,upload_pic,do_like");
 		return sb.toString();
 	}
-	
+
 	private static String wechat() {
-		
-		return "";
+		StringBuilder sb = new StringBuilder(LoginConstants.WECHAT_OPEN_DOMAIN);
+		sb.append("/connect/qrconnect")
+		   .append("?appid=").append(LoginConstants.WECHAT_APP_ID)
+		   .append("&redirect_uri=").append(getRedirectUrl(LoginConstants.WECHAT_AUTH_REDIRECT_URI))
+		   .append("&response_type=code&scope=SCOPE&state=STATE#wechat_redirect");
+		return sb.toString();
 	}
-	
+
 	private static String sina() {
 		StringBuilder sb = new StringBuilder(LoginConstants.SINA_DOMAIN);
-		sb.append("/oauth2/authorize");
-		sb.append("?client_id=");
-		sb.append(LoginConstants.SINA_APP_KEY);
-		sb.append("&scope=all&redirect_uri=");
-		sb.append(LoginConstants.SINA_AUTH_REDIRECT_URL);
-		sb.append("&state=init");
-		sb.append("&display=default");
-		sb.append("&forcelogin=false");
+		sb.append("/oauth2/authorize")
+		   .append("?client_id=").append(LoginConstants.SINA_APP_KEY)
+		   .append("&redirect_uri=").append(getRedirectUrl(LoginConstants.SINA_AUTH_REDIRECT_URI))
+		   .append("&scope=all&state=init&display=default&forcelogin=false");
 		return sb.toString();
 	}
-	
+
 	private static String baidu() {
 		StringBuilder sb = new StringBuilder(LoginConstants.BAIDU_DOMAIN);
-		sb.append("/oauth/2.0/authorize");
-		sb.append("?client_id=" + LoginConstants.BAIDU_APP_KEY);
-		sb.append("&redirect_uri=" + LoginConstants.BAIDU_AUTH_REDIRECT_URI);
-		sb.append("&scope=basic&display=popup&response_type=code");
+		sb.append("/oauth/2.0/authorize")
+		   .append("?client_id=").append(LoginConstants.BAIDU_APP_KEY)
+		   .append("&redirect_uri=").append(getRedirectUrl(LoginConstants.BAIDU_AUTH_REDIRECT_URI))
+		   .append("&scope=basic&display=popup&response_type=code");
 		return sb.toString();
 	}
-	
+
 	private static String alipay() {
-		StringBuilder sb = new StringBuilder(LoginConstants.APIPAY_AUTH_DOMAIN);
+		StringBuilder sb = new StringBuilder(LoginConstants.ALIPAY_AUTH_DOMAIN);
 		sb.append("/oauth2/publicAppAuthorize.htm");
-		sb.append("?app_id=");
-		sb.append(LoginConstants.APIPAY_APP_ID);
-		sb.append("&scope=auth_user&redirect_uri=");
+		sb.append("?app_id=").append(LoginConstants.ALIPAY_APP_ID);
+		sb.append("&redirect_uri=");
 		try {
-			sb.append(URLEncoder.encode(LoginConstants.ALIPAY_AUTH_REDIRECT_URL, "utf-8"));
+			sb.append(URLEncoder.encode(getRedirectUrl(LoginConstants.ALIPAY_AUTH_REDIRECT_URI), "utf-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		sb.append("&state=init");
+		sb.append("&state=init&scope=auth_user");
 		return sb.toString();
 	}
-	
+
 	private static String github() {
 		StringBuilder sb = new StringBuilder(LoginConstants.GITHUB_LOGIN_DOMAIN);
-		sb.append("/login/oauth/authorize");
-		sb.append("?client_id=" + LoginConstants.GITHUB_CLIENT_ID);
+		sb.append("/login/oauth/authorize")
+		   .append("?client_id=").append(LoginConstants.GITHUB_CLIENT_ID);
 		return sb.toString();
+	}
+
+	private static String getRedirectUrl(String uri) {
+		return LoginConstants.CHEETAH_DOMIAN + uri;
 	}
 
 }

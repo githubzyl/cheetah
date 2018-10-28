@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zylsite.cheetah.backstage.mapper.master.UserLoginLogMapper">
+  <resultMap id="BaseResultMap" type="top.zylsite.cheetah.backstage.model.master.UserLoginLog">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="l_user_id" jdbcType="INTEGER" property="lUserId" />
+    <result column="d_login_time" jdbcType="TIMESTAMP" property="dLoginTime" />
+    <result column="d_logout_time" jdbcType="TIMESTAMP" property="dLogoutTime" />
+    <result column="vc_ip" jdbcType="VARCHAR" property="vcIp" />
+    <result column="vc_device_type" jdbcType="VARCHAR" property="vcDeviceType" />
+    <result column="vc_browser_type" jdbcType="VARCHAR" property="vcBrowserType" />
+  </resultMap>
+</mapper>

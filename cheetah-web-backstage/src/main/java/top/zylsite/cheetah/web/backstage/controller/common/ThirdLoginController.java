@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import top.zylsite.cheetah.backstage.service.common.LoginConstants;
 import top.zylsite.cheetah.backstage.service.common.ThirdLoginUrl;
 
 /**
@@ -24,37 +25,37 @@ public class ThirdLoginController {
 		return "redirect:" + url;
 	}
 	
-	@GetMapping("/login/qq/callback")
+	@GetMapping(LoginConstants.QQ_AUTH_REDIRECT_URI)
 	public String qq(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		
 		return "redirect:/index";
 	}
 	
-	@GetMapping("/login/wechat/callback")
+	@GetMapping(LoginConstants.WECHAT_AUTH_REDIRECT_URI)
 	public String wechat(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		
 		return "redirect:/index";
 	}
 	
-	@GetMapping("/login/sina/callback")
+	@GetMapping(LoginConstants.SINA_AUTH_REDIRECT_URI)
 	public String sina(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		
 		return "redirect:/index";
 	}
 	
-	@GetMapping("/login/baidu/callback")
+	@GetMapping(LoginConstants.BAIDU_AUTH_REDIRECT_URI)
 	public String baidu(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		
 		return "redirect:/index";
 	}
 	
-	@GetMapping("/login/alipay/callback")
+	@GetMapping(LoginConstants.ALIPAY_AUTH_REDIRECT_URI)
 	public String alipay(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		
 		return "redirect:/index";
 	}
 	
-	@GetMapping("/login/github/callback")
+	@GetMapping(LoginConstants.GITHUB_AUTH_REDIRECT_URI)
 	public String github(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		
 		return "redirect:/index";
