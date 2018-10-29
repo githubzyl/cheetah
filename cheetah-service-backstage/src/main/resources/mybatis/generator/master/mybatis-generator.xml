@@ -15,19 +15,24 @@
 		<property name="xmlFormatter"
 			value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
 
-		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+		<plugin
+			type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
 		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
-		<plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin" />
+		<plugin
+			type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin" />
 		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
 		<plugin type="org.mybatis.generator.plugins.RowBoundsPlugin" />
-		<plugin type="org.mybatis.generator.plugins.VirtualPrimaryKeyPlugin" />
-		<plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+		<plugin
+			type="org.mybatis.generator.plugins.VirtualPrimaryKeyPlugin" />
+		<plugin
+			type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
 			<property name="searchString" value="Example$" />
 			<property name="replaceString" value="Criteria" />
 		</plugin>
 
 		<plugin type="tk.mybatis.mapper.generator.MapperPlugin">
-			<property name="mappers" value="top.zylsite.cheetah.base.common.BaseMapper" />
+			<property name="mappers"
+				value="top.zylsite.cheetah.base.common.BaseMapper" />
 		</plugin>
 
 		<commentGenerator
@@ -45,7 +50,8 @@
 			<property name="forceBigDecimals" value="false" />
 		</javaTypeResolver>
 
-		<javaModelGenerator targetPackage="top.zylsite.cheetah.backstage.model.master"
+		<javaModelGenerator
+			targetPackage="top.zylsite.cheetah.backstage.model.master"
 			targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
@@ -57,7 +63,8 @@
 		</sqlMapGenerator>
 
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="top.zylsite.cheetah.backstage.mapper.master" targetProject="src/main/java">
+			targetPackage="top.zylsite.cheetah.backstage.mapper.master"
+			targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 		<table tableName="t_user" domainObjectName="User"></table>
@@ -65,9 +72,12 @@
 		<table tableName="t_user_role" domainObjectName="UserRole"></table>
 		<table tableName="t_permission" domainObjectName="Permission"></table>
 		<table tableName="t_role_permission" domainObjectName="RolePermission"></table>
-        <table tableName="t_dict_type" domainObjectName="DictionaryType"></table>
-        <table tableName="t_data_dict" domainObjectName="DataDictionary"></table>
-        <table tableName="t_scheduled_job" domainObjectName="ScheduledJob"></table>
+		<table tableName="t_dict_type" domainObjectName="DictionaryType"></table>
+		<table tableName="t_data_dict" domainObjectName="DataDictionary"></table>
+		<table tableName="t_scheduled_job" domainObjectName="ScheduledJob"></table>
+		<table tableName="t_user_bind_info" domainObjectName="UserBindInfo"></table>
+		<table tableName="t_user_login_log" domainObjectName="UserLoginLog"></table>
+		<table tableName="t_user_view_log" domainObjectName="UserViewLog"></table>
 
 	</context>
 </generatorConfiguration>

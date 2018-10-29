@@ -17,11 +17,11 @@ import top.zylsite.cheetah.base.utils.RequestUtil;
 import top.zylsite.cheetah.base.utils.ResponseUtil;
 
 /**
- * 统一异常处理类
  * 
- * @author: zhaoyl
- * @since: 2017年6月9日 下午1:04:59
- * @history:
+ * Description: 统一异常处理类
+ * @author jason
+ * 2018年10月28日
+ * @version 1.0
  */
 @ControllerAdvice
 public class ExceptionHandle extends BaseController {

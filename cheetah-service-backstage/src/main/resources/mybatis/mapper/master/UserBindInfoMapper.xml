@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zylsite.cheetah.backstage.mapper.master.UserBindInfoMapper">
+  <resultMap id="BaseResultMap" type="top.zylsite.cheetah.backstage.model.master.UserBindInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="l_user_id" jdbcType="INTEGER" property="lUserId" />
+    <result column="vc_account" jdbcType="VARCHAR" property="vcAccount" />
+    <result column="vc_nick_name" jdbcType="VARCHAR" property="vcNickName" />
+    <result column="vc_photo" jdbcType="VARCHAR" property="vcPhoto" />
+    <result column="c_type" jdbcType="CHAR" property="cType" />
+  </resultMap>
+</mapper>
