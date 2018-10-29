@@ -1,0 +1,23 @@
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>日志管理系统</title>
+<link rel="stylesheet" media="screen" th:href="@{/common/css/error.css}">
+
+<script language="JavaScript">
+	function dosearch() {
+		var sf = document.searchform;
+		var submitto = sf.sengine.value + escape(sf.searchterms.value);
+		window.location.href = submitto;
+		return false;
+	}
+</script>
+</head>
+<body>
+	<p class="error">500</p>
+	<div class="content">
+		<span th:if=${exception}> <span th:text="${exception}"></span>:
+		</span><span th:text="${message}"></span>
+	</div>
+</body>
+</html>

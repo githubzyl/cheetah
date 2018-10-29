@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/common_head :: common_head(#{system.name},~{::link},~{})">
+    <!-- CSS App -->
+    <link rel="stylesheet" type="text/css" th:href="@{/flat-admin/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/flat-admin/css/themes/flat-blue.css}">
+    <script language="JavaScript">
+		//每次都跳出iframe，在顶层打开
+		if (window != top) {
+			top.location.href = location.href;
+		}
+	</script>
+</head>
+<body class="flat-blue login-page" th:style="'background: url(' + @{/flat-admin/img/app-header-bg.jpg} + ') no-repeat center center fixed;'">
+    <div class="container">
+        <div class="login-box">
+            <div>
+                <div class="login-form row">
+                    <div class="col-sm-12 text-center login-header">
+                        <i class="login-logo fa fa-connectdevelop fa-5x"></i>
+                        <h4 class="login-title" th:text="#{system.name}"></h4>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="login-body">
+                            <div class="progress hidden" id="login-progress">
+                                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                    Log In...
+                                </div>
+                            </div>
+                            <form th:action="@{/loginSubmit}" name="loginForm" id="loginForm" method="post">
+                                <div class="control">
+                                    <input type="text" class="form-control" id="username" name="username"  placeholder="请输入用户名" required/>
+                                </div>
+                                <div class="control">
+                                    <input type="password" class="form-control" id="password" name="password"  placeholder="请输入密码" required/>
+                                </div>
+                                <div id="error" class="hide_error" style="text-align: center;color: red;">
+									<span></span>
+								</div>
+                                <div class="login-button text-center">
+                                    <a id="loginBtn" class="btn btn-primary" href="javascript:realLogin();">登录</a>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- 
+                        <div class="login-footer">
+                            <span class="text-right"><a href="#" class="color-white">Forgot password?</a></span>
+                        </div>
+                         -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common/common_foot :: common_foot(~{::script})">
+	      <script type="text/javascript" th:src="@{/common/js/login.js}"></script>
+	      <script th:inline="javascript">
+		        /*<![CDATA[*/
+		        var error_message = /*[[${error_message}]]*/;
+		        /*]]>*/
+		    </script>
+     </div>
+</body>
+</html>

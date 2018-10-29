@@ -4,11 +4,17 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.DisabledAccountException;
+import org.apache.shiro.authc.ExcessiveAttemptsException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
 
 import top.zylsite.cheetah.backstage.model.dto.SessionUser;
+import top.zylsite.cheetah.base.utils.MessageSourceUtil;
 
 public class ShiroUtil {
 
@@ -115,6 +121,27 @@ public class ShiroUtil {
             savedRequest = (CustomSavedRequest) session.getAttribute(CUSTOM_SAVED_REQUEST_KEY);
         }
         return savedRequest;
+	}
+	
+	public static String getErrorMessage(Exception e) {
+		String messageProperty = "", error_message = "";
+		if (e instanceof UnknownAccountException) {
+			messageProperty = "unknown_account";
+		} else if (e instanceof IncorrectCredentialsException) {
+			messageProperty = "incorrect_credentials";
+		} else if (e instanceof LockedAccountException) {
+			messageProperty = "locked_account";
+		} else if (e instanceof ExcessiveAttemptsException) {
+			messageProperty = "excessive_attempts";
+		} else if (e instanceof DisabledAccountException) {
+			messageProperty = "disabled_account";
+		} else {
+			messageProperty = "server_exception";
+		}
+		if (!"".equals(messageProperty)) {
+			error_message = MessageSourceUtil.getMessage(messageProperty);
+		}
+		return error_message;
 	}
 
 	private static Subject getSubject() {

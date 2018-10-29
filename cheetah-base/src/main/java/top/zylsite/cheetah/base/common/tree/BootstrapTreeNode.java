@@ -23,6 +23,7 @@ public class BootstrapTreeNode extends BaseTree {
 	private List<BootstrapTreeNode> nodes; // 子节点，可以用递归的方法读取
 	private BootstrapTreeNodeState state;// 节点状态
 	private List<String> parentNodeIds;// 所有的父节点集合
+	private String parentNames;//所有父节点的名称，用逗号隔开
 
 	public BootstrapTreeNode() {
 		this.nodes = new ArrayList<BootstrapTreeNode>();
@@ -195,6 +196,14 @@ public class BootstrapTreeNode extends BaseTree {
 
 	public void setTarget(String target) {
 		this.target = target;
+	}
+
+	public String getParentNames() {
+		return parentNames;
+	}
+
+	public void setParentNames(String parentNames) {
+		this.parentNames = parentNames;
 	}
 
 }

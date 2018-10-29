@@ -119,6 +119,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
 		node.setNodeId(permission.getId().toString());
 		node.setPid(permission.getParentId().toString());
 		node.setText(permission.getVcName());
+		node.setParentNames(permission.getParentIds());
 		node.setTarget((StringUtils.isBlank(permission.getcTargetBlank()) ? "0" : permission.getcTargetBlank()));
 		return node;
 	}

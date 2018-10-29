@@ -1,9 +1,11 @@
 package top.zylsite.cheetah.backstage.service.master.impl;
- 
+
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import tk.mybatis.mapper.entity.Example;
 import top.zylsite.cheetah.backstage.mapper.master.UserMapper;
@@ -22,16 +24,16 @@ import top.zylsite.cheetah.base.common.tree.BootstrapTreeNode;
 
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User> implements IUserService {
- 
+
 	@Autowired
 	private UserMapper userMapper;
-	
+
 	@Autowired
 	private UserRoleMapper userRoleMapper;
-	
+
 	@Autowired
 	private UserInfoExtendMapper userInfoExtendMapper;
-	
+
 	@Autowired
 	private IPermissionService permissionService;
 
@@ -93,6 +95,11 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 		if (!"sysadmin".equals(sessionUser.getVcUserName())) {
 			permissions = this.queryPermissionListByUserId(sessionUser.getId());
 		}
+		if (!CollectionUtils.isEmpty(permissions)) {
+			for (Permission permission : permissions) {
+				permission.setParentIds(getParentName(permission.getParentIds()));
+			}
+		}
 		List<? extends BaseTree> tree = permissionService.getPermissionTreeWithPermissions(permissions, null, false,
 				false);
 		if (null != tree && tree.size() > 0) {
@@ -103,5 +110,33 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 		}
 		sessionUser.setMenuTree(tree);
 	}
-	
+
+	private String getParentName(String parentIds) {
+		if (StringUtils.isNotBlank(parentIds)) {
+			String[] pIds = parentIds.split(",");
+			if (pIds.length > 1) {
+				StringBuilder pName = new StringBuilder();
+				String[] pNames = new String[pIds.length - 1];
+				Permission permission = null;
+				for (int i = 0, length = pIds.length; i < length; i++) {
+					if(pIds[i].equals("0")) {
+						continue;
+					}else {
+						permission = permissionService.queryInfoByPrimaryKey(Integer.parseInt(pIds[i]));
+						if(null == permission) {
+							
+						}else {
+							pNames[pNames.length - 1] = permission.getVcName();
+						}
+					}
+				}
+				for(int j = 0, length = pNames.length ; j < length ; j++) {
+					pName.append(",").append(pNames[j]);
+				}
+				return pName.substring(1);
+			}
+		}
+		return null;
+	}
+
 }

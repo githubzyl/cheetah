@@ -53,7 +53,7 @@ public class CustomErrorController extends BaseController implements ErrorContro
 			return null;
 		} else {
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.setViewName("page/common/error/403");
+			modelAndView.setViewName("common/error/403");
 			return modelAndView;
 		}
 	}
@@ -66,7 +66,7 @@ public class CustomErrorController extends BaseController implements ErrorContro
 			return null;
 		} else {
 			ModelAndView modelAndView = new ModelAndView();
-			modelAndView.setViewName("page/common/error/404");
+			modelAndView.setViewName("common/error/404");
 			return modelAndView;
 		}
 	}
@@ -82,7 +82,7 @@ public class CustomErrorController extends BaseController implements ErrorContro
 			Map<String, Object> model = getErrorAttributes(request, isIncludeStackTrace(request, MediaType.TEXT_HTML));
 			ModelAndView modelAndView = new ModelAndView();
 			modelAndView.addAllObjects(model);
-			modelAndView.setViewName("page/common/error/500");
+			modelAndView.setViewName("common/error/500");
 			return modelAndView;
 		}
 	}

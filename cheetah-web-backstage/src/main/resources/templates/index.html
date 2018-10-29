@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head th:replace="common/common_head :: common_head(#{system.name},~{::link},~{})">
+    <!-- CSS App -->
+    <link rel="stylesheet" type="text/css" th:href="@{/flat-admin/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/flat-admin/css/themes/flat-blue.css}">
+</head>
+<body class="flat-blue" style="height: 100%; overflow: hidden;">
+    <div class="app-container" style="height: 100%;">
+        <div class="row content-container" style="height: 100%;">
+            <div th:replace="common/top_nav"></div>
+            <div th:replace="common/side_menu"></div>
+            <!-- Main Content -->
+            <div class="container-fluid" style="height: 100%;padding-right: 0px;">
+                <div id="mainFrame"  class="side-body padding-top" style="width:100%;height: calc(100% - 30px);overflow:hidden;margin: 60px 0px 0px 0px;padding: 0px 0px 0px 45px;">
+                    <iframe src="" frameborder="0" scrolling="auto" style="height: 100%;width: 100%;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="common/common_foot :: common_foot(~{::script})">
+     	  <!-- Javascript -->
+	      <script type="text/javascript" th:src="@{/flat-admin/js/app.js}"></script>
+	      <script type="text/javascript" th:src="@{/common/js/navigation.js}"></script>
+     </div>
+</body>
+</html>

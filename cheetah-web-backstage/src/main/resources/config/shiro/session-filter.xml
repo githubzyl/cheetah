@@ -3,8 +3,11 @@
     <!-- 不需要认证就能访问的url -->
 	<anons>
 		<pattern>/login</pattern>
+		<pattern>/loginSubmit</pattern>
 		<pattern>/logout</pattern>
 		<pattern>/error/**</pattern>
+		<pattern>/common/**</pattern>
+		<pattern>/flat-admin/**</pattern>
 		<pattern>/favicon.ico</pattern>
 	</anons>
 	<!-- 需要认证才能访问的url -->

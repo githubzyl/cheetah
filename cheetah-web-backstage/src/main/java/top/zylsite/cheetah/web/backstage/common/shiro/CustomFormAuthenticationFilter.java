@@ -11,11 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.DisabledAccountException;
-import org.apache.shiro.authc.ExcessiveAttemptsException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
@@ -67,31 +62,10 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
 	@Override
 	protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request,
 			ServletResponse response) {
-		String messageProperty = "", error_message = "";
-		if (e instanceof UnknownAccountException) {
-			messageProperty = "unknown_account";
-		} else if (e instanceof IncorrectCredentialsException) {
-			messageProperty = "incorrect_credentials";
-		} else if (e instanceof LockedAccountException) {
-			messageProperty = "locked_account";
-		} else if (e instanceof ExcessiveAttemptsException) {
-			messageProperty = "excessive_attempts";
-		} else if (e instanceof DisabledAccountException) {
-			messageProperty = "disabled_account";
-		} else {
-			if (null == token.getPrincipal() || null == token.getCredentials()) {
-				messageProperty = "username_or_pwd_empty";
-			} else {
-				messageProperty = "server_exception";
-			}
-		}
-		if (!"".equals(messageProperty)) {
-			error_message = MessageSourceUtil.getMessage(messageProperty);
-		}
-		request.setAttribute(ShiroConstants.FAIL_LOGIN_KEY_ATTRIBUTE, error_message);
+		request.setAttribute(ShiroConstants.FAIL_LOGIN_KEY_ATTRIBUTE, ShiroUtil.getErrorMessage(e));
 		return true;
 	}
-	
+
 	@Override
 	protected void issueSuccessRedirect(ServletRequest request, ServletResponse response) throws Exception {
 		String url = ShiroUtil.getBeforeLoginUrl(request);

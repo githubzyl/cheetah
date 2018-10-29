@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="common_foot(scripts)">
+	<script type="text/javascript" th:src="@{/flat-admin/lib/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/flat-admin/lib/js/Chart.min.js}"></script>
+	<script type="text/javascript" th:src="@{/flat-admin/lib/js/bootstrap-switch.min.js}"></script>
+	<script type="text/javascript" th:src="@{/flat-admin/lib/js/jquery.matchHeight-min.js}"></script>
+	<script type="text/javascript" th:src="@{/flat-admin/lib/js/jquery.dataTables.min.js}"></script>
+	<script type="text/javascript" th:src="@{/flat-admin/lib/js/dataTables.bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/flat-admin/lib/js/select2.full.min.js}"></script>
+	<script type="text/javascript" th:src="@{/flat-admin/lib/js/ace/ace.js}"></script>
+	<script type="text/javascript" th:src="@{/flat-admin/lib/js/ace/mode-html.js}"></script>
+	<script type="text/javascript" th:src="@{/flat-admin/lib/js/ace/theme-github.js}"></script>
+	
+    <th:block th:replace="${scripts}" />
+</div>

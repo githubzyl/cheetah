@@ -1,0 +1,37 @@
+<div class="side-menu sidebar-inverse" style="overflow: hidden;">
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="side-menu-container">
+			<div class="navbar-header" style="position: absolute;">
+				<a class="navbar-brand" href="javascript:loadIndex();">
+					<div class="icon fa fa-paper-plane"></div>
+					<div class="title" th:text="#{system.name}"></div>
+				</a>
+				<button type="button"
+					class="navbar-expand-toggle pull-right visible-xs">
+					<i class="fa fa-times icon"></i>
+				</button>
+			</div>
+			<div id="menuDiv"
+				style="position: absolute; top: 65px; width: 100%; overflow-x: hidden; overflow-y: auto;">
+				<ul id="menuUL" class="nav navbar-nav">
+					
+				</ul>
+			</div>
+		</div>
+		<!-- /.navbar-collapse -->
+	</nav>
+	<script type="text/javascript">
+	   $(function(){
+		   setmenuUlHeight();
+		   $(window).resize(function() {
+			   setmenuUlHeight();
+		   });
+	   });
+	   function setmenuUlHeight(){
+		   var dH = $(document.body).height();
+		   var top = $('#menuDiv').css('top');
+		   top = top.substring(0, top.length - 2);
+           $('#menuUL').height(dH-top);
+	   }
+	</script>
+</div>
