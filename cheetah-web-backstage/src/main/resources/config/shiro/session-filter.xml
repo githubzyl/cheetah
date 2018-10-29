@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sessionfilter>
+    <!-- 不需要认证就能访问的url -->
+	<anons>
+		<pattern>/login</pattern>
+		<pattern>/logout</pattern>
+		<pattern>/error/**</pattern>
+		<pattern>/favicon.ico</pattern>
+	</anons>
+	<!-- 需要认证才能访问的url -->
+	<authcs>
+		<pattern>/*</pattern>
+		<pattern>/**</pattern>
+		<pattern>/*.*</pattern>
+		<pattern>/login</pattern>
+	</authcs>
+</sessionfilter>

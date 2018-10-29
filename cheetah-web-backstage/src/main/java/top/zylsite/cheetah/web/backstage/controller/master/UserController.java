@@ -1,5 +1,7 @@
 package top.zylsite.cheetah.web.backstage.controller.master;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tk.mybatis.mapper.entity.Example;
-import top.zylsite.cheetah.base.common.BaseService;
-import top.zylsite.cheetah.base.common.BaseRequestController;
-import top.zylsite.cheetah.base.common.QueryParameter;
-import top.zylsite.cheetah.backstage.service.master.IUserService;
 import top.zylsite.cheetah.backstage.model.master.User;
+import top.zylsite.cheetah.backstage.service.master.IUserService;
+import top.zylsite.cheetah.base.common.BaseRequestController;
+import top.zylsite.cheetah.base.common.BaseService;
+import top.zylsite.cheetah.base.common.QueryParameter;
+import top.zylsite.cheetah.base.common.tree.BaseTree;
+import top.zylsite.cheetah.web.backstage.common.shiro.ShiroUtil;
 
 @RestController
 @RequestMapping("/user")
@@ -56,6 +60,12 @@ public class UserController extends BaseRequestController<User> {
 	@GetMapping("/remove")
 	public Object remove(Integer[] ids) {
 		return super.remove(ids);
+	}
+	
+	@GetMapping("/userMenus")
+	public Object queryMenusById() {
+		List<? extends BaseTree> tree = ShiroUtil.getSessionUser().getMenuTree();
+		return this.ajaxSuccess(tree);
 	}
 	
 	@Override

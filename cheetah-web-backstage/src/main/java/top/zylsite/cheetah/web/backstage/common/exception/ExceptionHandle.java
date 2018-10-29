@@ -1,4 +1,4 @@
-package top.zylsite.cheetah.web.backstage.exception;
+package top.zylsite.cheetah.web.backstage.common.exception;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

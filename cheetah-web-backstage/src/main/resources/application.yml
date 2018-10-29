@@ -43,3 +43,21 @@ spring:
           exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,*.woff2,*.woff,*.ttf,*.svg,*.eot,/druid/*'
         stat-view-servlet: 
           reset-enable: false
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 10MB
+  thymeleaf:
+    content-type: text/html
+    cache: false
+    mode: LEGACYHTML5
+  messages: 
+    encoding: UTF-8
+    cache-seconds: 3600
+    basename: i18n/messages
+session:
+  timeout: 30

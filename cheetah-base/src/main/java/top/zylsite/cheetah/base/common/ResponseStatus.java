@@ -20,6 +20,11 @@ public class ResponseStatus {
 	 * 认证失败
 	 */
 	public static final int AuthenticationFailed = 1003;
+	
+	/**
+	 * session超时的状态
+	 */
+	public static final int SessionTimeout = 9999;
 
 	/**
 	 * 未知错误
