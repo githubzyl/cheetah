@@ -92,6 +92,10 @@ public abstract class BaseServiceImpl<T> extends BaseParamHandler implements Bas
 				.getActualTypeArguments()[0];
 		return tClass;
 	}
+	
+	protected Example createExample() {
+		return new Example(getEntityClass());
+	}
 
 	protected abstract BaseMapper<T> getBaseMapper();
 

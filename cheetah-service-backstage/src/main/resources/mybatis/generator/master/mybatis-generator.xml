@@ -67,7 +67,9 @@
 			targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
-		<table tableName="t_user" domainObjectName="User"></table>
+		<table tableName="t_user" domainObjectName="User">
+			<generatedKey column="id" sqlStatement="JDBC"/>
+		</table>
 		<table tableName="t_role" domainObjectName="Role"></table>
 		<table tableName="t_user_role" domainObjectName="UserRole"></table>
 		<table tableName="t_permission" domainObjectName="Permission"></table>
@@ -75,7 +77,9 @@
 		<table tableName="t_dict_type" domainObjectName="DictionaryType"></table>
 		<table tableName="t_data_dict" domainObjectName="DataDictionary"></table>
 		<table tableName="t_scheduled_job" domainObjectName="ScheduledJob"></table>
-		<table tableName="t_user_bind_info" domainObjectName="UserBindInfo"></table>
+		<table tableName="t_user_bind_info" domainObjectName="UserBindInfo">
+			<generatedKey column="id" sqlStatement="JDBC"/>
+		</table>
 		<table tableName="t_user_login_log" domainObjectName="UserLoginLog">
 			<generatedKey column="id" sqlStatement="JDBC"/>
 		</table>

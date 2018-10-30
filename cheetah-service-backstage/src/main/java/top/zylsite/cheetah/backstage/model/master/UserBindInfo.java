@@ -9,6 +9,7 @@ public class UserBindInfo implements Serializable {
      * 自增ID
      */
     @Id
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**

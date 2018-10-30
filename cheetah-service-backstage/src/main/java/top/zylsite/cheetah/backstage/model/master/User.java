@@ -9,6 +9,7 @@ public class User implements Serializable {
      * 用户id
      */
     @Id
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**

@@ -5,4 +5,26 @@ import top.zylsite.cheetah.backstage.model.master.UserBindInfo;
 
 public interface IUserBindInfoService extends BaseService<UserBindInfo>{
  
+	/**
+	 * 查询第三方账号是否已存在，不存在插入一条，最后返回记录ID
+	 * @param account
+	 * @param type
+	 * @return
+	 */
+	public Integer insertIfNotExist(UserBindInfo bindInfo);
+	
+	/**
+	 * 查询第三方账号是否已经绑定用户信息，如果绑定了则返回用户ID
+	 * @param accountId
+	 * @return
+	 */
+	public Integer hasBindingUser(int accountId);
+	
+	/**
+	 * 第三方账号绑定
+	 * @param accountId
+	 * @param userId
+	 */
+	public void bindUser(int accountId, int userId);
+	
 }
