@@ -8,4 +8,8 @@ Mapper采用的是通用Mapper最新版本，集成spring boot的最新版本为
 安全框架采用的是Shiro1.3.2  
 html渲染引擎采用的是thymeleaf3.0.0.RELEASE  
 前端框架采用的是Bootstrap3.3.6  
-js框架采用的是Jquery2.1.4  
+js框架采用的是Jquery2.1.4   
+登录页展示如下图：  
+![image](https://github.com/githubzyl/cheetah/blob/master/cheetah-web-backstage/src/main/resources/static/example/img/login.png?raw=true) 
+首页展示如下图：  
+![image](https://github.com/githubzyl/cheetah/blob/master/cheetah-web-backstage/src/main/resources/static/example/img/index.png?raw=true)
