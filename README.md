@@ -3,6 +3,7 @@
 底层框架采用spring boot，项目此时用的版本是1.5.6
 ORM框架采用的是Mybatis3.4.5
 数据库Mysql5.7
+数据库连接池druid1.1.9
 Mapper采用的是通用Mapper最新版本，集成spring boot的最新版本为2.0.4
 安全框架采用的是Shiro1.3.2
 html渲染引擎采用的是thymeleaf3.0.0.RELEASE
