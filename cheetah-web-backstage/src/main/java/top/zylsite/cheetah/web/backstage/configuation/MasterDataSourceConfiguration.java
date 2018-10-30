@@ -5,7 +5,6 @@ import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +23,7 @@ import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
  * @version 1.0
  */
 @Configuration
-@MapperScan(basePackages = "top.zylsite.cheetah.backstage.mapper.master", sqlSessionTemplateRef = "masterSqlSessionTemplate")
+@tk.mybatis.spring.annotation.MapperScan(basePackages = "top.zylsite.cheetah.backstage.mapper.master", sqlSessionTemplateRef = "masterSqlSessionTemplate")
 public class MasterDataSourceConfiguration {
 
 	private final static String MASTER_MYBATIS_CONFIG = "classpath:mybatis-config.xml";

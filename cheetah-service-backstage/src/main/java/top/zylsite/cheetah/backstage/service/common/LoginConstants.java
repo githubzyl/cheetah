@@ -37,15 +37,15 @@ public final class LoginConstants {
 	 */
 	public final static String WECHAT_APP_ID = "";
 	public final static String WECHAT_APP_SECRET = "";
-	public final static String WECHAT_OPEN_DOMAIN = "https://open.weixin.qq.com/connect/qrconnect";
+	public final static String WECHAT_OPEN_DOMAIN = "https://open.weixin.qq.com";
 	public final static String WECHAT_API_DOMAIN = "https://api.weixin.qq.com";
 	public final static String WECHAT_AUTH_REDIRECT_URI = "/login/wechat/callback";
 	
 	/**
 	 * 新浪微博
 	 */
-	public final static String SINA_APP_KEY = "1601293518";
-	public final static String SINA_APP_SECRET = "b02cd362cfc904ae4c3875d2f89d6700";
+	public final static String SINA_APP_KEY = "2170790687";
+	public final static String SINA_APP_SECRET = "4fb47b9e490164d9b8e0858be0c1903d";
 	public final static String SINA_DOMAIN = "https://api.weibo.com";
 	public final static String SINA_AUTH_REDIRECT_URI = "/login/sina/callback";
 	

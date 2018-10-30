@@ -15,23 +15,31 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
+import org.slf4j.Logger;
 import org.springframework.core.env.Environment;
 
 import top.zylsite.cheetah.backstage.model.dto.SessionUser;
+import top.zylsite.cheetah.backstage.model.dto.SystemLog;
 import top.zylsite.cheetah.backstage.model.master.Permission;
 import top.zylsite.cheetah.backstage.model.master.Role;
+import top.zylsite.cheetah.backstage.model.master.UserLoginLog;
 import top.zylsite.cheetah.backstage.model.master.UserRole;
+import top.zylsite.cheetah.backstage.service.common.enums.LoginWayEnum;
 import top.zylsite.cheetah.backstage.service.master.IRoleService;
+import top.zylsite.cheetah.backstage.service.master.IUserLoginLogService;
 import top.zylsite.cheetah.backstage.service.master.IUserService;
 import top.zylsite.cheetah.base.common.BaseOut;
 import top.zylsite.cheetah.base.common.ResponseStatus;
+import top.zylsite.cheetah.base.utils.LoggerFactoryUtil;
 import top.zylsite.cheetah.base.utils.MessageSourceUtil;
 import top.zylsite.cheetah.base.utils.RequestUtil;
 import top.zylsite.cheetah.base.utils.ResponseUtil;
 import top.zylsite.cheetah.base.utils.SpringUtil;
 
 public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
-	
+
+	private Logger logger = LoggerFactoryUtil.getLogger(CustomFormAuthenticationFilter.class);
+
 	// 重写此方法是为了在session过期时返回数据或重定向到登录页
 	@Override
 	protected void redirectToLogin(ServletRequest servletRequest, ServletResponse servletResponse) throws IOException {
@@ -49,9 +57,20 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
 		// 设置菜单树信息
 		userService.setMenuTree(sessionUser);
 		Environment env = SpringUtil.getBean(Environment.class);
-		int timeout = env.getProperty(ShiroConstants.SESSION_TIMEOUT_KEY, Integer.class, ShiroConstants.DEFAULT_SESSION_TIMEOUT);
+		int timeout = env.getProperty(ShiroConstants.SESSION_TIMEOUT_KEY, Integer.class,
+				ShiroConstants.DEFAULT_SESSION_TIMEOUT);
 		if (0 != timeout) {
 			ShiroUtil.getSession().setTimeout(timeout * 60 * 1000);
+		}
+		// 记录用户登录日志
+		try {
+			IUserLoginLogService userLoginLogService = SpringUtil.getBean(IUserLoginLogService.class);
+			UserLoginLog userLoginLog = SystemLog.createUserLoginLog((HttpServletRequest) request, sessionUser.getId(),
+					String.valueOf(LoginWayEnum.AP.getCode()));
+			userLoginLogService.insertInfoAndGetId(userLoginLog);
+			sessionUser.setLoginLogId(userLoginLog.getId());
+		} catch (Exception e) {
+			logger.error("登录日志插入数据库失败:", e);
 		}
 		ShiroUtil.setSessionAttribute(ShiroConstants.SESSION_USER_KEY, sessionUser);
 		ShiroUtil.setSessionAttribute(ShiroConstants.SESSION_PERMISSION_KEY, getPermissions(sessionUser));
@@ -73,12 +92,6 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
 			url = getSuccessUrl();
 		}
 		WebUtils.issueRedirect(request, response, url, null, true);
-	}
-
-	@Override
-	protected void saveRequest(ServletRequest request) {
-		ShiroUtil.saveRequest(request);//自定义的保存request方法
-		WebUtils.saveRequest(request);
 	}
 
 	private boolean checkSession(ServletRequest servletRequest, ServletResponse servletResponse) throws IOException {

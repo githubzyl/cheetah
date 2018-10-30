@@ -18,6 +18,7 @@ import top.zylsite.cheetah.base.common.BaseRequestController;
 import top.zylsite.cheetah.base.common.BaseService;
 import top.zylsite.cheetah.base.common.QueryParameter;
 import top.zylsite.cheetah.base.common.tree.BaseTree;
+import top.zylsite.cheetah.web.backstage.common.annotation.ControllerLogs;
 import top.zylsite.cheetah.web.backstage.common.shiro.ShiroUtil;
 
 @RestController
@@ -62,8 +63,9 @@ public class UserController extends BaseRequestController<User> {
 		return super.remove(ids);
 	}
 	
+	@ControllerLogs(description="获取菜单列表")
 	@GetMapping("/userMenus")
-	public Object queryMenusById() {
+	public Object userMenus() {
 		List<? extends BaseTree> tree = ShiroUtil.getSessionUser().getMenuTree();
 		return this.ajaxSuccess(tree);
 	}

@@ -15,6 +15,8 @@ public class SessionUser extends User {
 
 	private static final long serialVersionUID = -6165247803503895708L;
 	
+	private Integer loginLogId;//登录日志ID
+	
 	private List<? extends BaseTree> menuTree;
 
 	public List<? extends BaseTree> getMenuTree() {
@@ -23,6 +25,14 @@ public class SessionUser extends User {
 
 	public void setMenuTree(List<? extends BaseTree> menuTree) {
 		this.menuTree = menuTree;
+	}
+
+	public Integer getLoginLogId() {
+		return loginLogId;
+	}
+
+	public void setLoginLogId(Integer loginLogId) {
+		this.loginLogId = loginLogId;
 	}
 
 }

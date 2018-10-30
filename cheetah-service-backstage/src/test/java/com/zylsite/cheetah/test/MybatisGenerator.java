@@ -19,7 +19,7 @@ public class MybatisGenerator {
 		MybatisGeneratorUtil.generateCode(MYBATIS_GENERATOR_CONFIG);
 		System.out.println("代码生成结束，请刷新项目之后生成service和serviceImpl...");
 	}
-
+	
 	@Test
 	public void genServiceAndServiceImpl() {
 		System.out.println("开始生成service,serviceImpl");

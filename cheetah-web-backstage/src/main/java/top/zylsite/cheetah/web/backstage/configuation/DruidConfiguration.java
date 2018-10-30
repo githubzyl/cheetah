@@ -29,7 +29,7 @@ public class DruidConfiguration {
 
 	{
 		aopPatterns = new ArrayList<>();
-		aopPatterns.add("com.hundsun.ism.logger.service.*");
+		aopPatterns.add("top.zylsite.cheetah.backstage.service.*");
 	}
 
 	@Bean

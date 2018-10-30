@@ -1,7 +1,4 @@
 spring:
-  aop:
-    auto: true
-    proxy-target-class: true
   datasource:
       master:
         type: com.alibaba.druid.pool.DruidDataSource

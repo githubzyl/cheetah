@@ -76,7 +76,9 @@
 		<table tableName="t_data_dict" domainObjectName="DataDictionary"></table>
 		<table tableName="t_scheduled_job" domainObjectName="ScheduledJob"></table>
 		<table tableName="t_user_bind_info" domainObjectName="UserBindInfo"></table>
-		<table tableName="t_user_login_log" domainObjectName="UserLoginLog"></table>
+		<table tableName="t_user_login_log" domainObjectName="UserLoginLog">
+			<generatedKey column="id" sqlStatement="JDBC"/>
+		</table>
 		<table tableName="t_user_view_log" domainObjectName="UserViewLog"></table>
 
 	</context>

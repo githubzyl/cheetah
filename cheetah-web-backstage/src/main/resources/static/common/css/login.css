@@ -1,0 +1,62 @@
+.oauth-wrapper {
+	margin: auto;
+	text-align: left;
+	margin-top: 20px;
+	font-size: 0;
+	border-top: 1px dashed #e0e0e0;
+	padding-top: 15px;
+	position: relative;
+	cursor: pointer;
+	margin-bottom: -15px;
+}
+
+.oauth-wrapper .oauth-icon {
+	margin-right: 15px;
+	margin-bottom: 5px;
+	width: 26px;
+	height: 26px;
+	display: block;
+	float: left;
+	border-radius: 13px;
+}
+
+.oauth-wrapper .register {
+	float: right;
+	font-size: 16px;
+	line-height: 26px;
+	margin-bottom: 5px;
+}
+
+.oauth-wrapper .oauth-icon.oauth-icon-qq {
+	background: url(../images/qq-logo.png) no-repeat center;
+	background-size: 26px;
+}
+
+.oauth-wrapper .oauth-icon.oauth-icon-wx {
+	background: url(../images/wechat-logo.png) no-repeat center;
+	background-size: 26px;
+}
+
+.oauth-wrapper .oauth-icon.oauth-icon-weibo {
+	background: url(../images/sina-logo.png) no-repeat center;
+	background-size: 26px;
+}
+
+.oauth-wrapper .oauth-icon.oauth-icon-alipay {
+	background: url(../images/alipay-logo.png) no-repeat center;
+	background-size: 26px;
+}
+
+.oauth-wrapper .oauth-icon.oauth-icon-baidu {
+	background: url(../images/baidu-logo.png) no-repeat center;
+	background-size: 26px;
+}
+
+.oauth-wrapper .oauth-icon.oauth-icon-github {
+	background: url(../images/github-logo.png) no-repeat center;
+	background-size: 26px;
+}
+
+.clearfix {
+	clear: both;
+}

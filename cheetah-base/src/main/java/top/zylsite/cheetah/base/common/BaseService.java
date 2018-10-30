@@ -13,6 +13,20 @@ import tk.mybatis.mapper.entity.Example;
  * @version 1.0
  */
 public interface BaseService<T> {
+	
+	/**
+	 * 新增对象信息,返回自增主键，主键名必须是“id”,而且是整型，并且设置了自增
+	 * 
+	 * @param entity
+	 */
+	public int insertInfoAndGetId(T entity);
+
+	/**
+	 * 插入集合(mysql专用)
+	 * 
+	 * @param list
+	 */
+	public int insertList(List<T> list);
 
 	/**
 	 * 新增对象信息

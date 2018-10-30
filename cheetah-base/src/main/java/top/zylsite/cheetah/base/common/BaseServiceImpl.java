@@ -18,6 +18,14 @@ import tk.mybatis.mapper.entity.Example;
  */
 public abstract class BaseServiceImpl<T> extends BaseParamHandler implements BaseService<T> {
 
+	public int insertInfoAndGetId(T entity) {
+		return getBaseMapper().insertUseGeneratedKeys(entity);
+	}
+
+	public int insertList(List<T> list) {
+		return getBaseMapper().insertList(list);
+	}
+	
 	public int insertInfo(T entity) {
 		return getBaseMapper().insert(entity);
 	}

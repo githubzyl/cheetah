@@ -6,6 +6,8 @@ import javax.persistence.*;
 
 @Table(name = "t_user_login_log")
 public class UserLoginLog implements Serializable {
+    @Id
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**
@@ -25,6 +27,12 @@ public class UserLoginLog implements Serializable {
      */
     @Column(name = "d_logout_time")
     private Date dLogoutTime;
+
+    /**
+     * 登录类型
+     */
+    @Column(name = "c_login_type")
+    private String cLoginType;
 
     /**
      * 访问IP
@@ -115,6 +123,24 @@ public class UserLoginLog implements Serializable {
     }
 
     /**
+     * 获取登录类型
+     *
+     * @return c_login_type - 登录类型
+     */
+    public String getcLoginType() {
+        return cLoginType;
+    }
+
+    /**
+     * 设置登录类型
+     *
+     * @param cLoginType 登录类型
+     */
+    public void setcLoginType(String cLoginType) {
+        this.cLoginType = cLoginType == null ? null : cLoginType.trim();
+    }
+
+    /**
      * 获取访问IP
      *
      * @return vc_ip - 访问IP
@@ -184,6 +210,7 @@ public class UserLoginLog implements Serializable {
             && (this.getlUserId() == null ? other.getlUserId() == null : this.getlUserId().equals(other.getlUserId()))
             && (this.getdLoginTime() == null ? other.getdLoginTime() == null : this.getdLoginTime().equals(other.getdLoginTime()))
             && (this.getdLogoutTime() == null ? other.getdLogoutTime() == null : this.getdLogoutTime().equals(other.getdLogoutTime()))
+            && (this.getcLoginType() == null ? other.getcLoginType() == null : this.getcLoginType().equals(other.getcLoginType()))
             && (this.getVcIp() == null ? other.getVcIp() == null : this.getVcIp().equals(other.getVcIp()))
             && (this.getVcDeviceType() == null ? other.getVcDeviceType() == null : this.getVcDeviceType().equals(other.getVcDeviceType()))
             && (this.getVcBrowserType() == null ? other.getVcBrowserType() == null : this.getVcBrowserType().equals(other.getVcBrowserType()));
@@ -197,6 +224,7 @@ public class UserLoginLog implements Serializable {
         result = prime * result + ((getlUserId() == null) ? 0 : getlUserId().hashCode());
         result = prime * result + ((getdLoginTime() == null) ? 0 : getdLoginTime().hashCode());
         result = prime * result + ((getdLogoutTime() == null) ? 0 : getdLogoutTime().hashCode());
+        result = prime * result + ((getcLoginType() == null) ? 0 : getcLoginType().hashCode());
         result = prime * result + ((getVcIp() == null) ? 0 : getVcIp().hashCode());
         result = prime * result + ((getVcDeviceType() == null) ? 0 : getVcDeviceType().hashCode());
         result = prime * result + ((getVcBrowserType() == null) ? 0 : getVcBrowserType().hashCode());
@@ -213,6 +241,7 @@ public class UserLoginLog implements Serializable {
         sb.append(", lUserId=").append(lUserId);
         sb.append(", dLoginTime=").append(dLoginTime);
         sb.append(", dLogoutTime=").append(dLogoutTime);
+        sb.append(", cLoginType=").append(cLoginType);
         sb.append(", vcIp=").append(vcIp);
         sb.append(", vcDeviceType=").append(vcDeviceType);
         sb.append(", vcBrowserType=").append(vcBrowserType);

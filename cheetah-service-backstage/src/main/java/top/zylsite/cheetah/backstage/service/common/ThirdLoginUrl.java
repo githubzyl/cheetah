@@ -46,7 +46,7 @@ public class ThirdLoginUrl {
 
 	private static String qq() {
 		StringBuilder sb = new StringBuilder(LoginConstants.QQ_DOMAIN);
-		sb.append("/oauth2.0/authorize?")
+		sb.append("/oauth2.0/authorize")
 		   .append("?client_id=").append(LoginConstants.QQ_CLIENT_ID)
 		   .append("&redirect_uri=").append(getRedirectUrl(LoginConstants.QQ_AUTH_REDIRECT_URI))
 		   .append("&state=" + LoginConstants.QQ_STATE)

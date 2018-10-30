@@ -1,6 +1,7 @@
 package top.zylsite.cheetah.base.common;
 
 import tk.mybatis.mapper.common.Mapper;
+import tk.mybatis.mapper.common.MySqlMapper;
 import top.zylsite.cheetah.base.common.mapper.BatchUpdateMapper;
 
 /**
@@ -10,6 +11,6 @@ import top.zylsite.cheetah.base.common.mapper.BatchUpdateMapper;
  * 2018年10月25日
  * @version 1.0
  */
-public interface BaseMapper<T>  extends Mapper<T>, BatchUpdateMapper<T> {
+public interface BaseMapper<T>  extends Mapper<T>, MySqlMapper<T>,BatchUpdateMapper<T> {
 
 }
