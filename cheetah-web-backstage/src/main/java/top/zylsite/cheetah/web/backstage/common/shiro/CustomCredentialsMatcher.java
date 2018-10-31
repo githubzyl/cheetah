@@ -5,7 +5,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
@@ -22,7 +21,11 @@ public class CustomCredentialsMatcher extends SimpleCredentialsMatcher {
 
 	@Override
 	public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
-		UsernamePasswordToken utoken = (UsernamePasswordToken) token;
+		char[] password = null;
+		if(token instanceof UsernamePasswordLoginTypeToken) {
+			UsernamePasswordLoginTypeToken loginTypeToken = (UsernamePasswordLoginTypeToken) token;
+			password = loginTypeToken.getPassword();
+		}
 		// 获取用户名
 		String username = (String) token.getPrincipal();
 		// 获取登录记录次数
@@ -36,7 +39,7 @@ public class CustomCredentialsMatcher extends SimpleCredentialsMatcher {
 			throw new ExcessiveAttemptsException();
 		}
 		// 获得用户输入的密码:(可以采用加盐(salt)的方式去检验)
-		String inPassword = new String(utoken.getPassword());
+		String inPassword = new String(password);
 		inPassword = EncdDecd.MD5String(inPassword);
 		// 获得数据库中的密码
 		String dbPassword = (String) info.getCredentials();

@@ -5,9 +5,10 @@
 <link rel="stylesheet" media="screen" th:href="@{/common/css/error.css}">
 </head>
 <body>
-	<p class="error">500</p>
 	<div class="content">
-		<span th:text="${res.error}"></span>
+		<p th:text="${res.error}"></p>
+		<p>请求的url如下：</p>
+		<p th:text="${res.requestUrl}"></p>
 	</div>
 </body>
 </html>

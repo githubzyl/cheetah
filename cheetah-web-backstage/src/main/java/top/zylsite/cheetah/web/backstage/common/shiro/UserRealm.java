@@ -9,7 +9,6 @@ import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.cache.Cache;
@@ -18,32 +17,38 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
 import top.zylsite.cheetah.backstage.model.dto.SessionUser;
+import top.zylsite.cheetah.backstage.service.common.enums.LoginWayEnum;
 import top.zylsite.cheetah.backstage.service.master.IUserService;
 import top.zylsite.cheetah.base.utils.SpringUtil;
 import top.zylsite.cheetah.web.backstage.common.Constants;
 
-public class CustomAuthRealm extends AuthorizingRealm {
+public class UserRealm extends AuthorizingRealm {
 
 	private Cache<String, AtomicInteger> passwordRetryCache;
 
-	public CustomAuthRealm(CacheManager cacheManager) {
+	/**
+	 * 支持的登录类型
+	 */
+	private String supportedLoginType;
+
+	public UserRealm(CacheManager cacheManager) {
 		passwordRetryCache = cacheManager.getCache("passwordRetryCache");
+		this.supportedLoginType = LoginWayEnum.AP.getCodeStr();
 	}
 
 	// 认证.登录
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		UsernamePasswordToken utoken = (UsernamePasswordToken) token;// 获取用户输入的token
-		String username = utoken.getUsername();
+		String username = (String) token.getPrincipal();
 		IUserService userService = SpringUtil.getBean(IUserService.class);
 		SessionUser user = userService.findByUserName(username);
 		if (null == user) {// 用户名不存在
 			throw new IncorrectCredentialsException();
 		}
-		if (Constants.YES.equals(user.getcStatus())) {//启用，禁用
+		if (Constants.YES.equals(user.getcStatus())) {// 启用，禁用
 			throw new DisabledAccountException();
 		}
-		if (Constants.YES.equals(user.getcLockStatus())) {//锁定，非锁定
+		if (Constants.YES.equals(user.getcLockStatus())) {// 锁定，非锁定
 			throw new LockedAccountException();
 		}
 		AtomicInteger atomicInteger = passwordRetryCache.get(username);
@@ -55,7 +60,7 @@ public class CustomAuthRealm extends AuthorizingRealm {
 			}
 		}
 		// 放入shiro.调用CredentialsMatcher检验密码
-		return new SimpleAuthenticationInfo(user, user.getVcPassword(), this.getClass().getName());
+		return new SimpleAuthenticationInfo(user, user.getVcPassword(), super.getName());
 	}
 
 	// 授权
@@ -66,6 +71,19 @@ public class CustomAuthRealm extends AuthorizingRealm {
 			return (SimpleAuthorizationInfo) obj;
 		}
 		return new SimpleAuthorizationInfo();
+	}
+
+	
+	/**
+	 * 重写获取tocken的验证器
+	 */
+	@Override
+	public boolean supports(AuthenticationToken token) {
+		if (token instanceof UsernamePasswordLoginTypeToken) {
+            UsernamePasswordLoginTypeToken usernamePasswordLoginType = (UsernamePasswordLoginTypeToken) token;
+            return this.supportedLoginType.equals(usernamePasswordLoginType.getLoginType());
+        }
+        return false;
 	}
 
 }

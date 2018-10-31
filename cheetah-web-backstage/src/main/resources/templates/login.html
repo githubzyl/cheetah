@@ -21,7 +21,7 @@
                 <div class="login-form row">
                     <div class="col-sm-12 text-center login-header">
                         <i class="login-logo fa fa-connectdevelop fa-5x"></i>
-                        <h4 class="login-title" th:text="#{system.name}"></h4>
+                        <h4 class="login-title">登录</h4>
                     </div>
                     <div class="col-sm-12">
                         <div class="login-body">
@@ -31,6 +31,7 @@
                                 </div>
                             </div>
                             <form th:action="@{/login}" name="loginForm" id="loginForm" method="post">
+                                <input type="hidden" id="loginType" name="loginType" th:value="${loginType}">
                                 <div class="control">
                                     <input type="text" class="form-control" id="username" name="username"  placeholder="请输入用户名" autocomplete="off" required/>
                                 </div>

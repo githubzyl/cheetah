@@ -58,3 +58,5 @@ spring:
     basename: i18n/messages
 session:
   timeout: 30
+logback:
+  fileDir: E:/workspace/web/WorkSpace/logs/cheetah-web-backstage

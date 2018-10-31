@@ -2,7 +2,9 @@ package top.zylsite.cheetah.web.backstage.configuation;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.Filter;
@@ -10,7 +12,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
+import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -28,16 +33,19 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
-import top.zylsite.cheetah.web.backstage.common.shiro.CustomAuthRealm;
 import top.zylsite.cheetah.web.backstage.common.shiro.CustomCredentialsMatcher;
 import top.zylsite.cheetah.web.backstage.common.shiro.CustomFormAuthenticationFilter;
+import top.zylsite.cheetah.web.backstage.common.shiro.CustomModularRealmAuthenticator;
 import top.zylsite.cheetah.web.backstage.common.shiro.CustomShiroFilterFactoryBean;
 import top.zylsite.cheetah.web.backstage.common.shiro.ShiroConstants;
+import top.zylsite.cheetah.web.backstage.common.shiro.ThirdAccountCredentialsMatcher;
+import top.zylsite.cheetah.web.backstage.common.shiro.ThirdAccountRealm;
+import top.zylsite.cheetah.web.backstage.common.shiro.UserRealm;
 
 /**
  * Description: shiro配置
- * @author jason
- * 2018年10月26日
+ * 
+ * @author jason 2018年10月26日
  * @version 1.0
  */
 @Configuration
@@ -46,8 +54,7 @@ public class ShiroConfiguration {
 	private Map<String, String> filterChainMap = new LinkedHashMap<String, String>();
 
 	/**
-	 * ShiroFilterFactoryBean 处理拦截资源文件问题。
-	 * 注意：单独一个ShiroFilterFactoryBean配置是或报错的，因为在
+	 * ShiroFilterFactoryBean 处理拦截资源文件问题。 注意：单独一个ShiroFilterFactoryBean配置是或报错的，因为在
 	 * 初始化ShiroFilterFactoryBean的时候需要注入：SecurityManager
 	 * 
 	 * Filter Chain定义说明 1、一个URL可以配置多个Filter，使用逗号分隔 2、当设置多个过滤器时，全部验证通过，才视为通过
@@ -67,12 +74,33 @@ public class ShiroConfiguration {
 		return new CustomCredentialsMatcher(getEhCacheManager());
 	}
 
+	// 配置第三方账号自定义的密码比较器
+	@Bean(name = "thirdAccountCredentialsMatcher")
+	public ThirdAccountCredentialsMatcher thirdAccountCredentialsMatcher() {
+		return new ThirdAccountCredentialsMatcher();
+	}
+
 	// 配置自定义的权限登录器
-	@Bean(name = "authRealm")
-	public CustomAuthRealm authRealm() {
-		CustomAuthRealm authRealm = new CustomAuthRealm(getEhCacheManager());
+	@Bean(name = "userAuthRealm")
+	public UserRealm userAuthRealm() {
+		UserRealm authRealm = new UserRealm(getEhCacheManager());
 		authRealm.setCredentialsMatcher(credentialsMatcher());
 		return authRealm;
+	}
+
+	// 配置自定义的权限登录器
+	@Bean(name = "thirdAccountRealm")
+	public ThirdAccountRealm thirdAccountRealm() {
+		ThirdAccountRealm authRealm = new ThirdAccountRealm();
+		authRealm.setCredentialsMatcher(thirdAccountCredentialsMatcher());
+		return authRealm;
+	}
+
+	@Bean(name = "authenticator")
+	public ModularRealmAuthenticator authenticator() {
+		CustomModularRealmAuthenticator authenticator = new CustomModularRealmAuthenticator();
+		authenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
+		return authenticator;
 	}
 
 	@Bean(name = "lifecycleBeanPostProcessor")
@@ -89,10 +117,14 @@ public class ShiroConfiguration {
 
 	// 配置核心安全事务管理器
 	@Bean(name = "securityManager")
-	public DefaultWebSecurityManager defaultWebSecurityManager(CustomAuthRealm realm) {
+	public DefaultWebSecurityManager defaultWebSecurityManager() {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-		// 设置realm
-		securityManager.setRealm(realm);
+		securityManager.setAuthenticator(authenticator());
+		List<Realm> realms = new ArrayList<>();
+		// 添加多个Realm
+		realms.add(userAuthRealm());
+		realms.add(thirdAccountRealm());
+		securityManager.setRealms(realms);
 		securityManager.setCacheManager(getEhCacheManager());
 		return securityManager;
 	}
@@ -131,8 +163,7 @@ public class ShiroConfiguration {
 	 */
 	private void loadShiroFilterChain(ShiroFilterFactoryBean factoryBean) {
 		/**
-		 * anon：它对应的过滤器里面是空的,什么都没做,可以理解为不拦截
-		 * authc：该过滤器下的页面必须验证后才能访问，它是Shiro内置的一个拦截器
+		 * anon：它对应的过滤器里面是空的,什么都没做,可以理解为不拦截 authc：该过滤器下的页面必须验证后才能访问，它是Shiro内置的一个拦截器
 		 * org.apache.shiro.web.filter.authc.FormAuthenticationFilter
 		 */
 		factoryBean.setFilterChainDefinitionMap(filterChainMap);

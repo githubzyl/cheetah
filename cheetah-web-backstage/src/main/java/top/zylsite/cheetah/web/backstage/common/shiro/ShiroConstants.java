@@ -42,6 +42,10 @@ public final class ShiroConstants {
 	 * 登录失败的错误消息的key
 	 */
 	public final static String FAIL_LOGIN_KEY_ATTRIBUTE = "error_message";
+	/**
+	 * 登录类型key
+	 */
+	public static final String DEFAULT_LOGIN_TYPE_PARAM = "loginType";
 	
 	/**
 	 * session超时的配置key
