@@ -17,7 +17,7 @@ public enum LoginWayEnum {
 	SINA(LoginConstants.LOGIN_WAY_SINA,"新浪微博",true),
 	BAIDU(LoginConstants.LOGIN_WAY_BAIDU,"百度",true),
 	ALIPAY(LoginConstants.LOGIN_WAY_ALIPAY,"支付宝",true),
-	GITHUB(LoginConstants.LOGIN_WAY_GITHUB,"GITHUB",true)
+	GITHUB(LoginConstants.LOGIN_WAY_GITHUB,"GitHub",true)
 	;
 	
 	int code;

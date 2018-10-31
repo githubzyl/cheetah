@@ -30,7 +30,7 @@ public class SinaInfo {
 		   .append("&client_secret=").append(LoginConstants.SINA_APP_SECRET)
 		   .append("&redirect_uri=").append(LoginConstants.CHEETAH_DOMIAN).append(LoginConstants.SINA_AUTH_REDIRECT_URI);
 		String url = sb.toString();
-		String result = HttpUtils.get(url);
+		String result = HttpUtils.post(url);
 		if(StringUtils.isBlank(result)) {
 			return new ThirdResult(false, url, "获取access_token失败,错误信息:请求异常");
 		}

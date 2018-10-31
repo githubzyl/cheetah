@@ -35,7 +35,10 @@ public class UserBindInfoServiceImpl extends BaseServiceImpl<UserBindInfo> imple
 			userBindInfoMapper.insert(bindInfo);
 			return bindInfo.getId();
 		}
-		return list.get(0).getId();
+		Integer id = list.get(0).getId();
+		bindInfo.setId(id);
+		userBindInfoMapper.updateByPrimaryKeySelective(bindInfo);
+		return id;
 	}
 
 	@Override
@@ -50,6 +53,16 @@ public class UserBindInfoServiceImpl extends BaseServiceImpl<UserBindInfo> imple
 		userBindInfo.setId(accountId);
 		userBindInfo.setlUserId(userId);
 		super.updateInfoByPrimaryKey(userBindInfo, true);
+	}
+
+	@Override
+	public boolean hasBindSameTypeAccount(int userId, String type) {
+		Example example = super.createExample();
+		example.createCriteria()
+		            .andEqualTo("lUserId", userId)
+		            .andEqualTo("cType", type);
+		List<UserBindInfo> list = userBindInfoMapper.selectByExample(example);
+		return CollectionUtils.isEmpty(list) ? false : true;
 	}
 	
 }

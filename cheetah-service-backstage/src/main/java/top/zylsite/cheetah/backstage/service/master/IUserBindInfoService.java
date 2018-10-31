@@ -27,4 +27,12 @@ public interface IUserBindInfoService extends BaseService<UserBindInfo>{
 	 */
 	public void bindUser(int accountId, int userId);
 	
+	/**
+	 * 查看某个用户是否绑定了同类型的账号
+	 * @param userId
+	 * @param type
+	 * @return
+	 */
+	public boolean hasBindSameTypeAccount(int userId, String type);
+	
 }

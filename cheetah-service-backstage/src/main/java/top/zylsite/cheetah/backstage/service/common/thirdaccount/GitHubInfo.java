@@ -25,7 +25,7 @@ public class GitHubInfo {
 	public static ThirdResult getAccessToken(String code) {
 		StringBuilder sb = new StringBuilder(LoginConstants.GITHUB_LOGIN_DOMAIN);
 		sb.append("/login/oauth/access_token")
-		   .append("&code=").append(code)
+		   .append("?code=").append(code)
 		   .append("&client_id=").append(LoginConstants.GITHUB_CLIENT_ID)
 		   .append("&client_secret=").append(LoginConstants.GITHUB_CLIENT_SECRET);
 		String url = sb.toString();

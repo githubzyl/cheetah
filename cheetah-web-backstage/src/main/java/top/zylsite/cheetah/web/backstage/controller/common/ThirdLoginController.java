@@ -18,6 +18,7 @@ import top.zylsite.cheetah.backstage.model.master.UserBindInfo;
 import top.zylsite.cheetah.backstage.service.common.LoginConstants;
 import top.zylsite.cheetah.backstage.service.common.ThirdLoginUrl;
 import top.zylsite.cheetah.backstage.service.common.enums.LoginWayEnum;
+import top.zylsite.cheetah.backstage.service.common.thirdaccount.AlipayInfo;
 import top.zylsite.cheetah.backstage.service.common.thirdaccount.BaiduInfo;
 import top.zylsite.cheetah.backstage.service.common.thirdaccount.GitHubInfo;
 import top.zylsite.cheetah.backstage.service.common.thirdaccount.QQInfo;
@@ -157,8 +158,33 @@ public class ThirdLoginController {
 
 	@GetMapping(LoginConstants.ALIPAY_AUTH_REDIRECT_URI)
 	public String alipay(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-
-		return "redirect:/index";
+		String code = request.getParameter("auth_code");
+		logger.info("支付宝返回的code="+code);
+		ThirdResult res = AlipayInfo.getAccessToken(code);
+		if (res.isSuccess()) {
+			String access_token = res.getResult().toString();
+			res = AlipayInfo.getUserInfo(access_token);
+			if (res.isSuccess()) {
+				JSONObject userInfo = (JSONObject) res.getResult();
+				UserBindInfo bindInfo = new UserBindInfo();
+				bindInfo.setVcAccount(userInfo.getString("userId"));
+				bindInfo.setVcNickName(userInfo.getString("nickName"));
+				bindInfo.setVcPhoto(userInfo.getString("avatar"));
+				bindInfo.setcType(LoginWayEnum.ALIPAY.getCodeStr());
+				int accountId = userBindInfoService.insertIfNotExist(bindInfo);
+				// 判断是否绑定了用户
+				Integer userId = userBindInfoService.hasBindingUser(accountId);
+				if (null == userId) {// 跳转到绑定页面
+					return bind(redirectAttributes, LoginWayEnum.ALIPAY.getCodeStr(), accountId, null);
+				} else {// 跳转到首页
+					return index(request, redirectAttributes, userId, LoginWayEnum.ALIPAY.getCodeStr());
+				}
+			} else {
+				return error(redirectAttributes, res);
+			}
+		} else {
+			return error(redirectAttributes, res);
+		}
 	}
 
 	@GetMapping(LoginConstants.GITHUB_AUTH_REDIRECT_URI)
@@ -169,12 +195,11 @@ public class ThirdLoginController {
 			String access_token = res.getResult().toString();
 			res = GitHubInfo.getUserInfo(access_token);
 			if (res.isSuccess()) {
-				logger.info("github获取到的用户信息："+res.getResult());
 				JSONObject userInfo = (JSONObject) res.getResult();
 				UserBindInfo bindInfo = new UserBindInfo();
-				bindInfo.setVcAccount(userInfo.get("uid").toString());
-				bindInfo.setVcNickName(userInfo.getString("uname"));
-				bindInfo.setVcPhoto(userInfo.getString("portrait"));
+				bindInfo.setVcAccount(userInfo.get("id").toString());
+				bindInfo.setVcNickName(userInfo.getString("name"));
+				bindInfo.setVcPhoto(userInfo.getString("avatar_url"));
 				bindInfo.setcType(LoginWayEnum.GITHUB.getCodeStr());
 				int accountId = userBindInfoService.insertIfNotExist(bindInfo);
 				// 判断是否绑定了用户
@@ -213,8 +238,14 @@ public class ThirdLoginController {
 			return bind(redirectAttributes, loginType, accountId, "用户名或密码错误");
 		}
 		if (EncdDecd.MD5String(password).equals(user.getVcPassword())) {
-			userBindInfoService.bindUser(accountId, user.getId());
-			return index(request, redirectAttributes, user.getId(), loginType);
+			boolean flag = userBindInfoService.hasBindSameTypeAccount(user.getId(), loginType);
+			if(flag) {
+				String typeName = LoginWayEnum.getNameByCode(Integer.parseInt(loginType));
+				return bind(redirectAttributes, loginType, accountId, "该用户已绑定了一个"+typeName+"账号");
+			}else {
+				userBindInfoService.bindUser(accountId, user.getId());
+				return index(request, redirectAttributes, user.getId(), loginType);
+			}
 		}
 		return bind(redirectAttributes, loginType, accountId, "用户名或密码错误");
 	}
