@@ -57,6 +57,11 @@
 	background-size: 26px;
 }
 
+.oauth-wrapper .oauth-icon.oauth-icon-dingding {
+	background: url(../images/dingding-logo.jpg) no-repeat center;
+	background-size: 26px;
+}
+
 .clearfix {
 	clear: both;
 }

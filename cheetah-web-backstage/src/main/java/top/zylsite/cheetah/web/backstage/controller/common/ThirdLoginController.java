@@ -20,6 +20,7 @@ import top.zylsite.cheetah.backstage.service.common.ThirdLoginUrl;
 import top.zylsite.cheetah.backstage.service.common.enums.LoginWayEnum;
 import top.zylsite.cheetah.backstage.service.common.thirdaccount.AlipayInfo;
 import top.zylsite.cheetah.backstage.service.common.thirdaccount.BaiduInfo;
+import top.zylsite.cheetah.backstage.service.common.thirdaccount.DingDindInfo;
 import top.zylsite.cheetah.backstage.service.common.thirdaccount.GitHubInfo;
 import top.zylsite.cheetah.backstage.service.common.thirdaccount.QQInfo;
 import top.zylsite.cheetah.backstage.service.common.thirdaccount.SinaInfo;
@@ -159,7 +160,6 @@ public class ThirdLoginController {
 	@GetMapping(LoginConstants.ALIPAY_AUTH_REDIRECT_URI)
 	public String alipay(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String code = request.getParameter("auth_code");
-		logger.info("支付宝返回的code="+code);
 		ThirdResult res = AlipayInfo.getAccessToken(code);
 		if (res.isSuccess()) {
 			String access_token = res.getResult().toString();
@@ -208,6 +208,50 @@ public class ThirdLoginController {
 					return bind(redirectAttributes, LoginWayEnum.GITHUB.getCodeStr(), accountId, null);
 				} else {// 跳转到首页
 					return index(request, redirectAttributes, userId, LoginWayEnum.GITHUB.getCodeStr());
+				}
+			} else {
+				return error(redirectAttributes, res);
+			}
+		} else {
+			return error(redirectAttributes, res);
+		}
+	}
+	
+	@GetMapping(LoginConstants.DINDGING_AUTH_REDIRECT_URI)
+	public String dingding(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		String code = request.getParameter("code");
+		ThirdResult res = DingDindInfo.getAccessToken();
+		if (res.isSuccess()) {
+			String access_token = res.getResult().toString();
+			res = DingDindInfo.getPersistentCode(access_token, code);
+			if (res.isSuccess()) {
+				JSONObject jsonObject = (JSONObject) res.getResult();
+				String openid = jsonObject.getString("openid");
+				String persistent_code = jsonObject.getString("persistent_code");
+				res = DingDindInfo.getSNSToken(access_token, openid, persistent_code);
+				if(res.isSuccess()) {
+					String sns_token = res.getResult().toString();
+					res = DingDindInfo.getUserInfo(sns_token);
+					if(res.isSuccess()) {
+						logger.info("钉钉获取到的用户信息为:"+res.getResult());
+						JSONObject userInfo = (JSONObject) res.getResult();
+						UserBindInfo bindInfo = new UserBindInfo();
+						bindInfo.setVcAccount(userInfo.getString("openid"));
+						bindInfo.setVcNickName(userInfo.getString("nick"));
+						bindInfo.setcType(LoginWayEnum.DINGDING.getCodeStr());
+						int accountId = userBindInfoService.insertIfNotExist(bindInfo);
+						// 判断是否绑定了用户
+						Integer userId = userBindInfoService.hasBindingUser(accountId);
+						if (null == userId) {// 跳转到绑定页面
+							return bind(redirectAttributes, LoginWayEnum.DINGDING.getCodeStr(), accountId, null);
+						} else {// 跳转到首页
+							return index(request, redirectAttributes, userId, LoginWayEnum.DINGDING.getCodeStr());
+						}
+					}else {
+						return error(redirectAttributes, res);
+					}
+				}else {
+					return error(redirectAttributes, res);
 				}
 			} else {
 				return error(redirectAttributes, res);

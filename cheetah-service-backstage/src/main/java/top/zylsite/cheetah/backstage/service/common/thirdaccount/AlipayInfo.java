@@ -64,7 +64,7 @@ public class AlipayInfo {
 	
 	private static AlipayClient getAlipayClient() {
 		return new DefaultAlipayClient(LoginConstants.ALIPAY_URL, LoginConstants.ALIPAY_APP_ID,
-				LoginConstants.ALIPAY_PRIVATE_KEY, LoginConstants.ALIPAY_FORMAT, LoginConstants.ALIPAY_CHARSET,
+				LoginConstants.ALIPAY_APP_PRIVATE_KEY, LoginConstants.ALIPAY_FORMAT, LoginConstants.ALIPAY_CHARSET,
 				LoginConstants.ALIPAY_PUBLIC_KEY, LoginConstants.ALIPAY_SIGN_TYPE);
 	}
 	

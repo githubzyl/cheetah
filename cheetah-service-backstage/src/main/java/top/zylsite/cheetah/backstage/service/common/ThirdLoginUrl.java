@@ -38,6 +38,9 @@ public class ThirdLoginUrl {
 		case LoginConstants.LOGIN_WAY_GITHUB:
 			url = github();
 			break;
+		case LoginConstants.LOGIN_WAY_DINGDING:
+			url = dingding();
+			break;
 		default:
 			break;
 		}
@@ -83,9 +86,9 @@ public class ThirdLoginUrl {
 
 	private static String alipay() {
 		StringBuilder sb = new StringBuilder(LoginConstants.ALIPAY_AUTH_DOMAIN);
-		sb.append("/oauth2/publicAppAuthorize.htm");
-		sb.append("?app_id=").append(LoginConstants.ALIPAY_APP_ID);
-		sb.append("&redirect_uri=");
+		sb.append("/oauth2/publicAppAuthorize.htm")
+		   .append("?app_id=").append(LoginConstants.ALIPAY_APP_ID)
+		   .append("&redirect_uri=");
 		try {
 			sb.append(URLEncoder.encode(getRedirectUrl(LoginConstants.ALIPAY_AUTH_REDIRECT_URI), "utf-8"));
 		} catch (UnsupportedEncodingException e) {
@@ -101,7 +104,28 @@ public class ThirdLoginUrl {
 		   .append("?client_id=").append(LoginConstants.GITHUB_CLIENT_ID);
 		return sb.toString();
 	}
-
+	
+	//调出钉钉二维码扫码登录页
+	private static String dingding() {
+		StringBuilder sb = new StringBuilder(LoginConstants.DINGDING_DOMAIN);
+		sb.append("/connect/qrconnect")
+		   .append("?appid=").append(LoginConstants.DINGDING_APP_ID)
+		   .append("&redirect_uri=").append(getRedirectUrl(LoginConstants.DINDGING_AUTH_REDIRECT_URI))
+		   .append("&response_type=code&scope=snsapi_login&state=STATE");
+		return sb.toString();
+	}
+	
+	//调出钉钉手机号+密码登录页面
+	@SuppressWarnings("unused")
+	private static String dingdingPwd() {
+		StringBuilder sb = new StringBuilder(LoginConstants.DINGDING_DOMAIN);
+		sb.append("/connect/oauth2/sns_authorize")
+		   .append("?appid=").append(LoginConstants.DINGDING_APP_ID)
+		   .append("&redirect_uri=").append(getRedirectUrl(LoginConstants.DINDGING_AUTH_REDIRECT_URI))
+		   .append("&response_type=code&scope=snsapi_login&state=STATE");
+		return sb.toString();
+	}
+	
 	private static String getRedirectUrl(String uri) {
 		return LoginConstants.CHEETAH_DOMIAN + uri;
 	}
