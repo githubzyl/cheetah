@@ -233,7 +233,6 @@ public class ThirdLoginController {
 					String sns_token = res.getResult().toString();
 					res = DingDindInfo.getUserInfo(sns_token);
 					if(res.isSuccess()) {
-						logger.info("钉钉获取到的用户信息为:"+res.getResult());
 						JSONObject userInfo = (JSONObject) res.getResult();
 						UserBindInfo bindInfo = new UserBindInfo();
 						bindInfo.setVcAccount(userInfo.getString("openid"));
