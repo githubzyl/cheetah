@@ -66,7 +66,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 
 	@Override
 	public void changeLockStatus(Integer id, String locked) {
-		userInfoExtendMapper.updateStatus(id, locked);
+		userInfoExtendMapper.updateLockStatus(id, locked);
 	}
 
 	@Override
@@ -137,6 +137,37 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void saveRoleInfo(Integer userId, Integer[] roles) {
+		deletRoleById(userId);
+		if (null != roles && roles.length > 0) {
+			UserRole userRole = null;
+			for (Integer role : roles) {
+				userRole = new UserRole();
+				userRole.setUserId(userId);
+				userRole.setRoleId(role);
+				userRoleMapper.insert(userRole);
+			}
+		}
+	}
+
+	@Override
+	public void changeStatus(Integer userId, String status) {
+		userInfoExtendMapper.updateStatus(userId, status);
+	}
+
+	@Override
+	public void updatePassword(Integer userId, String password) {
+		userInfoExtendMapper.updatePassword(userId, password);
+	}
+	
+	private void deletRoleById(Integer userId) {
+		Example example = new Example(UserRole.class);
+		Example.Criteria criteria = example.createCriteria();
+		criteria.andEqualTo("userId", userId);
+		userRoleMapper.deleteByExample(example);
 	}
 
 }

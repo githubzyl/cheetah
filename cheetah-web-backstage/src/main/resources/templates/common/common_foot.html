@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="common_foot(scripts)">
+    <!-- 框架自带的js -->
 	<script type="text/javascript" th:src="@{/flat-admin/lib/js/bootstrap.min.js}"></script>
 	<script type="text/javascript" th:src="@{/flat-admin/lib/js/Chart.min.js}"></script>
 	<script type="text/javascript" th:src="@{/flat-admin/lib/js/bootstrap-switch.min.js}"></script>
@@ -12,6 +13,23 @@
 	<script type="text/javascript" th:src="@{/flat-admin/lib/js/ace/ace.js}"></script>
 	<script type="text/javascript" th:src="@{/flat-admin/lib/js/ace/mode-html.js}"></script>
 	<script type="text/javascript" th:src="@{/flat-admin/lib/js/ace/theme-github.js}"></script>
+	<!-- 引入的插件js -->
+	<script type="text/javascript" th:src="@{/plugins/bootstrap-table/bootstrap-table-extend.js}"></script>
+	<script type="text/javascript" th:src="@{/plugins/bootstrap-table/bootstrap-table-zh-CN.js}"></script>
+	<script type="text/javascript" th:src="@{/plugins/bootstrap-table/bootstrap-table-export.js}"></script>
+	<script type="text/javascript" th:src="@{/plugins/bootstrap-table/tableExport.js}"></script>
+	<script type="text/javascript"  th:src="@{/plugins/bootstrap-dialog/bootstrap-dialog.js}"></script>
+	<script type="text/javascript"  th:src="@{/plugins/bootstrap-validator/bootstrapValidator.js}"></script>
+    <script type="text/javascript"  th:src="@{/plugins/bootstrap-validator/language/zh_CN.js}"></script>
+    <script type="text/javascript"  th:src="@{/plugins/bootstrap-select/bootstrap-select-extend.js}"></script>
+	<script type="text/javascript"  th:src="@{/plugins/jquery-message/message.js}"></script>
 	
+	<!-- 系统通用的js -->
+	<script type="text/javascript" th:src="@{/common/js/constants.js}"></script>
+	<script type="text/javascript" th:src="@{/common/js/common.js}"></script>
+	<script type="text/javascript" th:src="@{/common/js/table.js}"></script>
+	<script type="text/javascript" th:src="@{/common/js/form.js}"></script>
+	
+	<!-- 页面引入的js -->
     <th:block th:replace="${scripts}" />
 </div>

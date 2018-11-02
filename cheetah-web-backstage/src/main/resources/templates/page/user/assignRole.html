@@ -1,0 +1,49 @@
+<form class="form-horizontal" id="assignRoleForm" style="padding: 0px 70px;">
+	<div class="form-group">
+        <label for="roleName" class="col-sm-3 control-label">角色名称</label>
+        <div class="col-sm-9">
+            <select id="roleName" name="roleName" class="form-control" multiple>
+            
+            </select>
+        </div>
+    </div>
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        var userId = /*[[${userId}]]*/;
+        /*]]>*/
+        $(function() {
+            let roleName = $("#roleName");
+            asyncAjax("/role/queryEnableRoles",null,null,
+            	function(result){
+            		if(result.status = ServerStatus.SUCCESS){
+            			setBaseSelectOptions(roleName, result.data, 'id', 'vcName',null, false);
+                        roleName.selectpicker({
+                            noneSelectedText: '请选择角色(可多选)',
+                        });
+                        asyncAjax("/user/userRoles?userId=" + userId,null,null,
+                        	function(result){
+                        		if(result.status = ServerStatus.SUCCESS){
+                        			let selectData = result.data;
+                        			if(selectData){
+                                        let val = [];
+                                        for(let i = 0, length = selectData.length; i < length; i++){
+                                            val.push(selectData[i].roleId);
+                                        }
+                                        roleName.selectpicker('val', val);
+                                        roleName.selectpicker('refresh');
+                                    }
+                        		}
+                        	},
+                        	function(res){
+                        		
+                        	}
+                        );
+            		}
+            	},
+            	function(res){
+            		
+            	}
+            );
+        });
+     </script>
+</form>

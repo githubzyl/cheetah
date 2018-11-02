@@ -25,6 +25,7 @@ import top.zylsite.cheetah.backstage.service.common.thirdaccount.GitHubInfo;
 import top.zylsite.cheetah.backstage.service.common.thirdaccount.QQInfo;
 import top.zylsite.cheetah.backstage.service.common.thirdaccount.SinaInfo;
 import top.zylsite.cheetah.backstage.service.common.thirdaccount.ThirdResult;
+import top.zylsite.cheetah.backstage.service.common.thirdaccount.WechatInfo;
 import top.zylsite.cheetah.backstage.service.master.IUserBindInfoService;
 import top.zylsite.cheetah.backstage.service.master.IUserService;
 import top.zylsite.cheetah.base.utils.EncdDecd;
@@ -91,8 +92,34 @@ public class ThirdLoginController {
 
 	@GetMapping(LoginConstants.WECHAT_AUTH_REDIRECT_URI)
 	public String wechat(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-
-		return "redirect:/index";
+		String code = request.getParameter("code");
+		ThirdResult res = WechatInfo.getAccessToken(code);
+		if(res.isSuccess()) {
+			JSONObject jsonObject = (JSONObject) res.getResult();
+			String access_token = jsonObject.getString("access_token");
+			String openid = jsonObject.getString("openid");
+			res = WechatInfo.getUserInfo(access_token, openid);
+			if(res.isSuccess()) {
+				jsonObject = (JSONObject) res.getResult();
+				UserBindInfo bindInfo = new UserBindInfo();
+				bindInfo.setVcAccount(openid);
+				bindInfo.setVcNickName(jsonObject.getString("nickname"));
+				bindInfo.setVcPhoto(jsonObject.getString("headimgurl"));
+				bindInfo.setcType(LoginWayEnum.WECHAT.getCodeStr());
+				int accountId = userBindInfoService.insertIfNotExist(bindInfo);
+				// 判断是否绑定了用户
+				Integer userId = userBindInfoService.hasBindingUser(accountId);
+				if (null == userId) {// 跳转到绑定页面
+					return bind(redirectAttributes, LoginWayEnum.WECHAT.getCodeStr(), accountId, null);
+				} else {// 跳转到首页
+					return index(request, redirectAttributes, userId, LoginWayEnum.WECHAT.getCodeStr());
+				}
+			}else {
+				return error(redirectAttributes, res);
+			}
+		}else {
+			return error(redirectAttributes, res);
+		}
 	}
 
 	@GetMapping(LoginConstants.SINA_AUTH_REDIRECT_URI)

@@ -46,7 +46,7 @@ public abstract class BaseRequestController<T> extends BaseController {
 	public void update(T entity) {
 		getService().updateInfoByPrimaryKey(entity, true);
 	}
-
+	
 	protected abstract BaseService<T> getService();
 
 	protected abstract Example getExample(QueryParameter queryParameter, HttpServletRequest request);
