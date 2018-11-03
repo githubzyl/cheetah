@@ -122,10 +122,10 @@ function resizeTable(table, initTable, initParam){
 	}else{
 		initTable();
 	}
-	changeTableHeight(table);
-	$(window).resize(function() {
-		changeTableHeight(table);
-	});
+//	changeTableHeight(table);
+//	$(window).resize(function() {
+//		changeTableHeight(table);
+//	});
 }
 //改变table的高度
 function changeTableHeight(table){

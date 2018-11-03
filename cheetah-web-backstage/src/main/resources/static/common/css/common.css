@@ -59,3 +59,15 @@
 	margin-bottom: 0px;
 	line-height: 34px;
 }
+
+/*表格中的button取消margin*/
+.table .btn {
+	margin: 0px;
+}
+
+.app-container .side-body {
+    margin-left: 60px;
+}
+.app-container .expanded .side-body {
+    margin-left: 260px;
+}

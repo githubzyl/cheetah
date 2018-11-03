@@ -34,8 +34,8 @@ import top.zylsite.cheetah.web.backstage.common.shiro.ShiroUtil;
 
 /**
  * Description: 第三方登录
- * 
- * @author jason 2018年10月28日
+ * @author jason 
+ * 2018年10月28日
  * @version 1.0
  */
 @Controller
