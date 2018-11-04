@@ -208,7 +208,7 @@ function initFormValidator(form){
 }
 //初始化密码
 function initPassword() {
-	let row = getEditRow(table);
+	let row = getEditRow(table, '请选择需要初始化密码的用户');
 	if(row){
 		showConfirmWarn('确定要初始化密码吗?', null, function(dialog){
 			asyncAjax('/user/initPassword?userId='+row.id,null, null,
@@ -228,7 +228,7 @@ function initPassword() {
 }
 //分配角色
 function assignRole(){
-	let row = getEditRow(table);
+	let row = getEditRow(table,'请选择需要分配角色的用户');
 	if(row){
 		let url = contextPath + '/page/user/assignRole?userId='+row.id;
 		showDialog(url,{

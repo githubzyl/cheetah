@@ -59,10 +59,10 @@ function bootstrapTableSearch(table){
 	table.bootstrapTable('refresh',params);
 }
 //获取需要编辑的行(单行)
-function getEditRow(table){
+function getEditRow(table, warnMsg){
 	let rows = getSelectedRows(table);
 	if(rows.length <= 0){
-		showWarn(Message.WARN_SELECT_EDIT_ROW_NONE);
+		showWarn(warnMsg || Message.WARN_SELECT_EDIT_ROW_NONE);
 		return;
 	}
 	if(rows.length > 1){
@@ -122,10 +122,10 @@ function resizeTable(table, initTable, initParam){
 	}else{
 		initTable();
 	}
-//	changeTableHeight(table);
-//	$(window).resize(function() {
-//		changeTableHeight(table);
-//	});
+	changeTableHeight(table);
+	$(window).resize(function() {
+		changeTableHeight(table);
+	});
 }
 //改变table的高度
 function changeTableHeight(table){

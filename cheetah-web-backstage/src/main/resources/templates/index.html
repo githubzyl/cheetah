@@ -8,13 +8,13 @@
     <link rel="stylesheet" type="text/css" th:href="@{/flat-admin/css/themes/flat-blue.css}">
 </head>
 <body class="flat-blue" style="height: 100%; overflow: hidden;">
-    <div class="app-container" style="height: 100%;">
+    <div class="app-container" style="height: 100%;padding-bottom: 0px;">
         <div class="row content-container" style="height: 100%;">
             <div th:replace="common/top_nav"></div>
             <div th:replace="common/side_menu"></div>
             <!-- Main Content -->
             <div class="container-fluid" style="height: 100%;padding-right: 0px;padding-left: 0px;">
-                <div id="mainFrame"  class="side-body" style="height: calc(100% - 30px);/*overflow:hidden;*/margin-top:60px;padding: 0px;margin-right: 0px;">
+                <div id="mainFrame"  class="side-body" style="height: calc(100% - 30px);overflow:hidden;margin-top:60px;padding: 0px;margin-right: 0px;">
                     <iframe src="" frameborder="0" scrolling="auto" style="height: 100%;width: 100%;"></iframe>
                 </div>
             </div>
