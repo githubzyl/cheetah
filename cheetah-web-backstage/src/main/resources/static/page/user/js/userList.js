@@ -5,6 +5,7 @@ let table = $('#'+Component.TABLE_ID),
      searchUrl = requestRoot + '/list',
      removeUrl = requestRoot + '/remove',
      saveUrl = requestRoot + '/save',
+     editPageUrl = "/user/userEdit",
      editFormId = 'userForm',
      formDialogStyle = 'width:500px;';
 $(function(){
@@ -140,6 +141,7 @@ function goToEditPage(isEdit, title, row, searchUrl) {
 		table,
 		searchUrl,
 		saveUrl,
+		editPageUrl,
 		null,
 		initFormValidator
 	);

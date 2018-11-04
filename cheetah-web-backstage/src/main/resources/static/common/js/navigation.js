@@ -71,7 +71,9 @@ function goToPage(option,pageUrl,title,menuId,target,parentNames) {
 	//左侧菜单显示当前操作菜单的顶部菜单（高亮）
 	changeActiveMenu(option);
 	//顶部导航显示当前操作菜单
-	setTopActiveMeunTitle(parentNames,title);
+	if(target != '1'){
+		setTopActiveMeunTitle(parentNames,title);
+	}
 	//跳转页面
 	viewPage(pageUrl,title,menuId,target);
 }

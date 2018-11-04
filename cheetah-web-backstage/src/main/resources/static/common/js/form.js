@@ -119,9 +119,9 @@ function initDialogEditForm(dialog, isEdit, editFormId, searchUrl, beforeRender,
  * @param afterRender 表单初始化之后需要执行的方法
  * @returns
  */
-function openEditDialog(isEdit, title, row, dialogStyle, editFormId, table, searchUrl, saveUrl, beforeRender, afterRender){
+function openEditDialog(isEdit, title, row, dialogStyle, editFormId, table, searchUrl, saveUrl, editPageUrl, beforeRender, afterRender){
 	title = (isEdit ? '编辑' : '新增') + title;
-	let url = contextPath + '/page/user/userEdit';
+	let url = contextPath + '/page'+editPageUrl;
 	showDialog(url,{
 		type: BootstrapDialog.TYPE_SUCCESS,
 		title : title,
