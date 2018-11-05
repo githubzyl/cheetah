@@ -9,6 +9,7 @@ let table = $('#'+Component.TABLE_ID),
      editFormId = 'dataDictionaryForm',
      formDialogStyle = 'width:500px;';
 $(function(){
+	setTypeSelection($('#lDictType'));
 	resizeTable(table, initTable, table);
 });
 function initTable(table){
@@ -19,6 +20,32 @@ function initTable(table){
 		columns : [{
 			field : 'checked',
 			checkbox : true
+		}, {
+			title : '字典类型',
+			field : 'lDictType',
+			align : 'center',
+			valign : 'middle',
+			width: 300,
+			formatter:function(val,row){
+				return val + '('+row.dictTypeName+')';
+			}
+		}, {
+			title : '字典编码',
+			field : 'cDictEntry',
+			align : 'center',
+			valign : 'middle',
+			width: 300
+		}, {
+			title : '字典名称',
+			field : 'vcEntryName',
+			align : 'center',
+			valign : 'middle',
+			width: 300
+		}, {
+			title : '排序',
+			field : 'lSort',
+			align : 'center',
+			valign : 'middle'
 		}]
 	};
 	renderBootstrapTable(tableOption, table);
@@ -62,8 +89,24 @@ function goToEditPage(isEdit, title, row, searchUrl) {
 		searchUrl,
 		saveUrl,
 		editPageUrl,
-		null,
-		initFormValidator
+		onshownBefore,
+		initFormValidator,
+		true
+	);
+}
+function onshownBefore(editForm,isEdit,searchUrl){
+	asyncAjax('/dictionaryType/all',null,null,
+	    function(result){
+	    	if(result.status == ServerStatus.SUCCESS){
+    			setBaseSelectOptions(editForm.find('#lDictType'), result.data, 'id', 'vcCode','vcName');
+    			setEditFormData(isEdit, searchUrl, editForm);
+			}else{
+				toastrError(result.msg);
+			}
+	    },
+	    function(res){
+	    	toastrError(ajaxError(res));
+	    }
 	);
 }
 // 初始化验证规则
@@ -76,7 +119,52 @@ function initFormValidator(form){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-        	
+        	lDictType: {
+                message: '字典类型不合法',
+                validators: {
+                    notEmpty: {
+                        message: '字典类型不能为空'
+                    }
+                }
+            },
+            cDictEntry: {
+            	message: '类型编码不合法',
+            	validators: {
+            		notEmpty: {
+            			message: '字典编码不能为空'
+            		},
+            		stringLength: {
+            			min: 1,
+            			max: 5,
+            			message: '请输入1到5个字符'
+            		}
+            	}
+            },
+            vcEntryName: {
+                validators: {
+                    notEmpty: {
+                        message: '字典名称不能为空'
+                    }, stringLength: {
+                        min: 1,
+                        max: 45,
+                        message: '请输入1到45个字符'
+                    }
+                }
+            }
         }
     });
+}
+function setTypeSelection(selectEle){
+	asyncAjax('/dictionaryType/all',null,null,
+	    function(result){
+	    	if(result.status == ServerStatus.SUCCESS){
+    			setBaseSelectOptions(selectEle, result.data, 'id', 'vcCode','vcName');
+			}else{
+				toastrError(result.msg);
+			}
+	    },
+	    function(res){
+	    	toastrError(ajaxError(res));
+	    }
+	);
 }

@@ -4,8 +4,7 @@
 <head
 	th:replace="common/common_head :: common_head(${htmlTitle},~{},~{})">
 </head>
-<body class="flat-blue"
-	style="height:calc(100% - 30px); width: 100%; overflow: hidden; padding: 0px;">
+<body class="flat-blue body-container">
 	<div class="panel panel-default main-panel">
 		<div class="panel-heading main-panel-head">
 			<h3 class="panel-title">${menuName}</h3>

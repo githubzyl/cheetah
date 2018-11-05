@@ -5,13 +5,20 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ZTreeNode extends BaseTree {
 
 	private String pId; // 树的节点Id，区别于数据库中保存的数据Id。
 	private String name; // 节点名称
 	private String iconClass;// 图标
+	private String href; // 点击节点触发的链接
+	private String target;// 是否在新窗口打开（0：否，1：是，默认否）
 	private boolean checked;// 是否选中
 	private List<ZTreeNode> children; // 子节点，可以用递归的方法读取
+	private String parentNames;//父节点名称
+	private boolean parent;//是否父节点
+	private boolean open;//是否展开
 
 	public ZTreeNode() {
 		this.children = new ArrayList<ZTreeNode>();
@@ -57,10 +64,10 @@ public class ZTreeNode extends BaseTree {
 		return root;
 	}
 
-	private List<ZTreeNode> getChild(int id, List<ZTreeNode> rootMenu) {
+	private List<ZTreeNode> getChild(int id, List<ZTreeNode> nodes) {
 		// 子菜单
 		List<ZTreeNode> childList = new ArrayList<>();
-		for (ZTreeNode node : rootMenu) {
+		for (ZTreeNode node : nodes) {
 			// 遍历所有节点，将父菜单id与传过来的id比较
 			if (StringUtils.isNotBlank(node.getpId())) {
 				if (node.getpId().equals(Integer.toString(id))) {
@@ -71,7 +78,7 @@ public class ZTreeNode extends BaseTree {
 		// 把子菜单的子菜单再循环一遍
 		for (ZTreeNode node : childList) {// 没有url子菜单还有子菜单
 			// 递归
-			node.setChildren(getChild(node.getId(), rootMenu));
+			node.setChildren(getChild(node.getId(), nodes));
 		} // 递归退出条件
 		if (childList.size() == 0) {
 			return null;
@@ -117,6 +124,50 @@ public class ZTreeNode extends BaseTree {
 
 	public void setChecked(boolean checked) {
 		this.checked = checked;
+	}
+
+	public String getHref() {
+		return href;
+	}
+
+	public void setHref(String href) {
+		this.href = href;
+	}
+
+	public String getTarget() {
+		return target;
+	}
+
+	public void setTarget(String target) {
+		this.target = target;
+	}
+
+	public String getParentNames() {
+		return parentNames;
+	}
+
+	public void setParentNames(String parentNames) {
+		this.parentNames = parentNames;
+	}
+
+	/*@JsonProperty放在get方法上，代表输出json时使用标注的属性名代替原来的属性名;
+	 * 若标注在set方法上，则输入的属性名要与标注的属性名一致
+	 */
+	@JsonProperty("isParent")
+	public boolean isParent() {
+		return parent;
+	}
+
+	public void setParent(boolean parent) {
+		this.parent = parent;
+	}
+
+	public boolean isOpen() {
+		return open;
+	}
+
+	public void setOpen(boolean open) {
+		this.open = open;
 	}
 
 }

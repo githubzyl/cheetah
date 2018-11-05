@@ -1,0 +1,101 @@
+<ul id="sidePermissionTree" class="ztree" style="height: 100%;"></ul>
+<script type="text/javascript">
+    var treeId = 'sidePermissionTree';
+	var setting = {
+			async: {
+				enable: true,
+				url: getUrl,
+				type:'get',
+				dataFilter: ajaxDataFilter,
+				dataType: 'json'
+			},
+			check: {
+				enable: false
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+			view: {
+				expandSpeed: ""
+			},
+			callback: {
+				beforeExpand: beforeExpand,
+				onAsyncSuccess: onAsyncSuccess,
+				onAsyncError: onAsyncError,
+				onClick: onClickCallBack
+			}
+		};
+		function getUrl(treeId, treeNode) {
+			return contextPath + '/permission/queryByParentId?parentId=' + treeNode.id;
+		}
+		function beforeExpand(treeId, treeNode) {
+			if (!treeNode.isAjaxing) {
+				startTime = new Date();
+				treeNode.times = 1;
+				ajaxGetNodes(treeNode, "refresh");
+				return true;
+			} else {
+				return false;
+			}
+		}
+		function onAsyncSuccess(event, treeId, treeNode, msg) {
+			if (msg.status !=1 || msg.data.length <= 0) {
+				return;
+			}
+			var zTree = $.fn.zTree.getZTreeObj(treeId);
+			treeNode.icon = "";
+			zTree.updateNode(treeNode);
+			zTree.selectNode(treeNode.children[0]);
+		}
+		function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
+			var zTree = $.fn.zTree.getZTreeObj(treeId);
+			treeNode.icon = "";
+			zTree.updateNode(treeNode);
+			showError("权限["+treeNode.name+"]的子权限加载失败");
+		}
+		function ajaxGetNodes(treeNode, reloadType) {
+			var zTree = $.fn.zTree.getZTreeObj(treeId);
+			if (reloadType == "refresh") {
+				treeNode.icon = contextPath + "/plugins/zTree_v3/css/zTreeStyle/img/loading.gif";
+				zTree.updateNode(treeNode);
+			}
+			zTree.reAsyncChildNodes(treeNode, reloadType, true);
+		}
+		function ajaxDataFilter(treeId, parentNode, responseData) {
+		    if (responseData && responseData.status == 1) {
+		      return responseData.data;
+		    }
+		    return [];
+		};
+    function onClickCallBack(event, treeId, treeNode){
+    	$('#searchForm').find('#parentId').val(treeNode.id);
+		btnSearch();
+    }
+	function renderPermissionTree(){
+		var url = '/permission/queryByParentId';
+		asyncAjax(url,null,null,
+			function(result){
+				if(result.status == 1){
+					var data = result.data;
+					$.fn.zTree.init($("#"+treeId), setting, data);
+				}else{
+					showError('权限加载失败');
+				}
+			},
+			function(res){
+				showError('服务器异常');
+			}
+		)
+	}
+	//刷新权限树（重新加载）
+	function refreshPermissionTree(){
+		var zTreeObj = $.fn.zTree.getZTreeObj(treeId);
+		zTreeObj.destroy();
+		renderPermissionTree();
+	}
+	$(document).ready(function(){
+		renderPermissionTree();
+	});
+</script>

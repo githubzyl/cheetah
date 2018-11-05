@@ -144,7 +144,7 @@ public class ShiroUtil {
 		SessionUser sessionUser = (SessionUser) subject.getPrincipal();
 		IUserService userService = SpringUtil.getBean(IUserService.class);
 		// 设置菜单树信息
-		userService.setMenuTree(sessionUser);
+		userService.setPermissionTree(sessionUser);
 		Environment env = SpringUtil.getBean(Environment.class);
 		int timeout = env.getProperty(ShiroConstants.SESSION_TIMEOUT_KEY, Integer.class,
 				ShiroConstants.DEFAULT_SESSION_TIMEOUT);

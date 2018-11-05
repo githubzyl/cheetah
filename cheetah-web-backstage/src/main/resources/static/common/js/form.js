@@ -78,14 +78,26 @@ function getFormData(form){
  * @param searchUrl   查询表单数据的URL
  * @param beforeRender 表单渲染之前需要执行的方法
  * @param afterRender 表单初始化之后需要执行的方法
+ * @param execSetFormDataAfterBeforeRender true:执行完beforeRender成功后再执行setEditFormData,false:需要在执行完beforeRender后手动调用setEditFormData
  * @returns
  */
-function initDialogEditForm(dialog, isEdit, editFormId, searchUrl, beforeRender, afterRender){
+function initDialogEditForm(dialog, isEdit, editFormId, searchUrl, beforeRender, afterRender, execSetFormDataAfterBeforeRender){
 	let editForm = getDialogForm(dialog, editFormId);
 	//渲染前
 	if(beforeRender && beforeRender instanceof Function){
-		beforeRender(editForm);
+		beforeRender(editForm,isEdit,searchUrl);
 	}
+	if(null == execSetFormDataAfterBeforeRender || execSetFormDataAfterBeforeRender == false){
+		//给表单赋值
+		setEditFormData(isEdit, searchUrl, editForm);
+	}
+	//渲染后
+	if(afterRender && afterRender instanceof Function){
+		afterRender(editForm);
+	}
+}
+//给编辑的form表单赋值
+function setEditFormData(isEdit, searchUrl, editForm){
 	if(isEdit){
 		asyncAjax(searchUrl,null,null,
 	    	function(result){
@@ -99,10 +111,6 @@ function initDialogEditForm(dialog, isEdit, editFormId, searchUrl, beforeRender,
 	    		toastrError(ajaxError(res));
 	    	}
 	    );
-	}
-	//渲染后
-	if(afterRender && afterRender instanceof Function){
-		afterRender(editForm);
 	}
 }
 /**
@@ -127,7 +135,7 @@ function openEditDialog(isEdit, title, row, dialogStyle, editFormId, table, sear
 		title : title,
 		style: dialogStyle,
 		onshown: function(dialog){
-			initDialogEditForm(dialog,isEdit, editFormId, searchUrl, initFormValidator);
+			initDialogEditForm(dialog,isEdit, editFormId, searchUrl, beforeRender,initFormValidator);
 		},
 		buttons: [{
             label: '取消',

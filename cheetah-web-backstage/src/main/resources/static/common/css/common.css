@@ -66,8 +66,16 @@
 }
 
 .app-container .side-body {
-    margin-left: 60px;
+	margin-left: 60px;
 }
+
 .app-container .expanded .side-body {
-    margin-left: 260px;
+	margin-left: 260px;
+}
+
+.body-container {
+	height: calc(100% - 30px);
+	width: 100%;
+	overflow: hidden;
+	padding: 0px;
 }

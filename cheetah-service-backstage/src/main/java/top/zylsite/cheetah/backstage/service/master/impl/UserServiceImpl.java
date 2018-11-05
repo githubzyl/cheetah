@@ -19,8 +19,9 @@ import top.zylsite.cheetah.backstage.service.master.IPermissionService;
 import top.zylsite.cheetah.backstage.service.master.IUserService;
 import top.zylsite.cheetah.base.common.BaseMapper;
 import top.zylsite.cheetah.base.common.BaseServiceImpl;
+import top.zylsite.cheetah.base.common.enums.YesOrNoEnum;
 import top.zylsite.cheetah.base.common.tree.BaseTree;
-import top.zylsite.cheetah.base.common.tree.BootstrapTreeNode;
+import top.zylsite.cheetah.base.common.tree.ZTreeNode;
 
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User> implements IUserService {
@@ -58,6 +59,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 			sessionUser.setVcRealName(user.getVcRealName());
 			sessionUser.setVcMobile(user.getVcMobile());
 			sessionUser.setVcPassword(user.getVcPassword());
+			sessionUser.setSysadmin(StringUtils.defaultIfBlank(user.getcSysAdmin(), YesOrNoEnum.NO.code()).equals(YesOrNoEnum.YES.code()));
 			return sessionUser;
 		}
 
@@ -86,13 +88,13 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 	}
 
 	@Override
-	public void setMenuTree(SessionUser sessionUser) {
+	public void setPermissionTree(SessionUser sessionUser) {
 		sessionUser.setVcPassword(null);
 		// 获取菜单信息
 		Example example = new Example(Permission.class);
 		example.setOrderByClause("l_sort asc");
 		List<Permission> permissions = permissionService.queryList(example);
-		if (!"sysadmin".equals(sessionUser.getVcUserName())) {
+		if(!sessionUser.isSysadmin()) {
 			permissions = this.queryPermissionListByUserId(sessionUser.getId());
 		}
 		if (!CollectionUtils.isEmpty(permissions)) {
@@ -100,15 +102,14 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 				permission.setParentIds(getParentName(permission.getParentIds()));
 			}
 		}
-		List<? extends BaseTree> tree = permissionService.getPermissionTreeWithPermissions(permissions, null, false,
-				false);
+		List<? extends BaseTree> tree = permissionService.getPermissionTreeWithPermissions(permissions, null, false);
 		if (null != tree && tree.size() > 0) {
-			BootstrapTreeNode node = (BootstrapTreeNode) tree.get(0);
+			ZTreeNode node = (ZTreeNode) tree.get(0);
 			if (null != node) {
-				tree = node.getNodes();
+				tree = node.getChildren();
 			}
 		}
-		sessionUser.setMenuTree(tree);
+		sessionUser.setPermissionTree(tree);
 	}
 
 	private String getParentName(String parentIds) {

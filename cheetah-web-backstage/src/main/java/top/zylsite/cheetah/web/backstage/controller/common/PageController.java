@@ -19,6 +19,7 @@ import top.zylsite.cheetah.backstage.model.master.Permission;
 import top.zylsite.cheetah.backstage.service.master.IPermissionService;
 import top.zylsite.cheetah.base.utils.RequestUtil;
 import top.zylsite.cheetah.web.backstage.common.shiro.ShiroConstants;
+import top.zylsite.cheetah.web.backstage.common.shiro.ShiroUtil;
 
 @Controller
 public class PageController {
@@ -48,12 +49,14 @@ public class PageController {
 	}
 
 	private boolean checkPermission(String parent, String filename) {
-		boolean flag = true;
+		if(ShiroUtil.getSessionUser().isSysadmin()) {
+			return true;
+		}
 		String permissionCode = getPermissionCode(parent, filename);
 		if (StringUtils.isNotBlank(permissionCode)) {
-			flag = SecurityUtils.getSubject().isPermitted(permissionCode);
+			return SecurityUtils.getSubject().isPermitted(permissionCode);
 		}
-		return flag;
+		return false;
 	}
 
 	private String getPermissionCode(String parent, String filename) {

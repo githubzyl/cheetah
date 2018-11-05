@@ -22,6 +22,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<alipay-sdk-java.version>3.0.0</alipay-sdk-java.version>
+		<quartz.version>2.2.3</quartz.version>
 	</properties>
 
 	<dependencies>
@@ -35,6 +36,20 @@
 			<groupId>top.zylsite.cheetah.base</groupId>
 			<artifactId>cheetah-base</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<!-- 引入quartz执行定时任务 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version>
 		</dependency>
 	</dependencies>
 

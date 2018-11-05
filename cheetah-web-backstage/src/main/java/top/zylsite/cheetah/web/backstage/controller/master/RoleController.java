@@ -15,6 +15,7 @@ import tk.mybatis.mapper.entity.Example;
 import top.zylsite.cheetah.base.common.BaseService;
 import top.zylsite.cheetah.base.common.BaseRequestController;
 import top.zylsite.cheetah.base.common.QueryParameter;
+import top.zylsite.cheetah.base.common.enums.EnableOrDisableEnum;
 import top.zylsite.cheetah.web.backstage.common.annotation.ControllerLogs;
 import top.zylsite.cheetah.backstage.service.master.IRoleService;
 import top.zylsite.cheetah.backstage.model.master.Role;
@@ -66,14 +67,31 @@ public class RoleController extends BaseRequestController<Role> {
 	public Object queryEnableRoles() {
 		Example example = new Example(Role.class);
 		Example.Criteria criteria = example.createCriteria();
-		criteria.andEqualTo("cEnable", "1");
+		criteria.andEqualTo("cEnable", EnableOrDisableEnum.ENABLE.code());
 		List<Role> list = roleService.queryList(example);
 		return this.ajaxSuccess(list);
+	}
+	
+	@PostMapping("/savePermission")
+	public Object saveMenu(Integer roleId, Integer[] permissions) {
+		roleService.saveRoleInfo(roleId, permissions);
+		return this.ajaxSuccess(null);
+	}
+	
+	@PostMapping("/status")
+	public Object saveStatus(Integer roleId, String status) {
+		roleService.changeStatus(roleId, status);
+		return this.ajaxSuccess(null);
 	}
 
 	@Override
 	protected Example getExample(QueryParameter queryParameter, HttpServletRequest request) {
+		String vcCode = request.getParameter("vcCode");
+		String vcName = request.getParameter("vcName");
 		Example example = new Example(Role.class);
+		Example.Criteria criteria = example.createCriteria();
+		super.andFullLike(criteria, "vcCode", vcCode);
+		super.andFullLike(criteria, "vcName", vcName);
 		return example;
 	}
 

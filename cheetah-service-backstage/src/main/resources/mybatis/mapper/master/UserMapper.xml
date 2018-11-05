@@ -13,5 +13,6 @@
     <result column="vc_email" jdbcType="VARCHAR" property="vcEmail" />
     <result column="c_status" jdbcType="CHAR" property="cStatus" />
     <result column="c_lock_status" jdbcType="CHAR" property="cLockStatus" />
+    <result column="c_sys_admin" jdbcType="CHAR" property="cSysAdmin" />
   </resultMap>
 </mapper>

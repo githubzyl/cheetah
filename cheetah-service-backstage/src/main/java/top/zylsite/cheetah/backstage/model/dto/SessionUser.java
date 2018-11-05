@@ -17,14 +17,16 @@ public class SessionUser extends User {
 	
 	private Integer loginLogId;//登录日志ID
 	
-	private List<? extends BaseTree> menuTree;
+	private List<? extends BaseTree> permissionTree;
+	
+	private boolean sysadmin;//是不是系统管理员
 
-	public List<? extends BaseTree> getMenuTree() {
-		return menuTree;
+	public List<? extends BaseTree> getPermissionTree() {
+		return permissionTree;
 	}
 
-	public void setMenuTree(List<? extends BaseTree> menuTree) {
-		this.menuTree = menuTree;
+	public void setPermissionTree(List<? extends BaseTree> menuTree) {
+		this.permissionTree = menuTree;
 	}
 
 	public Integer getLoginLogId() {
@@ -33,6 +35,14 @@ public class SessionUser extends User {
 
 	public void setLoginLogId(Integer loginLogId) {
 		this.loginLogId = loginLogId;
+	}
+
+	public boolean isSysadmin() {
+		return sysadmin;
+	}
+
+	public void setSysadmin(boolean sysadmin) {
+		this.sysadmin = sysadmin;
 	}
 
 }

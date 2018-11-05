@@ -1,8 +1,61 @@
 <form class="form-horizontal" id="jobForm" style="padding: 0px 70px;">
 	<div class="form-group">
-		<label for="" class="col-sm-3 control-label">Label</label>
+		<label for="vcJobName" class="col-sm-3 control-label">任务名称</label>
 		<div class="col-sm-9">
-			<input type="text" class="form-control" id="" name="" placeholder="请输入Label">
+			<input type="text" class="form-control" id="vcJobName"
+				name="vcJobName">
+		</div>
+	</div>
+	<!-- 
+	<div class="form-group" >
+		<label for="vcJobgroupName" class="col-sm-3 control-label" >任务组名</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" id="vcJobgroupName" 
+				name="vcJobgroupName">
+		</div>
+	</div>
+	<div class="form-group" >
+		<label for="vcTriggerName" class="col-sm-3 control-label" >触发器名</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" id="vcTriggerName" name="vcTriggerName" >
+		</div>
+	</div>
+	<div class="form-group" >
+		<label for="vcTriggergroupName" class="col-sm-3 control-label" >触发器组名</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" id="vcTriggergroupName" name="vcTriggergroupName" >
+		</div>
+	</div>
+	 -->
+	<div class="form-group">
+		<label for="vcJobclassName" class="col-sm-3 control-label">任务执行类</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" id="vcJobclassName"
+				name="vcJobclassName">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="vcCronExpression" class="col-sm-3 control-label">cron表达式</label>
+		<div class="col-sm-9">
+			<div class="input-group">
+				<input type="text" class="form-control" id="vcCronExpression"
+					name="vcCronExpression"> <span class="input-group-addon"><a
+					href="http://cron.qqe2.com" target="_blank">在线生成</a></span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="cExecOnStartup" class="col-sm-3 control-label">程序启动时立即执行</label>
+		<div class="col-sm-9" style="padding-top: 10px;">
+			<div class="radio3 radio-check radio-success radio-inline"
+				style="margin-left: 5px;">
+				<input type="radio" id="cExecOnStartup1" name="cExecOnStartup"
+					value="0" checked> <label for="cExecOnStartup1">否</label>
+			</div>
+			<div class="radio3 radio-check radio-danger radio-inline">
+				<input type="radio" id="cExecOnStartup2" name="cExecOnStartup"
+					value="1"> <label for="cExecOnStartup2">是</label>
+			</div>
 		</div>
 	</div>
 </form>

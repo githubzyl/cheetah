@@ -73,7 +73,7 @@ public class UserController extends BaseRequestController<User> {
 	@ControllerLogs(description="获取菜单列表")
 	@GetMapping("/userMenus")
 	public Object userMenus() {
-		List<? extends BaseTree> tree = ShiroUtil.getSessionUser().getMenuTree();
+		List<? extends BaseTree> tree = ShiroUtil.getSessionUser().getPermissionTree();
 		return this.ajaxSuccess(tree);
 	}
 	

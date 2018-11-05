@@ -32,7 +32,7 @@ function getMenus(result){
 }
 function traverseMenu(menu){
 	let menuNav = "";
-	let children = menu.nodes;
+	let children = menu.children;
 	if(isBlankArray(children)){
 		let li = renderMenu(menu);
 		menuNav += li;
@@ -40,7 +40,7 @@ function traverseMenu(menu){
 		let number = RndNum(5);
 		let li = '<li class="panel panel-default dropdown">';
 		let dropA = '<a data-toggle="collapse" href="#dropdown-'+number+'">'
-				          + '<span class="icon '+menu.icon+'"></span><span class="title">'+menu.text+'</span>'
+				          + '<span class="icon '+menu.iconClass+'"></span><span class="title">'+menu.name+'</span>'
 				          + '</a>';
 		li += dropA;
 		let dropDiv = '<div id="dropdown-'+number+'" class="panel-collapse collapse">'
@@ -59,8 +59,8 @@ function traverseMenu(menu){
 }
 function renderMenu(menu){
 	let li = '<li>';
-	let a = isBlankStr(menu.href)  ? '<a href="javascript:void(0);">' : '<a data-tabId="'+menu.id+'" onclick="goToPage(this,\''+menu.href+'\',\''+menu.text+'\',\''+menu.id+'\',\''+menu.target+'\',\''+menu.parentNames+'\')" href="javascript:void(0);">';
-	let span = '<span class="icon fa '+menu.icon+'"></span><span class="title">'+menu.text+'</span>';
+	let a = isBlankStr(menu.href)  ? '<a href="javascript:void(0);">' : '<a data-tabId="'+menu.id+'" onclick="goToPage(this,\''+menu.href+'\',\''+menu.name+'\',\''+menu.id+'\',\''+menu.target+'\',\''+menu.parentNames+'\')" href="javascript:void(0);">';
+	let span = '<span class="icon fa '+menu.iconClass+'"></span><span class="title">'+menu.name+'</span>';
 	li += a;
 	li += span;
 	li += '</a>';

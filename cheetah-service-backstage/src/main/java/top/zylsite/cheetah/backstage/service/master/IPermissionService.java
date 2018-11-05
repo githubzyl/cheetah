@@ -4,23 +4,24 @@ import java.util.List;
 
 import top.zylsite.cheetah.backstage.model.master.Permission;
 import top.zylsite.cheetah.backstage.model.master.RolePermission;
+import top.zylsite.cheetah.backstage.model.vo.PermissionVO;
 import top.zylsite.cheetah.base.common.BaseService;
 import top.zylsite.cheetah.base.common.tree.BaseTree;
+import top.zylsite.cheetah.base.common.tree.ZTreeNode;
 
 public interface IPermissionService extends BaseService<Permission>{
 
-	/**
-	 * 根据菜单列表获取菜单树
-	 * 
-	 * @param permissionList
-	 * @param rolePermissions
-	 * @param containButton
-	 * @param ztree
-	 * @return
-	 * @create: 2018年4月3日 下午4:28:30 zhaoyl
-	 * @history:
-	 */
 	List<? extends BaseTree> getPermissionTreeWithPermissions(List<Permission> permissionList,
-			List<RolePermission> rolePermissions, boolean containButton, boolean ztree);
+			List<RolePermission> rolePermissions, boolean containButton);
+
+	List<Permission> getPermissionByParentId(int parentId);
+
+	PermissionVO queryById(Integer id);
+
+	void changeStatus(Integer permissionId, String status);
+	
+	BaseTree createNode(Permission permission, boolean async);
+	
+	ZTreeNode getRootNode(); 
  
 }

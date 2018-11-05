@@ -54,6 +54,12 @@ public class User implements Serializable {
     @Column(name = "c_lock_status")
     private String cLockStatus;
 
+    /**
+     * 是否系统管理员（0：否，1：是）
+     */
+    @Column(name = "c_sys_admin")
+    private String cSysAdmin;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -200,6 +206,24 @@ public class User implements Serializable {
         this.cLockStatus = cLockStatus == null ? null : cLockStatus.trim();
     }
 
+    /**
+     * 获取是否系统管理员（0：否，1：是）
+     *
+     * @return c_sys_admin - 是否系统管理员（0：否，1：是）
+     */
+    public String getcSysAdmin() {
+        return cSysAdmin;
+    }
+
+    /**
+     * 设置是否系统管理员（0：否，1：是）
+     *
+     * @param cSysAdmin 是否系统管理员（0：否，1：是）
+     */
+    public void setcSysAdmin(String cSysAdmin) {
+        this.cSysAdmin = cSysAdmin == null ? null : cSysAdmin.trim();
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -219,7 +243,8 @@ public class User implements Serializable {
             && (this.getVcMobile() == null ? other.getVcMobile() == null : this.getVcMobile().equals(other.getVcMobile()))
             && (this.getVcEmail() == null ? other.getVcEmail() == null : this.getVcEmail().equals(other.getVcEmail()))
             && (this.getcStatus() == null ? other.getcStatus() == null : this.getcStatus().equals(other.getcStatus()))
-            && (this.getcLockStatus() == null ? other.getcLockStatus() == null : this.getcLockStatus().equals(other.getcLockStatus()));
+            && (this.getcLockStatus() == null ? other.getcLockStatus() == null : this.getcLockStatus().equals(other.getcLockStatus()))
+            && (this.getcSysAdmin() == null ? other.getcSysAdmin() == null : this.getcSysAdmin().equals(other.getcSysAdmin()));
     }
 
     @Override
@@ -234,6 +259,7 @@ public class User implements Serializable {
         result = prime * result + ((getVcEmail() == null) ? 0 : getVcEmail().hashCode());
         result = prime * result + ((getcStatus() == null) ? 0 : getcStatus().hashCode());
         result = prime * result + ((getcLockStatus() == null) ? 0 : getcLockStatus().hashCode());
+        result = prime * result + ((getcSysAdmin() == null) ? 0 : getcSysAdmin().hashCode());
         return result;
     }
 
@@ -251,6 +277,7 @@ public class User implements Serializable {
         sb.append(", vcEmail=").append(vcEmail);
         sb.append(", cStatus=").append(cStatus);
         sb.append(", cLockStatus=").append(cLockStatus);
+        sb.append(", cSysAdmin=").append(cSysAdmin);
         sb.append("]");
         return sb.toString();
     }

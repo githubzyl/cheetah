@@ -19,10 +19,85 @@ function initTable(table){
 		columns : [{
 			field : 'checked',
 			checkbox : true
+		}, {
+			title : '权限编码',
+			field : 'vcCode',
+			align : 'center',
+			valign : 'middle',
+			width: 130
+		},{
+			title : '权限名称',
+			field : 'vcName',
+			align : 'center',
+			valign : 'middle',
+			width: 140
+		}, {
+			title : '资源URL',
+			field : 'vcUrl',
+			align : 'center',
+			valign : 'middle'
+		}, {
+			title : '资源图标',
+			field : 'vcIcon',
+			align : 'center',
+			valign : 'middle'
+		}, {
+			title : '资源类型',
+			field : 'cResourceType',
+			align : 'center',
+			valign : 'middle',
+			width: 80,
+			formatter: function(value, row, index){
+				return value == 1 ? '菜单' : '按钮';
+			}
+		}, {
+			title : '是否启用',
+			field : 'cEnable',
+			align : 'center',
+			valign : 'middle',
+			width: 80,
+			formatter: function(value, row, index){
+				let icon = 'iconfont ';
+				icon += (value == 1 ? 'icon-enable' : 'icon-disable');
+				let color = (value == 1 ? 'green' : 'red');
+				let span = '<span class="'+icon+'" style="color:'+color+'"></span>';
+				return span;
+			}
+		}, {
+			title : '排序',
+			field : 'lSort',
+			align : 'center',
+			valign : 'middle',
+			width: 80
+		},{
+			field : 'operate',
+			title : '操作',
+			align: 'center',
+            valign: 'middle',
+            width: 100,
+            events: operateEvents,
+			formatter : operateFormatter
 		}]
 	};
 	renderBootstrapTable(tableOption, table);
 }
+function operateFormatter(value, row, index) {
+	let btnName = (row.cEnable == 0 ? '启用' : '禁用');
+	let className = (row.cEnable == 0 ? 'btn-success' : 'btn-danger');
+    return [
+        '<button type="button" class="EnableOrDisable btn '+className+' btn-sm">'+btnName +'</button>'
+    ].join('');
+}
+window.operateEvents = {
+     'click .EnableOrDisable': function (e, value, row, index) {
+    	 let error = enableOrDisable(row.id, row.cEnable == '1' ? '0' : '1');
+        	if(error){
+        		showError(error);
+        	}else{
+        		bootstrapTableSearch($('#table'));
+        	}
+     }
+};
 function queryParams(params) {
 	let formParams = getFormData(searchForm);
 	return bootstrapTableQueryParams(params,formParams);
@@ -76,7 +151,46 @@ function initFormValidator(form){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-        	
+        	parentName: {
+                message: '父级权限不合法',
+                validators: {
+                    notEmpty: {
+                        message: '请选择父级权限'
+                    }
+                }
+            },
+        	vcName: {
+                message: '权限名称不合法',
+                validators: {
+                    notEmpty: {
+                        message: '权限名称不能为空'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 20,
+                        message: '请输入2到20个字符'
+                    }
+                }
+            }
         }
     });
+}
+//启用或禁用
+function enableOrDisable(permissionId, status){
+	let message = status == 0 ? '禁用' : '启用';
+	let data = 'permissionId='+permissionId+'&status='+status;
+	asyncAjax('/permission/status', 'post', data,
+	    function(result){
+	    	if(result.status == ServerStatus.SUCCESS){
+    			toastrInfo('权限'+message+'成功');
+    			dialog.close();
+    			btnSearch();
+			}else{
+				toastrError(result.msg);
+			}
+	    },
+	    function(res){
+	    	toastrError(ajaxError(res));
+	    }
+	);
 }

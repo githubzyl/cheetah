@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zylsite.cheetah.backstage.mapper.master.extend.DataDictionaryExtendMapper">
+  <select id="selectList" parameterType="top.zylsite.cheetah.backstage.model.vo.DataDictionaryVO" resultType="top.zylsite.cheetah.backstage.model.vo.DataDictionaryVO">
+  	select d.id, d.c_dict_entry, d.vc_entry_name, d.l_dict_type, d.l_sort, t.vc_name dictTypeName
+	from t_data_dict d left join t_dict_type t on d.l_dict_type = t.id
+	<where>
+		<if test="lDictType != null and lDictType !=''">
+			and d.l_dict_type = #{lDictType}
+		</if>
+		<if test="cDictEntry != null and cDictEntry !=''">
+			and d.c_dict_entry = #{cDictEntry}
+		</if>
+	</where>
+	<if test="orderByClause != null">
+          order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

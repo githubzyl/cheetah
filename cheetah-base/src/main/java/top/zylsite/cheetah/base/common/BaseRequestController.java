@@ -1,5 +1,7 @@
 package top.zylsite.cheetah.base.common;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.github.pagehelper.PageInfo;
@@ -43,6 +45,14 @@ public abstract class BaseRequestController<T> extends BaseController {
 		getService().insertInfo(entity);
 	}
 
+	public int insertAndGetId(T entity) {
+		return getService().insertInfoAndGetId(entity);
+	}
+
+	public int insertList(List<T> list) {
+		return getService().insertList(list);
+	}
+	
 	public void update(T entity) {
 		getService().updateInfoByPrimaryKey(entity, true);
 	}

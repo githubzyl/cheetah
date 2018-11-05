@@ -19,7 +19,7 @@ public interface IUserService extends BaseService<User>{
 
 	List<Permission> queryPermissionListByUserId(Integer id);
 	
-	void setMenuTree(SessionUser sessionUser);
+	void setPermissionTree(SessionUser sessionUser);
 	
 	void saveRoleInfo(Integer userId, Integer[] roles);
 	

@@ -58,9 +58,19 @@ public class DictionaryTypeController extends BaseRequestController<DictionaryTy
 		return super.remove(ids);
 	}
 	
+	@GetMapping("/all")
+	public Object all(HttpServletRequest request) {
+		return super.all();
+	}
+	
 	@Override
 	protected Example getExample(QueryParameter queryParameter, HttpServletRequest request) {
+		String vcCode = request.getParameter("vcCode");
+		String vcName = request.getParameter("vcName");
 		Example example = new Example(DictionaryType.class);
+		Example.Criteria criteria = example.createCriteria();
+		super.andFullLike(criteria, "vcCode", vcCode);
+		super.andFullLike(criteria, "vcName", vcName);
 		return example;
 	}
 	
