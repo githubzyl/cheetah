@@ -13,6 +13,7 @@ import tk.mybatis.mapper.entity.Example;
 import top.zylsite.cheetah.base.common.BaseService;
 import top.zylsite.cheetah.base.common.BaseRequestController;
 import top.zylsite.cheetah.base.common.QueryParameter;
+import top.zylsite.cheetah.web.backstage.common.annotation.ControllerLogs;
 import top.zylsite.cheetah.backstage.service.master.IDictionaryTypeService;
 import top.zylsite.cheetah.backstage.model.master.DictionaryType;
 
@@ -28,6 +29,7 @@ public class DictionaryTypeController extends BaseRequestController<DictionaryTy
 		return dictionaryTypeService;
 	}
 	
+	@ControllerLogs(description="查询字典类型列表")
 	@GetMapping("/list")
 	public Object list(QueryParameter queryParameter, HttpServletRequest request) {
 		return super.list(queryParameter, request);
@@ -38,11 +40,13 @@ public class DictionaryTypeController extends BaseRequestController<DictionaryTy
 	    return super.queryByPrimaryKey(id);
 	}
 	
+	@ControllerLogs(description="删除单个字典类型")
 	@GetMapping("/remove/{id}")
 	public Object remove(@PathVariable Integer id) {
 		return super.removeByPrimaryKey(id);
 	}
 	
+	@ControllerLogs(description="保存字典类型")
 	@PostMapping("/save")
 	public Object save(DictionaryType entity) {
 		if (null == entity.getId()) {
@@ -53,6 +57,7 @@ public class DictionaryTypeController extends BaseRequestController<DictionaryTy
 		return this.ajaxSuccess(null);
 	}
 	
+	@ControllerLogs(description="批量删除字典类型")
 	@GetMapping("/remove")
 	public Object remove(Integer[] ids) {
 		return super.remove(ids);

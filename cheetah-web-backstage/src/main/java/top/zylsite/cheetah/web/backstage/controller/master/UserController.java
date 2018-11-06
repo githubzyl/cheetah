@@ -37,6 +37,7 @@ public class UserController extends BaseRequestController<User> {
 		return userService;
 	}
 	
+	@ControllerLogs(description="查询用户列表")
 	@GetMapping("/list")
 	public Object list(QueryParameter queryParameter, HttpServletRequest request) {
 		return super.list(queryParameter, request);
@@ -47,11 +48,13 @@ public class UserController extends BaseRequestController<User> {
 	    return super.queryByPrimaryKey(id);
 	}
 	
+	@ControllerLogs(description="删除单个用户")
 	@GetMapping("/remove/{id}")
 	public Object remove(@PathVariable Integer id) {
 		return super.removeByPrimaryKey(id);
 	}
 	
+	@ControllerLogs(description="保存用户信息")
 	@PostMapping("/save")
 	public Object save(User entity) {
 		if (null == entity.getId()) {
@@ -65,6 +68,7 @@ public class UserController extends BaseRequestController<User> {
 		return this.ajaxSuccess(null);
 	}
 	
+	@ControllerLogs(description="批量删除用户")
 	@GetMapping("/remove")
 	public Object remove(Integer[] ids) {
 		return super.remove(ids);

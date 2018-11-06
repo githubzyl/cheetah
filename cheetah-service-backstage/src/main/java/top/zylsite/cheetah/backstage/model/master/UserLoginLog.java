@@ -17,6 +17,12 @@ public class UserLoginLog implements Serializable {
     private Integer lUserId;
 
     /**
+     * 用户名
+     */
+    @Column(name = "vc_user_name")
+    private String vcUserName;
+
+    /**
      * 登录时间
      */
     @Column(name = "d_login_time")
@@ -84,6 +90,24 @@ public class UserLoginLog implements Serializable {
      */
     public void setlUserId(Integer lUserId) {
         this.lUserId = lUserId;
+    }
+
+    /**
+     * 获取用户名
+     *
+     * @return vc_user_name - 用户名
+     */
+    public String getVcUserName() {
+        return vcUserName;
+    }
+
+    /**
+     * 设置用户名
+     *
+     * @param vcUserName 用户名
+     */
+    public void setVcUserName(String vcUserName) {
+        this.vcUserName = vcUserName == null ? null : vcUserName.trim();
     }
 
     /**
@@ -208,6 +232,7 @@ public class UserLoginLog implements Serializable {
         UserLoginLog other = (UserLoginLog) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getlUserId() == null ? other.getlUserId() == null : this.getlUserId().equals(other.getlUserId()))
+            && (this.getVcUserName() == null ? other.getVcUserName() == null : this.getVcUserName().equals(other.getVcUserName()))
             && (this.getdLoginTime() == null ? other.getdLoginTime() == null : this.getdLoginTime().equals(other.getdLoginTime()))
             && (this.getdLogoutTime() == null ? other.getdLogoutTime() == null : this.getdLogoutTime().equals(other.getdLogoutTime()))
             && (this.getcLoginType() == null ? other.getcLoginType() == null : this.getcLoginType().equals(other.getcLoginType()))
@@ -222,6 +247,7 @@ public class UserLoginLog implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getlUserId() == null) ? 0 : getlUserId().hashCode());
+        result = prime * result + ((getVcUserName() == null) ? 0 : getVcUserName().hashCode());
         result = prime * result + ((getdLoginTime() == null) ? 0 : getdLoginTime().hashCode());
         result = prime * result + ((getdLogoutTime() == null) ? 0 : getdLogoutTime().hashCode());
         result = prime * result + ((getcLoginType() == null) ? 0 : getcLoginType().hashCode());
@@ -239,6 +265,7 @@ public class UserLoginLog implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", lUserId=").append(lUserId);
+        sb.append(", vcUserName=").append(vcUserName);
         sb.append(", dLoginTime=").append(dLoginTime);
         sb.append(", dLogoutTime=").append(dLogoutTime);
         sb.append(", cLoginType=").append(cLoginType);

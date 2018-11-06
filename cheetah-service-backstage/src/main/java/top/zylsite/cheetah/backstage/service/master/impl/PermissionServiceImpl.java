@@ -70,7 +70,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
 		ZTreeNode node = new ZTreeNode();
 		node.setId(permission.getId());
 		node.setIconClass(permission.getVcIcon());
-		node.setpId(permission.getParentId().toString());
+		node.setpId(permission.getParentId());
 		node.setName(permission.getVcName());
 		node.setParentNames(permission.getParentIds());
 		node.setHref(permission.getVcUrl());
@@ -83,7 +83,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
 	
 	@Override
 	public ZTreeNode getRootNode() {
-		return new ZTreeNode(0, "0", ROOT_PERMISSION_NAME, "iconfont icon-xitong");// 根节点自定义，但是要和pid对应好
+		return new ZTreeNode(0, 0, ROOT_PERMISSION_NAME, "iconfont icon-xitong");// 根节点自定义，但是要和pid对应好
 	}
 
 	private List<ZTreeNode> getZTree(List<Permission> permissionList, List<RolePermission> rolePermissions,

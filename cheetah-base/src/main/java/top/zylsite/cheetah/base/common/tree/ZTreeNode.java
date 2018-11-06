@@ -3,13 +3,11 @@ package top.zylsite.cheetah.base.common.tree;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ZTreeNode extends BaseTree {
 
-	private String pId; // 树的节点Id，区别于数据库中保存的数据Id。
+	private Integer pId; // 树的节点Id，区别于数据库中保存的数据Id。
 	private String name; // 节点名称
 	private String iconClass;// 图标
 	private String href; // 点击节点触发的链接
@@ -38,7 +36,7 @@ public class ZTreeNode extends BaseTree {
 	 * @param icon
 	 * @param href
 	 */
-	public ZTreeNode(Integer id, String pId, String name, String iconClass) {
+	public ZTreeNode(Integer id, Integer pId, String name, String iconClass) {
 		this.id = id;
 		this.pId = pId;
 		this.name = name;
@@ -52,14 +50,20 @@ public class ZTreeNode extends BaseTree {
 		}
 		// 添加一级菜单
 		for (ZTreeNode node : nodes) {
-			if (StringUtils.isBlank(node.getpId()) || node.getpId().equals("0") || node.getpId().equals("root")) {// 根节点自定义，但是要和pid对应好
+			if (null == node.getpId() || 0 == node.getpId()) {// 根节点自定义，但是要和pid对应好
 				// 向根添加一个节点
 				root.getChildren().add(node);
+			}
+			if(null != root.getChildren() && root.getChildren().size() > 0) {
+				root.setParent(true);
 			}
 		}
 		// 将所有节点添加到多叉树中
 		for (ZTreeNode node : root.getChildren()) {
 			node.setChildren(getChild(node.getId(), nodes));
+			if(null != node.getChildren() && node.getChildren().size() > 0) {
+				node.setParent(true);
+			}
 		}
 		return root;
 	}
@@ -69,8 +73,8 @@ public class ZTreeNode extends BaseTree {
 		List<ZTreeNode> childList = new ArrayList<>();
 		for (ZTreeNode node : nodes) {
 			// 遍历所有节点，将父菜单id与传过来的id比较
-			if (StringUtils.isNotBlank(node.getpId())) {
-				if (node.getpId().equals(Integer.toString(id))) {
+			if (null != node.getpId()) {
+				if (node.getpId() == id) {
 					childList.add(node);
 				}
 			}
@@ -86,11 +90,11 @@ public class ZTreeNode extends BaseTree {
 		return childList;
 	}
 
-	public String getpId() {
+	public Integer getpId() {
 		return pId;
 	}
 
-	public void setpId(String pId) {
+	public void setpId(Integer pId) {
 		this.pId = pId;
 	}
 

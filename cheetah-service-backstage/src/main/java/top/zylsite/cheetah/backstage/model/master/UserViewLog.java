@@ -16,6 +16,12 @@ public class UserViewLog implements Serializable {
     private Integer lUserId;
 
     /**
+     * 用户名
+     */
+    @Column(name = "vc_user_name")
+    private String vcUserName;
+
+    /**
      * 请求描述
      */
     @Column(name = "vc_operation")
@@ -95,6 +101,24 @@ public class UserViewLog implements Serializable {
      */
     public void setlUserId(Integer lUserId) {
         this.lUserId = lUserId;
+    }
+
+    /**
+     * 获取用户名
+     *
+     * @return vc_user_name - 用户名
+     */
+    public String getVcUserName() {
+        return vcUserName;
+    }
+
+    /**
+     * 设置用户名
+     *
+     * @param vcUserName 用户名
+     */
+    public void setVcUserName(String vcUserName) {
+        this.vcUserName = vcUserName == null ? null : vcUserName.trim();
     }
 
     /**
@@ -255,6 +279,7 @@ public class UserViewLog implements Serializable {
         UserViewLog other = (UserViewLog) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getlUserId() == null ? other.getlUserId() == null : this.getlUserId().equals(other.getlUserId()))
+            && (this.getVcUserName() == null ? other.getVcUserName() == null : this.getVcUserName().equals(other.getVcUserName()))
             && (this.getVcOperation() == null ? other.getVcOperation() == null : this.getVcOperation().equals(other.getVcOperation()))
             && (this.getVcUrl() == null ? other.getVcUrl() == null : this.getVcUrl().equals(other.getVcUrl()))
             && (this.getVcMethod() == null ? other.getVcMethod() == null : this.getVcMethod().equals(other.getVcMethod()))
@@ -271,6 +296,7 @@ public class UserViewLog implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getlUserId() == null) ? 0 : getlUserId().hashCode());
+        result = prime * result + ((getVcUserName() == null) ? 0 : getVcUserName().hashCode());
         result = prime * result + ((getVcOperation() == null) ? 0 : getVcOperation().hashCode());
         result = prime * result + ((getVcUrl() == null) ? 0 : getVcUrl().hashCode());
         result = prime * result + ((getVcMethod() == null) ? 0 : getVcMethod().hashCode());
@@ -290,6 +316,7 @@ public class UserViewLog implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", lUserId=").append(lUserId);
+        sb.append(", vcUserName=").append(vcUserName);
         sb.append(", vcOperation=").append(vcOperation);
         sb.append(", vcUrl=").append(vcUrl);
         sb.append(", vcMethod=").append(vcMethod);

@@ -21,6 +21,7 @@ import top.zylsite.cheetah.backstage.service.master.IScheduledJobService;
 import top.zylsite.cheetah.base.common.BaseRequestController;
 import top.zylsite.cheetah.base.common.BaseService;
 import top.zylsite.cheetah.base.common.QueryParameter;
+import top.zylsite.cheetah.web.backstage.common.annotation.ControllerLogs;
 
 @RestController
 @RequestMapping("/scheduledJob")
@@ -34,6 +35,7 @@ public class ScheduledJobController extends BaseRequestController<ScheduledJob> 
 		return scheduledJobService;
 	}
 
+	@ControllerLogs(description="查询定时任务列表")
 	@GetMapping("/list")
 	public Object list(QueryParameter queryParameter, HttpServletRequest request) {
 		return super.list(queryParameter, request);
@@ -44,11 +46,13 @@ public class ScheduledJobController extends BaseRequestController<ScheduledJob> 
 		return super.queryByPrimaryKey(id);
 	}
 
+	@ControllerLogs(description="删除单个定时任务")
 	@GetMapping("/remove/{id}")
 	public Object remove(@PathVariable Integer id) {
 		return super.removeByPrimaryKey(id);
 	}
 
+	@ControllerLogs(description="保存定时任务")
 	@PostMapping("/save")
 	public Object save(ScheduledJob entity, HttpServletRequest request) throws Exception {
 		boolean startNow = Boolean.parseBoolean(StringUtils.defaultIfBlank(request.getParameter("startNow"), "false"));
@@ -79,6 +83,7 @@ public class ScheduledJobController extends BaseRequestController<ScheduledJob> 
 		return this.ajaxSuccess(null);
 	}
 
+	@ControllerLogs(description="批量删除定时任务")
 	@GetMapping("/remove")
 	public Object remove(Integer[] ids) {
 		// 添加从quartz任务中删除任务的操作
@@ -99,10 +104,11 @@ public class ScheduledJobController extends BaseRequestController<ScheduledJob> 
 	 * @create: 2018年4月11日 下午2:24:14 zhaoyl
 	 * @history:
 	 */
-	@GetMapping("/startJob")
-	public Object startJob(Integer[] id) throws Exception {
-		if (null != id && id.length > 0) {
-			for (Integer jobName : id) {
+	@ControllerLogs(description="批量启动定时任务")
+	@PostMapping("/startJob")
+	public Object startJob(Integer[] ids) throws Exception {
+		if (null != ids && ids.length > 0) {
+			for (Integer jobName : ids) {
 				QuartzManager.removeJob(Integer.toString(jobName));
 				ScheduledJob job = getService().queryInfoByPrimaryKey(jobName);
 				updateJob(jobName, job, true);
@@ -111,7 +117,7 @@ public class ScheduledJobController extends BaseRequestController<ScheduledJob> 
 			List<ScheduledJob> list = scheduledJobService.getAllJob(true);
 			addJobs(list);
 		}
-		scheduledJobService.updateStatus(id, BaseQuartzJob.JOB_STATUS_RUNNING);
+		scheduledJobService.updateStatus(ids, BaseQuartzJob.JOB_STATUS_RUNNING);
 		return this.ajaxSuccess(null);
 	}
 
@@ -123,20 +129,22 @@ public class ScheduledJobController extends BaseRequestController<ScheduledJob> 
 	 * @create: 2018年4月11日 下午2:24:14 zhaoyl
 	 * @history:
 	 */
-	@GetMapping("/pauseJob")
-	public Object pauseJob(Integer[] id) {
-		if (null != id && id.length > 0) {
-			for (Integer jobName : id) {
+	@ControllerLogs(description="批量停止定时任务")
+	@PostMapping("/pauseJob")
+	public Object pauseJob(Integer[] ids) {
+		if (null != ids && ids.length > 0) {
+			for (Integer jobName : ids) {
 				QuartzManager.removeJob(jobName.toString());
 			}
 		} else {
 			List<ScheduledJob> list = scheduledJobService.getAllJob(true);
 			removeJobs(list);
 		}
-		scheduledJobService.updateStatus(id, BaseQuartzJob.JOB_STATUS_STOPPED);
+		scheduledJobService.updateStatus(ids, BaseQuartzJob.JOB_STATUS_STOPPED);
 		return this.ajaxSuccess(null);
 	}
 
+	@ControllerLogs(description="立即执行某个定时任务")
 	@GetMapping("/executeJobNow")
 	public Object executeJobNow(Integer id) throws ClassNotFoundException {
 		if (null != id) {

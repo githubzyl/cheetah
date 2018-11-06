@@ -1,5 +1,7 @@
 package top.zylsite.cheetah.backstage.service.common.enums;
 
+import org.apache.commons.lang3.StringUtils;
+
 import top.zylsite.cheetah.backstage.service.common.LoginConstants;
 
 /**
@@ -69,6 +71,18 @@ public enum LoginWayEnum {
 	public static String getNameByCode(int code) {
 		for(LoginWayEnum loginWayEnum : LoginWayEnum.values()) {
 			if(code == loginWayEnum.getCode()) {
+				return loginWayEnum.getName();
+			}
+		}
+		return null;
+	}
+	
+	public static String getNameByCode(String code) {
+		if(StringUtils.isBlank(code)) {
+			return null;
+		}
+		for(LoginWayEnum loginWayEnum : LoginWayEnum.values()) {
+			if(code.equals( loginWayEnum.getCodeStr())) {
 				return loginWayEnum.getName();
 			}
 		}

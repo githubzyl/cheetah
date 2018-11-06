@@ -17,6 +17,5 @@
     <result column="l_last_start_time" jdbcType="BIGINT" property="lLastStartTime" />
     <result column="l_last_end_time" jdbcType="BIGINT" property="lLastEndTime" />
     <result column="l_last_exec_status" jdbcType="CHAR" property="lLastExecStatus" />
-    <result column="l_event_id" jdbcType="INTEGER" property="lEventId" />
   </resultMap>
 </mapper>

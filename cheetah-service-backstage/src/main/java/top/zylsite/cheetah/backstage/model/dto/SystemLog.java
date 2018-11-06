@@ -21,11 +21,14 @@ import top.zylsite.cheetah.base.utils.UserAgentUtils;
  */
 public class SystemLog {
 
-	public static UserLoginLog createUserLoginLog(HttpServletRequest request, Integer userId, String loginType) {
+	public static UserLoginLog createUserLoginLog(HttpServletRequest request, SessionUser sessionUser, String loginType) {
 		UserAgent userAgent = getUserAgent(request);
 		UserLoginLog userLoginLog = new UserLoginLog();
 		userLoginLog.setcLoginType(loginType);
-		userLoginLog.setlUserId(userId);
+		if(null != sessionUser) {
+			userLoginLog.setlUserId(sessionUser.getId());
+			userLoginLog.setVcUserName(sessionUser.getVcUserName());
+		}
 		userLoginLog.setdLoginTime(new Date());
 		userLoginLog.setVcIp(RequestUtil.getClientIp(request));
 		userLoginLog.setVcDeviceType(getDeviceType(userAgent));
@@ -33,10 +36,13 @@ public class SystemLog {
 		return userLoginLog;
 	}
 
-	public static UserViewLog createUserViewLog(HttpServletRequest request, Integer userId, String methodDescription) {
+	public static UserViewLog createUserViewLog(HttpServletRequest request, SessionUser sessionUser, String methodDescription) {
 		UserAgent userAgent = getUserAgent(request);
 		UserViewLog userViewLog = new UserViewLog();
-		userViewLog.setlUserId(userId);
+		if(null != sessionUser) {
+			userViewLog.setlUserId(sessionUser.getId());
+			userViewLog.setVcUserName(sessionUser.getVcUserName());
+		}
 		userViewLog.setVcOperation(methodDescription);
 		userViewLog.setVcUrl(request.getRequestURI());
 		userViewLog.setVcParam(getRequestParam(request));

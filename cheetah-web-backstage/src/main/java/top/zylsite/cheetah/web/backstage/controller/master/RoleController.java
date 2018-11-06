@@ -32,6 +32,7 @@ public class RoleController extends BaseRequestController<Role> {
 		return roleService;
 	}
 
+	@ControllerLogs(description="查询角色列表")
 	@GetMapping("/list")
 	public Object list(QueryParameter queryParameter, HttpServletRequest request) {
 		return super.list(queryParameter, request);
@@ -42,11 +43,13 @@ public class RoleController extends BaseRequestController<Role> {
 		return super.queryByPrimaryKey(id);
 	}
 
+	@ControllerLogs(description="删除单个角色")
 	@GetMapping("/remove/{id}")
 	public Object remove(@PathVariable Integer id) {
 		return super.removeByPrimaryKey(id);
 	}
 
+	@ControllerLogs(description="保存角色信息")
 	@PostMapping("/save")
 	public Object save(Role entity) {
 		if (null == entity.getId()) {
@@ -57,6 +60,7 @@ public class RoleController extends BaseRequestController<Role> {
 		return this.ajaxSuccess(null);
 	}
 
+	@ControllerLogs(description="批量删除角色")
 	@GetMapping("/remove")
 	public Object remove(Integer[] ids) {
 		return super.remove(ids);
@@ -72,12 +76,14 @@ public class RoleController extends BaseRequestController<Role> {
 		return this.ajaxSuccess(list);
 	}
 	
+	@ControllerLogs(description="为角色分配权限")
 	@PostMapping("/savePermission")
 	public Object saveMenu(Integer roleId, Integer[] permissions) {
 		roleService.saveRoleInfo(roleId, permissions);
 		return this.ajaxSuccess(null);
 	}
 	
+	@ControllerLogs(description="修改角色状态")
 	@PostMapping("/status")
 	public Object saveStatus(Integer roleId, String status) {
 		roleService.changeStatus(roleId, status);

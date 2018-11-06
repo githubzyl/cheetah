@@ -19,6 +19,7 @@ import top.zylsite.cheetah.backstage.service.master.IDataDictionaryService;
 import top.zylsite.cheetah.base.common.BaseRequestController;
 import top.zylsite.cheetah.base.common.BaseService;
 import top.zylsite.cheetah.base.common.QueryParameter;
+import top.zylsite.cheetah.web.backstage.common.annotation.ControllerLogs;
 
 @RestController
 @RequestMapping("/dataDictionary")
@@ -32,6 +33,7 @@ public class DataDictionaryController extends BaseRequestController<DataDictiona
 		return dataDictionaryService;
 	}
 	
+	@ControllerLogs(description="查询数据字典列表")
 	@GetMapping("/list")
 	public Object list(QueryParameter queryParameter, DataDictionaryVO dataDictionaryVO, HttpServletRequest request) {
 		PageInfo<DataDictionaryVO> pageInfo = dataDictionaryService.queryForPage(queryParameter, dataDictionaryVO);
@@ -43,11 +45,13 @@ public class DataDictionaryController extends BaseRequestController<DataDictiona
 	    return super.queryByPrimaryKey(id);
 	}
 	
+	@ControllerLogs(description="删除单个数据字典")
 	@GetMapping("/remove/{id}")
 	public Object remove(@PathVariable Integer id) {
 		return super.removeByPrimaryKey(id);
 	}
 	
+	@ControllerLogs(description="保存数据字典")
 	@PostMapping("/save")
 	public Object save(DataDictionary entity) {
 		if (null == entity.getId()) {
@@ -58,6 +62,7 @@ public class DataDictionaryController extends BaseRequestController<DataDictiona
 		return this.ajaxSuccess(null);
 	}
 	
+	@ControllerLogs(description="批量数据字典")
 	@GetMapping("/remove")
 	public Object remove(Integer[] ids) {
 		return super.remove(ids);

@@ -154,7 +154,7 @@ public class ShiroUtil {
 		// 记录用户登录日志
 		try {
 			IUserLoginLogService userLoginLogService = SpringUtil.getBean(IUserLoginLogService.class);
-			UserLoginLog userLoginLog = SystemLog.createUserLoginLog(request, sessionUser.getId(), loginType);
+			UserLoginLog userLoginLog = SystemLog.createUserLoginLog(request, sessionUser, loginType);
 			userLoginLogService.insertInfoAndGetId(userLoginLog);
 			sessionUser.setLoginLogId(userLoginLog.getId());
 		} catch (Exception e) {

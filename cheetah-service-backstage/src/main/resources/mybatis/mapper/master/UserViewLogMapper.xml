@@ -7,6 +7,7 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="l_user_id" jdbcType="INTEGER" property="lUserId" />
+    <result column="vc_user_name" jdbcType="VARCHAR" property="vcUserName" />
     <result column="vc_operation" jdbcType="VARCHAR" property="vcOperation" />
     <result column="vc_url" jdbcType="VARCHAR" property="vcUrl" />
     <result column="vc_method" jdbcType="VARCHAR" property="vcMethod" />

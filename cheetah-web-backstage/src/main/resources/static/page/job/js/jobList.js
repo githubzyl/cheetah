@@ -215,7 +215,7 @@ function startupAll(){
 }
 //立即执行一次任务
 function executeNow(){
-	let rows = getSelectedRows();
+	let rows = getSelectedRows(table);
 	if(rows.length <= 0){
 		showWarn('请选择需要执行的任务');
 		return;
@@ -226,12 +226,20 @@ function executeNow(){
 	}
 	let row = rows[0];
 	if(row){
-		let error = ajaxJson('/job/executeJobNow?id='+row.id, null, null);
-		if(error){
-    		showError(error);
-    	}else{
-    		showInfo("任务正在执行中,请稍后刷新数据查看执行情况");
-    	}
+		let url = '/scheduledJob/executeJobNow?id='+row.id;
+		asyncAjax(url,null, null,
+			function(result){
+				if(result.status == ServerStatus.SUCCESS){
+					showInfo("任务正在执行中,请稍后刷新数据查看执行情况");
+		    		btnSearch();
+				}else{
+					showError(result.msg);
+				}
+			},
+			function(res){
+				showError(ajaxError(res));
+			}	
+		)
 	}
 }
 //停止任务
@@ -243,39 +251,51 @@ function stopAll(){
 	startOrStopAll(1);
 }
 function startOrStop(type){
-	let rows = getSelectedRows();
+	let rows = getSelectedRows(table);
 	let warnMsg = '请选择需要' + (type == 0 ? '启动' : '停止') + '的任务' ;
 	let infoMsg = '任务已经' + (type == 0 ? '启动' : '停止');
-	let url = '/job/' + (type == 0 ? 'startJob' : 'pauseJob');
+	let url = '/scheduledJob/' + (type == 0 ? 'startJob' : 'pauseJob');
 	if(rows && rows.length > 0){
 		let ids = getIds();
-		let error = ajaxJson(url, null, ids);
-		if(error){
-    		showError(error);
-    	}else{
-    		showInfo(infoMsg);
-    		btnSearch();
-    	}
+		asyncAjax(url,'post', ids,
+			function(result){
+				if(result.status == ServerStatus.SUCCESS){
+					showInfo(infoMsg);
+		    		btnSearch();
+				}else{
+					showError(result.msg);
+				}
+			},
+			function(res){
+				showError(ajaxError(res));
+			}	
+		)
 	}else{
 		showWarn(warnMsg);
 	}
 }
 function startOrStopAll(type){
-	let url = '/job/' + (type == 0 ? 'startJob' : 'pauseJob');
+	let url = '/scheduledJob/' + (type == 0 ? 'startJob' : 'pauseJob');
 	let infoMsg = '任务已经全部' + (type == 0 ? '启动' : '停止');
-	let error = ajaxJson(url, null);
-	if(error){
-		showError(error);
-	}else{
-		showInfo(infoMsg);
-		btnSearch();
-	}
+	asyncAjax(url,'post', null,
+		function(result){
+			if(result.status == ServerStatus.SUCCESS){
+				showInfo(infoMsg);
+	    		btnSearch();
+			}else{
+				showError(result.msg);
+			}
+		},
+		function(res){
+			showError(ajaxError(res));
+		}	
+	)
 }
 function getIds(){
-	let rows = getSelectedRows();
+	let rows = getSelectedRows(table);
 	let ids = "";
 	for(let i = 0, length = rows.length ; i < length ; i++){
-		ids += "&id=" + rows[i].id;
+		ids += "&ids=" + rows[i].id;
 	}
 	if(ids != ""){
 		ids = ids.substring(1);

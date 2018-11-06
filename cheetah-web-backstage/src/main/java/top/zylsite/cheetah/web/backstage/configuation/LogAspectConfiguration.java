@@ -41,12 +41,8 @@ public class LogAspectConfiguration {
 		try {
 			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 					.getRequest();
-			Integer userId = null;
-			if (null != ShiroUtil.getSessionUser()) {
-				userId = ShiroUtil.getSessionUser().getId();
-			}
 			String methodDescription = getControllerMethodDescription(joinPoint);
-			UserViewLog userViewLog = SystemLog.createUserViewLog(request, userId, methodDescription);
+			UserViewLog userViewLog = SystemLog.createUserViewLog(request, ShiroUtil.getSessionUser(), methodDescription);
 			userViewLogService.insertInfo(userViewLog);
 		} catch (Exception e) {
 			e.printStackTrace();

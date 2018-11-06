@@ -74,12 +74,6 @@ public class ScheduledJob implements Serializable {
     @Column(name = "l_last_exec_status")
     private String lLastExecStatus;
 
-    /**
-     * 事件编码
-     */
-    @Column(name = "l_event_id")
-    private Integer lEventId;
-
     private static final long serialVersionUID = 1L;
 
     /**
@@ -294,24 +288,6 @@ public class ScheduledJob implements Serializable {
         this.lLastExecStatus = lLastExecStatus == null ? null : lLastExecStatus.trim();
     }
 
-    /**
-     * 获取事件编码
-     *
-     * @return l_event_id - 事件编码
-     */
-    public Integer getlEventId() {
-        return lEventId;
-    }
-
-    /**
-     * 设置事件编码
-     *
-     * @param lEventId 事件编码
-     */
-    public void setlEventId(Integer lEventId) {
-        this.lEventId = lEventId;
-    }
-
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -335,8 +311,7 @@ public class ScheduledJob implements Serializable {
             && (this.getcExecOnStartup() == null ? other.getcExecOnStartup() == null : this.getcExecOnStartup().equals(other.getcExecOnStartup()))
             && (this.getlLastStartTime() == null ? other.getlLastStartTime() == null : this.getlLastStartTime().equals(other.getlLastStartTime()))
             && (this.getlLastEndTime() == null ? other.getlLastEndTime() == null : this.getlLastEndTime().equals(other.getlLastEndTime()))
-            && (this.getlLastExecStatus() == null ? other.getlLastExecStatus() == null : this.getlLastExecStatus().equals(other.getlLastExecStatus()))
-            && (this.getlEventId() == null ? other.getlEventId() == null : this.getlEventId().equals(other.getlEventId()));
+            && (this.getlLastExecStatus() == null ? other.getlLastExecStatus() == null : this.getlLastExecStatus().equals(other.getlLastExecStatus()));
     }
 
     @Override
@@ -355,7 +330,6 @@ public class ScheduledJob implements Serializable {
         result = prime * result + ((getlLastStartTime() == null) ? 0 : getlLastStartTime().hashCode());
         result = prime * result + ((getlLastEndTime() == null) ? 0 : getlLastEndTime().hashCode());
         result = prime * result + ((getlLastExecStatus() == null) ? 0 : getlLastExecStatus().hashCode());
-        result = prime * result + ((getlEventId() == null) ? 0 : getlEventId().hashCode());
         return result;
     }
 
@@ -377,7 +351,6 @@ public class ScheduledJob implements Serializable {
         sb.append(", lLastStartTime=").append(lLastStartTime);
         sb.append(", lLastEndTime=").append(lLastEndTime);
         sb.append(", lLastExecStatus=").append(lLastExecStatus);
-        sb.append(", lEventId=").append(lEventId);
         sb.append("]");
         return sb.toString();
     }

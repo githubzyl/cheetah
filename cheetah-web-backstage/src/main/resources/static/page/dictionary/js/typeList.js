@@ -149,7 +149,7 @@ function lookDictDetail(row){
 		},
 		buttons: [{
             label: '关闭',
-            cssClass: 'btn-primary',
+            cssClass: 'btn-default',
             action: function(dialog) {
                 dialog.close();
             }
