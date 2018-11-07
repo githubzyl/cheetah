@@ -14,5 +14,7 @@
     <result column="c_status" jdbcType="CHAR" property="cStatus" />
     <result column="c_lock_status" jdbcType="CHAR" property="cLockStatus" />
     <result column="c_sys_admin" jdbcType="CHAR" property="cSysAdmin" />
+    <result column="c_gender" jdbcType="CHAR" property="cGender" />
+    <result column="vc_photo" jdbcType="VARCHAR" property="vcPhoto" />
   </resultMap>
 </mapper>

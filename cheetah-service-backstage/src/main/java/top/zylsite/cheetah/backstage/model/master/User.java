@@ -60,6 +60,18 @@ public class User implements Serializable {
     @Column(name = "c_sys_admin")
     private String cSysAdmin;
 
+    /**
+     * 性别（男：'0',女：'1'）
+     */
+    @Column(name = "c_gender")
+    private String cGender;
+
+    /**
+     * 头像
+     */
+    @Column(name = "vc_photo")
+    private String vcPhoto;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -224,6 +236,42 @@ public class User implements Serializable {
         this.cSysAdmin = cSysAdmin == null ? null : cSysAdmin.trim();
     }
 
+    /**
+     * 获取性别（男：'0',女：'1'）
+     *
+     * @return c_gender - 性别（男：'0',女：'1'）
+     */
+    public String getcGender() {
+        return cGender;
+    }
+
+    /**
+     * 设置性别（男：'0',女：'1'）
+     *
+     * @param cGender 性别（男：'0',女：'1'）
+     */
+    public void setcGender(String cGender) {
+        this.cGender = cGender == null ? null : cGender.trim();
+    }
+
+    /**
+     * 获取头像
+     *
+     * @return vc_photo - 头像
+     */
+    public String getVcPhoto() {
+        return vcPhoto;
+    }
+
+    /**
+     * 设置头像
+     *
+     * @param vcPhoto 头像
+     */
+    public void setVcPhoto(String vcPhoto) {
+        this.vcPhoto = vcPhoto == null ? null : vcPhoto.trim();
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -244,7 +292,9 @@ public class User implements Serializable {
             && (this.getVcEmail() == null ? other.getVcEmail() == null : this.getVcEmail().equals(other.getVcEmail()))
             && (this.getcStatus() == null ? other.getcStatus() == null : this.getcStatus().equals(other.getcStatus()))
             && (this.getcLockStatus() == null ? other.getcLockStatus() == null : this.getcLockStatus().equals(other.getcLockStatus()))
-            && (this.getcSysAdmin() == null ? other.getcSysAdmin() == null : this.getcSysAdmin().equals(other.getcSysAdmin()));
+            && (this.getcSysAdmin() == null ? other.getcSysAdmin() == null : this.getcSysAdmin().equals(other.getcSysAdmin()))
+            && (this.getcGender() == null ? other.getcGender() == null : this.getcGender().equals(other.getcGender()))
+            && (this.getVcPhoto() == null ? other.getVcPhoto() == null : this.getVcPhoto().equals(other.getVcPhoto()));
     }
 
     @Override
@@ -260,6 +310,8 @@ public class User implements Serializable {
         result = prime * result + ((getcStatus() == null) ? 0 : getcStatus().hashCode());
         result = prime * result + ((getcLockStatus() == null) ? 0 : getcLockStatus().hashCode());
         result = prime * result + ((getcSysAdmin() == null) ? 0 : getcSysAdmin().hashCode());
+        result = prime * result + ((getcGender() == null) ? 0 : getcGender().hashCode());
+        result = prime * result + ((getVcPhoto() == null) ? 0 : getVcPhoto().hashCode());
         return result;
     }
 
@@ -278,6 +330,8 @@ public class User implements Serializable {
         sb.append(", cStatus=").append(cStatus);
         sb.append(", cLockStatus=").append(cLockStatus);
         sb.append(", cSysAdmin=").append(cSysAdmin);
+        sb.append(", cGender=").append(cGender);
+        sb.append(", vcPhoto=").append(vcPhoto);
         sb.append("]");
         return sb.toString();
     }

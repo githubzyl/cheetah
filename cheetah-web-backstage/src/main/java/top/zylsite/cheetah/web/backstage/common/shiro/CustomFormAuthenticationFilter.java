@@ -22,7 +22,7 @@ import top.zylsite.cheetah.base.utils.ResponseUtil;
 public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
 
 	private String loginTypeParamName = ShiroConstants.DEFAULT_LOGIN_TYPE_PARAM;
-
+	
 	// 重写此方法是为了在session过期时返回数据或重定向到登录页
 	@Override
 	protected void redirectToLogin(ServletRequest servletRequest, ServletResponse servletResponse) throws IOException {

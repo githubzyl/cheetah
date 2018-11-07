@@ -22,7 +22,7 @@ import top.zylsite.cheetah.web.backstage.common.shiro.ShiroConstants;
 import top.zylsite.cheetah.web.backstage.common.shiro.ShiroUtil;
 
 @Controller
-public class PageController {
+public class PageController{
 
 	// 存放权限代码和url
 	private static Map<String, String> permissionMap = new HashMap<>();
@@ -36,7 +36,7 @@ public class PageController {
 	public String index() {
 		return "index";
 	}
-
+	
 	@GetMapping("/page/{parent}/{filename}")
 	public String page(@PathVariable String parent, @PathVariable String filename, HttpServletRequest request,
 			Model model) {

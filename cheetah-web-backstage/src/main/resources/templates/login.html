@@ -25,11 +25,6 @@
                     </div>
                     <div class="col-sm-12">
                         <div class="login-body">
-                            <div class="progress hidden" id="login-progress">
-                                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                    Log In...
-                                </div>
-                            </div>
                             <form th:action="@{/login}" name="loginForm" id="loginForm" method="post">
                                 <input type="hidden" id="loginType" name="loginType" th:value="${loginType}">
                                 <div class="control">
@@ -38,10 +33,15 @@
                                 <div class="control">
                                     <input type="password" class="form-control" id="password" name="password"  placeholder="请输入密码" autocomplete="off" required/>
                                 </div>
+                                <div class="input-wrapper">
+			                        <label class="auto-login"><input type="checkbox" id="remeberMe" name="remeberMe">记住我</label>
+<!-- 			                        <label class="forgot-password"><a href="/resetpassword" target="_parent">忘记密码？</a></label> -->
+			                        <div style="clear: both;"></div>
+			                    </div>
                                 <div id="error" class="hide_error" style="text-align: center;color: red;">
 									<span></span>
 								</div>
-                                <div class="login-button text-center">
+                                <div class="control login-button text-center">
                                     <input id="loginBtn" class="btn btn-primary" onclick="realLogin();" value="登录">
                                 </div>
                             </form>

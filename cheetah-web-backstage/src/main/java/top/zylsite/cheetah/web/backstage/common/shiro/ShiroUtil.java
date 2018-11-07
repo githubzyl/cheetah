@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.DisabledAccountException;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
@@ -21,9 +22,13 @@ import top.zylsite.cheetah.backstage.model.dto.SessionUser;
 import top.zylsite.cheetah.backstage.model.dto.SystemLog;
 import top.zylsite.cheetah.backstage.model.master.Permission;
 import top.zylsite.cheetah.backstage.model.master.Role;
+import top.zylsite.cheetah.backstage.model.master.UserBindInfo;
 import top.zylsite.cheetah.backstage.model.master.UserLoginLog;
 import top.zylsite.cheetah.backstage.model.master.UserRole;
+import top.zylsite.cheetah.backstage.service.common.enums.GenderEnum;
+import top.zylsite.cheetah.backstage.service.common.enums.LoginWayEnum;
 import top.zylsite.cheetah.backstage.service.master.IRoleService;
+import top.zylsite.cheetah.backstage.service.master.IUserBindInfoService;
 import top.zylsite.cheetah.backstage.service.master.IUserLoginLogService;
 import top.zylsite.cheetah.backstage.service.master.IUserService;
 import top.zylsite.cheetah.base.utils.LoggerFactoryUtil;
@@ -142,7 +147,21 @@ public class ShiroUtil {
 
 	public static void onLoginSuccess(HttpServletRequest request, Subject subject, String loginType) {
 		SessionUser sessionUser = (SessionUser) subject.getPrincipal();
+		//清空密码
+		sessionUser.setVcPassword(null);
+		//设置头像信息
 		IUserService userService = SpringUtil.getBean(IUserService.class);
+		if(LoginWayEnum.isThirdAccount(loginType)) {
+			IUserBindInfoService userBindInfoService = SpringUtil.getBean(IUserBindInfoService.class);
+			UserBindInfo bindInfo = userBindInfoService.queryByUserId(sessionUser.getId(), loginType);
+			if(null != bindInfo && StringUtils.isNotBlank(bindInfo.getVcPhoto())) {
+				sessionUser.setVcPhoto(bindInfo.getVcPhoto());
+			}
+		}
+		//设置性别
+		if(StringUtils.isBlank(sessionUser.getcGender())) {
+			sessionUser.setcGender(GenderEnum.MALE.getCode());
+		}
 		// 设置菜单树信息
 		userService.setPermissionTree(sessionUser);
 		Environment env = SpringUtil.getBean(Environment.class);

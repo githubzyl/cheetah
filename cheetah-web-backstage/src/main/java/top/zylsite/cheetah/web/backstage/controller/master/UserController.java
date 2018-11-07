@@ -63,6 +63,7 @@ public class UserController extends BaseRequestController<User> {
 			entity.setcStatus("0");
 			super.insert(entity);
 		} else {
+			entity.setVcUserName(null);
 			super.update(entity);
 		}
 		return this.ajaxSuccess(null);

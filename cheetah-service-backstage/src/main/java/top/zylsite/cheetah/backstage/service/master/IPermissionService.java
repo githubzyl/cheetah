@@ -23,5 +23,5 @@ public interface IPermissionService extends BaseService<Permission>{
 	BaseTree createNode(Permission permission, boolean async);
 	
 	ZTreeNode getRootNode(); 
- 
+	
 }

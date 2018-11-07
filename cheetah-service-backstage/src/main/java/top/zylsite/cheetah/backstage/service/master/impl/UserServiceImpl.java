@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -53,12 +54,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 		if (null != list && !list.isEmpty()) {
 			User user = list.get(0);
 			SessionUser sessionUser = new SessionUser();
-			sessionUser.setId(user.getId());
-			sessionUser.setVcEmail(user.getVcEmail());
-			sessionUser.setVcUserName(user.getVcUserName());
-			sessionUser.setVcRealName(user.getVcRealName());
-			sessionUser.setVcMobile(user.getVcMobile());
-			sessionUser.setVcPassword(user.getVcPassword());
+			BeanCopier copier = BeanCopier.create(User.class, SessionUser.class, false);
+			copier.copy(user, sessionUser, null);
 			sessionUser.setSysadmin(StringUtils.defaultIfBlank(user.getcSysAdmin(), YesOrNoEnum.NO.code()).equals(YesOrNoEnum.YES.code()));
 			return sessionUser;
 		}

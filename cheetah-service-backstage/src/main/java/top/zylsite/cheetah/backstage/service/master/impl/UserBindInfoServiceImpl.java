@@ -57,12 +57,21 @@ public class UserBindInfoServiceImpl extends BaseServiceImpl<UserBindInfo> imple
 
 	@Override
 	public boolean hasBindSameTypeAccount(int userId, String type) {
+		UserBindInfo bindInfo = queryByUserId(userId, type);
+		return null == bindInfo ? false : true;
+	}
+
+	@Override
+	public UserBindInfo queryByUserId(int userId, String type) {
 		Example example = super.createExample();
 		example.createCriteria()
 		            .andEqualTo("lUserId", userId)
 		            .andEqualTo("cType", type);
 		List<UserBindInfo> list = userBindInfoMapper.selectByExample(example);
-		return CollectionUtils.isEmpty(list) ? false : true;
+		if(CollectionUtils.isEmpty(list)) {
+			return null;
+		}
+		return list.get(0);
 	}
 	
 }

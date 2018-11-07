@@ -1,0 +1,35 @@
+.info-wapper {
+	margin: 24px auto 24px 40px;
+}
+
+.info-box {
+	margin-bottom: 12px;
+}
+
+.info-box label {
+	width: 120px;
+	line-height: 20px;
+	padding: 20px 0;
+	text-align: center;
+	background-color: #f3f5f7;
+	color: #07111b;
+	font-weight: 700;
+}
+
+.info-box div {
+	width: 708px;
+	margin-left: 8px;
+	line-height: 20px;
+	padding: 20px 0 20px 22px;
+	border-bottom: 1px solid #d9dde1;
+}
+
+.pull-left {
+	float: left;
+}
+
+.btn-edit {
+	color: #93999f !important;
+	font-weight: 400;
+	font-size: 14px;
+}

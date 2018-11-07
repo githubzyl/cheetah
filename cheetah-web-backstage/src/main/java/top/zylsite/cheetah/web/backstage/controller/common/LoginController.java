@@ -17,8 +17,8 @@ import top.zylsite.cheetah.web.backstage.common.shiro.ShiroUtil;
 public class LoginController extends BaseController {
 
 	@GetMapping("/login")
-	public String login(Model model,RedirectAttributes attributes) {
-		if(!attributes.containsAttribute(ShiroConstants.DEFAULT_LOGIN_TYPE_PARAM)) {
+	public String login(Model model, RedirectAttributes attributes) {
+		if (!attributes.containsAttribute(ShiroConstants.DEFAULT_LOGIN_TYPE_PARAM)) {
 			model.addAttribute(ShiroConstants.DEFAULT_LOGIN_TYPE_PARAM, LoginWayEnum.AP.getCodeStr());
 		}
 		return "login";
