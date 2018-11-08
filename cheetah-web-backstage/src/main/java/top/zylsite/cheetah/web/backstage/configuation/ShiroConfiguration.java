@@ -1,16 +1,11 @@
 package top.zylsite.cheetah.web.backstage.configuation;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.Filter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
@@ -26,15 +21,9 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import top.zylsite.cheetah.base.utils.ResourceReader;
 import top.zylsite.cheetah.web.backstage.common.shiro.CustomCredentialsMatcher;
 import top.zylsite.cheetah.web.backstage.common.shiro.CustomFormAuthenticationFilter;
 import top.zylsite.cheetah.web.backstage.common.shiro.CustomModularRealmAuthenticator;
@@ -69,24 +58,24 @@ public class ShiroConfiguration {
 		ehcacheManager.setCacheManagerConfigFile(ShiroConstants.EHCACHE_SHIRO_FILE);
 		return ehcacheManager;
 	}
-	
-	//cookie对象;
-    @Bean
-    public SimpleCookie rememberMeCookie() {
-        //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
-        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
-        //<!-- 记住我cookie生效时间30天 ,单位秒;-->
-        simpleCookie.setMaxAge(259200);
-        return simpleCookie;
-    }
 
-    //cookie管理对象;
-    @Bean
-    public CookieRememberMeManager cookieRememberMeManager() {
-        CookieRememberMeManager manager = new CookieRememberMeManager();
-        manager.setCookie(rememberMeCookie());
-        return manager;
-    }
+	// cookie对象;
+	@Bean
+	public SimpleCookie rememberMeCookie() {
+		// 这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
+		SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+		// <!-- 记住我cookie生效时间30天 ,单位秒;-->
+		simpleCookie.setMaxAge(259200);
+		return simpleCookie;
+	}
+
+	// cookie管理对象;
+	@Bean
+	public CookieRememberMeManager cookieRememberMeManager() {
+		CookieRememberMeManager manager = new CookieRememberMeManager();
+		manager.setCookie(rememberMeCookie());
+		return manager;
+	}
 
 	// 配置自定义的密码比较器
 	@Bean(name = "credentialsMatcher")
@@ -172,8 +161,8 @@ public class ShiroConfiguration {
 		factoryBean.setSuccessUrl(ShiroConstants.SUCCESS_URL);
 		// 没有权限的跳转链接
 		factoryBean.setUnauthorizedUrl(ShiroConstants.UNAUTHORIZED_URL);
-		// 初始化配置信息,主要加载不需要验证的url
-		loadExcludesUrl();
+		// 加载配置信息
+		loadShiroConfiguation();
 		// 配置访问权限
 		loadShiroFilterChain(factoryBean);
 		return factoryBean;
@@ -191,22 +180,10 @@ public class ShiroConfiguration {
 	}
 
 	/**
-	 * 初始化配置信息，主要加载排除拦截的pattern
+	 * 加载配置信息
 	 */
-	private void loadExcludesUrl() {
-		try {
-			Element element = getElement();
-			// 读取不需要验证的url
-			addPatternsByType(element, "anon");
-			// 读取需要验证的url
-			addPatternsByType(element, "authc");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		}
+	private void loadShiroConfiguation() {
+		filterChainMap = ResourceReader.readProperties(ShiroConstants.SHIRO_FILTER_FILE);
 	}
 
 	/**
@@ -217,33 +194,6 @@ public class ShiroConfiguration {
 	@Bean
 	public ShiroDialect shiroDialect() {
 		return new ShiroDialect();
-	}
-
-	private void addPatternsByType(Element element, String type) {
-		NodeList nodeList = element.getElementsByTagName(type + "s");
-		if (nodeList == null) {
-			return;
-		}
-		NodeList secondlist = nodeList.item(0).getChildNodes();
-		if (null == secondlist || secondlist.getLength() <= 0) {
-			return;
-		}
-		for (int i = 0; i < secondlist.getLength(); i++) {
-			Node node = secondlist.item(i);
-			if ("pattern".equals(node.getNodeName())) {
-				filterChainMap.put(node.getTextContent(), type);
-			}
-		}
-	}
-
-	private Element getElement() throws IOException, ParserConfigurationException, SAXException {
-		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-		Resource[] resources = resolver.getResources(ShiroConstants.SESSION_FILTER_FILE);
-		InputStream is = resources[0].getInputStream();
-		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		Document doc = builder.parse(is);
-		Element element = doc.getDocumentElement();
-		return element;
 	}
 
 }

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 
 public class RequestUtil {
+	
+	private static String IP_LOCATION_QUERY_URL = "http://whois.pconline.com.cn/ip.jsp?ip={IP}";
 
 	/**
 	 * 获取客户端请求ip
@@ -160,6 +162,13 @@ public class RequestUtil {
 	public static boolean isFirefoxBrowser(HttpServletRequest request) {
 		String userAgent = request.getHeader("User-Agent");
 		return (userAgent != null && userAgent.toLowerCase().indexOf("firefox") != -1);
+	}
+	
+	//获取ip归属地
+	public static String getIpLocation(String ip) {
+		String url = IP_LOCATION_QUERY_URL.replace("{IP}", ip);
+		String result = HttpUtils.get(url);
+		return 	StringUtils.isNotBlank(result) ? result.trim() : result;
 	}
 
 }

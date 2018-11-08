@@ -18,7 +18,6 @@ import tk.mybatis.mapper.entity.Example;
 import top.zylsite.cheetah.backstage.model.master.Permission;
 import top.zylsite.cheetah.backstage.service.master.IPermissionService;
 import top.zylsite.cheetah.base.utils.RequestUtil;
-import top.zylsite.cheetah.web.backstage.common.shiro.ShiroConstants;
 import top.zylsite.cheetah.web.backstage.common.shiro.ShiroUtil;
 
 @Controller
@@ -28,7 +27,9 @@ public class PageController{
 	private static Map<String, String> permissionMap = new HashMap<>();
 
 	private final static String PAGE_ROOT_PATH = "page/";
-
+	
+	private final static String HOME = "home";
+	
 	@Autowired
 	private IPermissionService permissionService;
 
@@ -40,16 +41,16 @@ public class PageController{
 	@GetMapping("/page/{parent}/{filename}")
 	public String page(@PathVariable String parent, @PathVariable String filename, HttpServletRequest request,
 			Model model) {
-		if (!checkPermission(parent, filename)) {
-			return "redirect:" + ShiroConstants.UNAUTHORIZED_URL;
-		}
+//		if (!checkPermission(parent, filename)) {
+//			return "redirect:" + ShiroConstants.UNAUTHORIZED_URL;
+//		}
 		Map<String, Object> params = RequestUtil.getParameterMap(request);
 		model.addAllAttributes(params);
 		return PAGE_ROOT_PATH + parent + "/" + filename;
 	}
 
-	private boolean checkPermission(String parent, String filename) {
-		if(ShiroUtil.getSessionUser().isSysadmin()) {
+	public boolean checkPermission(String parent, String filename) {
+		if(ShiroUtil.getSessionUser().isSysadmin() || (HOME.equals(parent) && HOME.equals(filename))) {
 			return true;
 		}
 		String permissionCode = getPermissionCode(parent, filename);
@@ -59,7 +60,7 @@ public class PageController{
 		return false;
 	}
 
-	private String getPermissionCode(String parent, String filename) {
+	public String getPermissionCode(String parent, String filename) {
 		String url = "/page/" + parent + "/" + filename;
 		String permissionCode = permissionMap.get(url);
 		if (StringUtils.isNotBlank(permissionCode)) {

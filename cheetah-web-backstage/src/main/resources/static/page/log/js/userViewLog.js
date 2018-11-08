@@ -30,7 +30,7 @@ function initTable(table){
 			field : 'vcOperation',
 			align : 'center',
 			valign : 'middle',
-			width:100
+			width:120
 		},{
 			title : '访问URL',
 			field : 'vcUrl',
@@ -48,7 +48,9 @@ function initTable(table){
 			field : 'dVisitTime',
 			align : 'center',
 			valign : 'middle',
-			width:160,
+			width:150,
+			sortable: true,
+			sortName: 'd_visit_time',
 			formatter: function(value, row, index){
 				return longDateFormat(value,'yyyy-MM-dd HH:mm:ss');
 			}
@@ -70,6 +72,12 @@ function initTable(table){
 			align : 'center',
 			valign : 'middle',
 			width:100
+		},{
+			title : '登录地址',
+			field : 'vcLocation',
+			align : 'center',
+			valign : 'middle',
+			width:160
 		}]
 	};
 	renderBootstrapTable(tableOption, table);

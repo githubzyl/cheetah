@@ -32,7 +32,7 @@
 									<span></span>
 								</div>
                                 <div class="login-button text-center">
-                                    <input class="btn btn-primary" onclick="loginAndBind();" value="登录并绑定">
+                                    <button class="btn btn-primary" onclick="loginAndBind();" style="width: 100%;">登录并绑定</button>
                                 </div>
                             </form>
                         </div>
@@ -42,7 +42,7 @@
         </div>
     </div>
     <div th:replace="common/common_foot :: common_foot(~{::script})">
-	      <script type="text/javascript" th:src="@{/common/js/bindInfo.js}"></script>
+	      <script type="text/javascript" th:src="@{/page/login/js/bindInfo.js}"></script>
 	      <script th:inline="javascript">
 		        /*<![CDATA[*/
 		        var error_message = /*[[${error_message}]]*/;

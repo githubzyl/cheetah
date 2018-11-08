@@ -31,6 +31,7 @@ public class SystemLog {
 		}
 		userLoginLog.setdLoginTime(new Date());
 		userLoginLog.setVcIp(RequestUtil.getClientIp(request));
+		userLoginLog.setVcLocation(getLocation(userLoginLog.getVcIp()));
 		userLoginLog.setVcDeviceType(getDeviceType(userAgent));
 		userLoginLog.setVcBrowserType(getBrowserType(userAgent));
 		return userLoginLog;
@@ -48,6 +49,7 @@ public class SystemLog {
 		userViewLog.setVcParam(getRequestParam(request));
 		userViewLog.setVcMethod(request.getMethod().toUpperCase());
 		userViewLog.setVcIp(RequestUtil.getClientIp(request));
+		userViewLog.setVcLocation(getLocation(userViewLog.getVcIp()));
 		userViewLog.setVcDeviceType(getDeviceType(userAgent));
 		userViewLog.setVcBrowserType(getBrowserType(userAgent));
 		userViewLog.setdVisitTime(new Date());
@@ -81,5 +83,12 @@ public class SystemLog {
 	private static String getBrowserType(UserAgent userAgent) {
 		return userAgent.getBrowser().getName() + "(版本:" + userAgent.getBrowserVersion() + ")";
 	}
-
+	
+	private static String getLocation(String ip) {
+		if(StringUtils.isBlank(ip)) {
+			return null;
+		}
+		return RequestUtil.getIpLocation(ip);
+	}
+	
 }

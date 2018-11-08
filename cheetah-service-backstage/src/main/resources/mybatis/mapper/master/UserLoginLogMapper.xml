@@ -12,6 +12,7 @@
     <result column="d_logout_time" jdbcType="TIMESTAMP" property="dLogoutTime" />
     <result column="c_login_type" jdbcType="CHAR" property="cLoginType" />
     <result column="vc_ip" jdbcType="VARCHAR" property="vcIp" />
+    <result column="vc_location" jdbcType="VARCHAR" property="vcLocation" />
     <result column="vc_device_type" jdbcType="VARCHAR" property="vcDeviceType" />
     <result column="vc_browser_type" jdbcType="VARCHAR" property="vcBrowserType" />
   </resultMap>

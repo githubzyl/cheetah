@@ -26,5 +26,12 @@ public interface IUserService extends BaseService<User>{
 	void changeStatus(Integer userId, String status);
 	
 	void updatePassword(Integer userId, String password);
+	
+	/**
+	 * 根据用户名，手机号，邮箱查询用户
+	 * @param account
+	 * @return
+	 */
+	SessionUser findUser(String account);
  
 }

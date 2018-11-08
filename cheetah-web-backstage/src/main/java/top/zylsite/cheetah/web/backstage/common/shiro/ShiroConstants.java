@@ -22,9 +22,9 @@ public final class ShiroConstants {
 	public final static String UNAUTHORIZED_URL = "/error/403";
 	
 	/**
-	 * session-filter配置文件，主要配置shiro相关的东西
+	 * shiro-filter配置文件，主要配置shiro相关的东西
 	 */
-	public final static String SESSION_FILTER_FILE = "classpath:config/shiro/session-filter.xml";
+	public final static String SHIRO_FILTER_FILE = "classpath:config/shiro/shiro-filter.properties";
 	/**
 	 * shiro-ehcache缓存配置
 	 */

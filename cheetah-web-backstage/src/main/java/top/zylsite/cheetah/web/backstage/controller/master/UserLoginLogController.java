@@ -37,6 +37,10 @@ public class UserLoginLogController extends BaseRequestController<UserLoginLog> 
 	@ControllerLogs(description="查询登录日志列表")
 	@GetMapping("/list")
 	public Object list(QueryParameter queryParameter, HttpServletRequest request) {
+		if(!queryParameter.isNeedOrder()) {
+			queryParameter.setSortName("d_login_time");
+			queryParameter.setSortOrder("desc");
+		}
 		PageInfo<UserLoginLog> pageInfo = getPageInfo(queryParameter, request);
 		List<UserLoginLog> list = pageInfo.getList();
 		if(!CollectionUtils.isEmpty(list)) {

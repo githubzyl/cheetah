@@ -8,6 +8,7 @@ function edit(){
 		style: "width:500px;",
 		onshown: function(dialog){
 			let editForm = getDialogForm(dialog, 'userForm');
+			editForm.find('#vcUserName').attr('readonly','readonly');
 			asyncAjax(searchUrl,null,null,
 		    	function(result){
 		    		if(result.status == ServerStatus.SUCCESS){

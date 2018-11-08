@@ -111,14 +111,14 @@ public class UserController extends BaseRequestController<User> {
 	}
 
 	@ControllerLogs(description="初始化用户密码")
-	@GetMapping("initPassword")
+	@GetMapping("/initPassword")
 	public Object initPassword(Integer userId) {
 		userService.updatePassword(userId, getInitPassword());
 		return this.ajaxSuccess(null);
 	}
 
 	@ControllerLogs(description="修改用户密码")
-	@PostMapping("editPassword")
+	@PostMapping("/editPassword")
 	public Object editPassword(Integer userId, String oldPassword, String newPassword) {
 		if (null == userId) {// 此时修改当前登录用户的密码
 			userId = ShiroUtil.getSessionUser().getId();

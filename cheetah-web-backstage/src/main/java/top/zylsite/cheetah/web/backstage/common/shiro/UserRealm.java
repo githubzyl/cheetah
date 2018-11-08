@@ -41,7 +41,7 @@ public class UserRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		String username = (String) token.getPrincipal();
 		IUserService userService = SpringUtil.getBean(IUserService.class);
-		SessionUser user = userService.findByUserName(username);
+		SessionUser user = userService.findUser(username);
 		if (null == user) {// 用户名不存在
 			throw new IncorrectCredentialsException();
 		}

@@ -87,20 +87,10 @@ function operateFormatter(value, row, index) {
 }
 window.operateEvents = {
      'click .EnableOrDisable': function (e, value, row, index) {
-        	let error = enableOrDisable(row.id, row.cStatus == '1' ? '0' : '1');
-        	if(error){
-        		showError(error);
-        	}else{
-        		bootstrapTableSearch($('#table'));
-        	}
+        enableOrDisable(row.id, row.cStatus == '1' ? '0' : '1');
      },
      'click .LockOrUnlock': function (e, value, row, index) {
-    	 let error = lockOrUnlock(row.id, row.cLockStatus == '1' ? '0' : '1');
-    	 if(error){
-    		 showError(error);
-    	 }else{
-    		 btnSearch();
-    	 }
+    	 lockOrUnlock(row.id, row.cLockStatus == '1' ? '0' : '1');
      }
 };
 function queryParams(params) {
@@ -142,9 +132,14 @@ function goToEditPage(isEdit, title, row, searchUrl) {
 		searchUrl,
 		saveUrl,
 		editPageUrl,
-		null,
+		beforeRender,
 		initFormValidator
 	);
+}
+function beforeRender(editForm,isEdit){
+	if(isEdit){
+		editForm.find('#vcUserName').attr('readonly','readonly');
+	}
 }
 // 初始化验证规则
 function initFormValidator(form){

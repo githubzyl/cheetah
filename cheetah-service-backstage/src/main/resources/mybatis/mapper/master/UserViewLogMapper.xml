@@ -12,6 +12,7 @@
     <result column="vc_url" jdbcType="VARCHAR" property="vcUrl" />
     <result column="vc_method" jdbcType="VARCHAR" property="vcMethod" />
     <result column="vc_ip" jdbcType="VARCHAR" property="vcIp" />
+    <result column="vc_location" jdbcType="VARCHAR" property="vcLocation" />
     <result column="vc_device_type" jdbcType="VARCHAR" property="vcDeviceType" />
     <result column="vc_browser_type" jdbcType="VARCHAR" property="vcBrowserType" />
     <result column="d_visit_time" jdbcType="TIMESTAMP" property="dVisitTime" />

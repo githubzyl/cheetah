@@ -103,12 +103,12 @@ function removeRows(table, removeUrl, successCallback){
 			    			toastrInfo(Message.SUCCESS_REMOVE);
 			    			successCallback();
 						}else{
-		            		showError(error);
+							toastrError(result.msg);
 						}
 			    	},
 			    	function(res){
 			    		dialog.close();
-	            		showError(ajaxError(res));
+			    		toastrError(ajaxError(res));
 			    	}
 		    	);
 			}

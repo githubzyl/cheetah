@@ -62,12 +62,7 @@ function operateFormatter(value, row, index) {
 }
 window.operateEvents = {
      'click .EnableOrDisable': function (e, value, row, index) {
-        	let error = enableOrDisable(row.id, row.cEnable == '1' ? '0' : '1');
-        	if(error){
-        		showError(error);
-        	}else{
-        		bootstrapTableSearch($('#table'));
-        	}
+        	enableOrDisable(row.id, row.cEnable == '1' ? '0' : '1');
      }
 };
 function queryParams(params) {
@@ -207,7 +202,6 @@ function enableOrDisable(roleId, status){
 	    function(result){
 	    	if(result.status == ServerStatus.SUCCESS){
     			toastrInfo('角色'+message+'成功');
-    			dialog.close();
     			btnSearch();
 			}else{
 				toastrError(result.msg);

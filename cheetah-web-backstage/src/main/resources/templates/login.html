@@ -6,7 +6,7 @@
     <!-- CSS App -->
     <link rel="stylesheet" type="text/css" th:href="@{/flat-admin/css/style.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/flat-admin/css/themes/flat-blue.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/common/css/login.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/page/login/css/login.css}">
     <script language="JavaScript">
 		//每次都跳出iframe，在顶层打开
 		if (window != top) {
@@ -28,7 +28,7 @@
                             <form th:action="@{/login}" name="loginForm" id="loginForm" method="post">
                                 <input type="hidden" id="loginType" name="loginType" th:value="${loginType}">
                                 <div class="control">
-                                    <input type="text" class="form-control" id="username" name="username"  placeholder="请输入用户名" autocomplete="off" required/>
+                                    <input type="text" class="form-control" id="username" name="username"  placeholder="请输入用户名/手机号/邮箱" autocomplete="off" required/>
                                 </div>
                                 <div class="control">
                                     <input type="password" class="form-control" id="password" name="password"  placeholder="请输入密码" autocomplete="off" required/>
@@ -42,7 +42,7 @@
 									<span></span>
 								</div>
                                 <div class="control login-button text-center">
-                                    <input id="loginBtn" class="btn btn-primary" onclick="realLogin();" value="登录">
+                                    <button class="btn btn-primary" onclick="realLogin();" style="width: 100%;">登录</button>
                                 </div>
                             </form>
                             <div class="oauth-wrapper">
@@ -68,7 +68,7 @@
         </div>
     </div>
     <div th:replace="common/common_foot :: common_foot(~{::script})">
-	      <script type="text/javascript" th:src="@{/common/js/login.js}"></script>
+	      <script type="text/javascript" th:src="@{/page/login/js/login.js}"></script>
 	      <script th:inline="javascript">
 		        /*<![CDATA[*/
 		        var error_message = /*[[${error_message}]]*/;

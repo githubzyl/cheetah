@@ -50,17 +50,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 		Example.Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("vcUserName", username);
 		List<User> list = userMapper.selectByExample(example);
-
-		if (null != list && !list.isEmpty()) {
-			User user = list.get(0);
-			SessionUser sessionUser = new SessionUser();
-			BeanCopier copier = BeanCopier.create(User.class, SessionUser.class, false);
-			copier.copy(user, sessionUser, null);
-			sessionUser.setSysadmin(StringUtils.defaultIfBlank(user.getcSysAdmin(), YesOrNoEnum.NO.code()).equals(YesOrNoEnum.YES.code()));
-			return sessionUser;
-		}
-
-		return null;
+		return getSessionUser(list);
 	}
 
 	@Override
@@ -166,6 +156,29 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 		Example.Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("userId", userId);
 		userRoleMapper.deleteByExample(example);
+	}
+
+	@Override
+	public SessionUser findUser(String account) {
+		Example example = new Example(User.class);
+		Example.Criteria criteria = example.createCriteria();
+		criteria.orEqualTo("vcUserName", account);
+		criteria.orEqualTo("vcMobile", account);
+		criteria.orEqualTo("vcEmail", account);
+		List<User> list = userMapper.selectByExample(example);
+		return getSessionUser(list);
+	}
+	
+	private SessionUser getSessionUser(List<User> list) {
+		if (null != list && !list.isEmpty()) {
+			User user = list.get(0);
+			SessionUser sessionUser = new SessionUser();
+			BeanCopier copier = BeanCopier.create(User.class, SessionUser.class, false);
+			copier.copy(user, sessionUser, null);
+			sessionUser.setSysadmin(StringUtils.defaultIfBlank(user.getcSysAdmin(), YesOrNoEnum.NO.code()).equals(YesOrNoEnum.YES.code()));
+			return sessionUser;
+		}
+		return null;
 	}
 
 }

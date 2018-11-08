@@ -11,6 +11,7 @@ import top.zylsite.cheetah.backstage.model.master.User;
 import top.zylsite.cheetah.backstage.service.master.IUserService;
 import top.zylsite.cheetah.base.common.BaseController;
 import top.zylsite.cheetah.base.utils.EncdDecd;
+import top.zylsite.cheetah.web.backstage.common.annotation.ControllerLogs;
 import top.zylsite.cheetah.web.backstage.common.shiro.ShiroUtil;
 
 @Controller
@@ -31,6 +32,7 @@ public class HomeController extends BaseController {
 		return this.ajaxSuccess(getUserInfo());
 	}
 	
+	@ControllerLogs(description="修改个人信息")
 	@PostMapping("/profile/save")
 	@ResponseBody
 	public Object saveProfile(User entity) {
@@ -44,6 +46,7 @@ public class HomeController extends BaseController {
 		return "page/home/modifyPwd";
 	}
 	
+	@ControllerLogs(description="修改密码")
 	@PostMapping("/profile/modifyPwd/save")
 	@ResponseBody
 	public Object savePwd(String oldPwd, String newPwd, String repeatNewPwd) {

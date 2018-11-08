@@ -47,6 +47,12 @@ public class UserLoginLog implements Serializable {
     private String vcIp;
 
     /**
+     * IP归属地
+     */
+    @Column(name = "vc_location")
+    private String vcLocation;
+
+    /**
      * 操作设备类型
      */
     @Column(name = "vc_device_type")
@@ -183,6 +189,24 @@ public class UserLoginLog implements Serializable {
     }
 
     /**
+     * 获取IP归属地
+     *
+     * @return vc_location - IP归属地
+     */
+    public String getVcLocation() {
+        return vcLocation;
+    }
+
+    /**
+     * 设置IP归属地
+     *
+     * @param vcLocation IP归属地
+     */
+    public void setVcLocation(String vcLocation) {
+        this.vcLocation = vcLocation == null ? null : vcLocation.trim();
+    }
+
+    /**
      * 获取操作设备类型
      *
      * @return vc_device_type - 操作设备类型
@@ -237,6 +261,7 @@ public class UserLoginLog implements Serializable {
             && (this.getdLogoutTime() == null ? other.getdLogoutTime() == null : this.getdLogoutTime().equals(other.getdLogoutTime()))
             && (this.getcLoginType() == null ? other.getcLoginType() == null : this.getcLoginType().equals(other.getcLoginType()))
             && (this.getVcIp() == null ? other.getVcIp() == null : this.getVcIp().equals(other.getVcIp()))
+            && (this.getVcLocation() == null ? other.getVcLocation() == null : this.getVcLocation().equals(other.getVcLocation()))
             && (this.getVcDeviceType() == null ? other.getVcDeviceType() == null : this.getVcDeviceType().equals(other.getVcDeviceType()))
             && (this.getVcBrowserType() == null ? other.getVcBrowserType() == null : this.getVcBrowserType().equals(other.getVcBrowserType()));
     }
@@ -252,6 +277,7 @@ public class UserLoginLog implements Serializable {
         result = prime * result + ((getdLogoutTime() == null) ? 0 : getdLogoutTime().hashCode());
         result = prime * result + ((getcLoginType() == null) ? 0 : getcLoginType().hashCode());
         result = prime * result + ((getVcIp() == null) ? 0 : getVcIp().hashCode());
+        result = prime * result + ((getVcLocation() == null) ? 0 : getVcLocation().hashCode());
         result = prime * result + ((getVcDeviceType() == null) ? 0 : getVcDeviceType().hashCode());
         result = prime * result + ((getVcBrowserType() == null) ? 0 : getVcBrowserType().hashCode());
         return result;
@@ -270,6 +296,7 @@ public class UserLoginLog implements Serializable {
         sb.append(", dLogoutTime=").append(dLogoutTime);
         sb.append(", cLoginType=").append(cLoginType);
         sb.append(", vcIp=").append(vcIp);
+        sb.append(", vcLocation=").append(vcLocation);
         sb.append(", vcDeviceType=").append(vcDeviceType);
         sb.append(", vcBrowserType=").append(vcBrowserType);
         sb.append("]");

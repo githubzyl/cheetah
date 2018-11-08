@@ -100,7 +100,7 @@ function showConfirmWarn(msg, cancelCallBack, confirmCallBack){
 function toastrError(error){
 	$.message({
         message:error,
-        time:'3000',
+        time:'1500',
         body: $('body', parent.document),
 //        showClose:true,
         type:'error'

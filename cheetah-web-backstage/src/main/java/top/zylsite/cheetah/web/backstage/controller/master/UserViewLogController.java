@@ -31,6 +31,10 @@ public class UserViewLogController extends BaseRequestController<UserViewLog> {
 	@ControllerLogs(description="查询访问日志列表")
 	@GetMapping("/list")
 	public Object list(QueryParameter queryParameter, HttpServletRequest request) {
+		if(!queryParameter.isNeedOrder()) {
+			queryParameter.setSortName("d_visit_time");
+			queryParameter.setSortOrder("desc");
+		}
 		return super.list(queryParameter, request);
 	}
 	

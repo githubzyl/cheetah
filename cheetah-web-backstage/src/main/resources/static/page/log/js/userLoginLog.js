@@ -38,6 +38,8 @@ function initTable(table){
 			align : 'center',
 			valign : 'middle',
 			width:160,
+			sortable: true,
+			sortName: 'd_login_time',
 			formatter: function(value, row, index){
 				return longDateFormat(value,'yyyy-MM-dd HH:mm:ss');
 			}
@@ -47,6 +49,12 @@ function initTable(table){
 			align : 'center',
 			valign : 'middle',
 			width:180
+		},{
+			title : '登录地址',
+			field : 'vcLocation',
+			align : 'center',
+			valign : 'middle',
+			width:160
 		},{
 			title : '登录设备',
 			field : 'vcDeviceType',
