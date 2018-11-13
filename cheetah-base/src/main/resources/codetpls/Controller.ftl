@@ -44,14 +44,34 @@ public class ${bigClassName}Controller extends BaseRequestController<${bigClassN
 	    return super.queryByPrimaryKey(id);
 	}
 	
+	@PostMapping("/add")
+	public Object add(${bigClassName} entity) {
+		return this.save(entity);
+	}
+	
+	@PostMapping("/edit")
+	public Object edit(${bigClassName} entity) {
+		return this.save(entity);
+	}
+	
 	@GetMapping("/remove/{id}")
 	public Object remove(@PathVariable ${idType} id) {
 		return super.removeByPrimaryKey(id);
 	}
 	</#if>
 	
-	@PostMapping("/save")
-	public Object save(${bigClassName} entity) {
+	@GetMapping("/remove")
+	public Object remove(Integer[] ids) {
+		return super.remove(ids);
+	}
+	
+	@Override
+	protected Example getExample(QueryParameter queryParameter, HttpServletRequest request) {
+		Example example = new Example(${bigClassName}.class);
+		return example;
+	}
+	
+	private Object save(${bigClassName} entity) {
 	    <#if existIdProperty == true>
 	    <#if idType == 'String'>
 	    if (StringUtils.isBlank(entity.getId())) {
@@ -64,17 +84,6 @@ public class ${bigClassName}Controller extends BaseRequestController<${bigClassN
 		}
 		</#if>
 		return this.ajaxSuccess(null);
-	}
-	
-	@GetMapping("/remove")
-	public Object remove(Integer[] ids) {
-		return super.remove(ids);
-	}
-	
-	@Override
-	protected Example getExample(QueryParameter queryParameter, HttpServletRequest request) {
-		Example example = new Example(${bigClassName}.class);
-		return example;
 	}
 	
 }

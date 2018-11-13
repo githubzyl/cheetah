@@ -4,7 +4,8 @@ let table = $('#'+Component.TABLE_ID),
      requestRoot = '/${requestRoot}',
      searchUrl = requestRoot + '/list',
      removeUrl = requestRoot + '/remove',
-     saveUrl = requestRoot + '/save',
+     addUrl = requestRoot + '/add',
+     editUrl = requestRoot + '/edit',
      editPageUrl = "/${modelName}/${modelName}Edit",
      editFormId = '${modelName}Form',
      formDialogStyle = 'width:500px;';
@@ -52,6 +53,7 @@ function removeItem() {
 }
 // 跳转到编辑页面
 function goToEditPage(isEdit, title, row, searchUrl) {
+    let saveUrl = isEdit ? editUrl : addUrl;
 	openEditDialog(
 		isEdit, 
 		title, 
@@ -62,9 +64,12 @@ function goToEditPage(isEdit, title, row, searchUrl) {
 		searchUrl,
 		saveUrl,
 		editPageUrl,
-		null,
+		beforeRender,
 		initFormValidator
 	);
+}
+function beforeRender(editForm,isEdit){
+	
 }
 // 初始化验证规则
 function initFormValidator(form){
