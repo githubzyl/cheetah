@@ -79,3 +79,17 @@
 	overflow: hidden;
 	padding: 0px;
 }
+
+/*徽章颜色设置*/
+.badge-primary{
+	background-color: #22A7F0;
+}
+.badge-success{
+	background-color: #1ABC9C;
+}
+.badge-warning{
+	background-color: #FABE28;
+}
+.badge-danger{
+	background-color: #fb927d;
+}

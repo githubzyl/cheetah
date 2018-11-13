@@ -1,7 +1,9 @@
 package top.zylsite.cheetah.web.backstage.common.shiro;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,6 +19,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.springframework.core.env.Environment;
+import org.springframework.util.CollectionUtils;
 
 import top.zylsite.cheetah.backstage.model.dto.SessionUser;
 import top.zylsite.cheetah.backstage.model.dto.SystemLog;
@@ -27,6 +30,8 @@ import top.zylsite.cheetah.backstage.model.master.UserLoginLog;
 import top.zylsite.cheetah.backstage.model.master.UserRole;
 import top.zylsite.cheetah.backstage.service.common.enums.GenderEnum;
 import top.zylsite.cheetah.backstage.service.common.enums.LoginWayEnum;
+import top.zylsite.cheetah.backstage.service.common.enums.ResourceTypeEnum;
+import top.zylsite.cheetah.backstage.service.master.IPermissionService;
 import top.zylsite.cheetah.backstage.service.master.IRoleService;
 import top.zylsite.cheetah.backstage.service.master.IUserBindInfoService;
 import top.zylsite.cheetah.backstage.service.master.IUserLoginLogService;
@@ -45,6 +50,10 @@ public class ShiroUtil {
 	public static int VCODE_EFFECTIVETIME = 15;// 验证码有效时间,单位分钟
 	public static boolean ENABLE_GOTO_BEFORE_LOGIN_URL = true;// 开启登陆之后直接跳转到登录之前的url
 	public static IUserLoginLogService userLoginLogService = SpringUtil.getBean(IUserLoginLogService.class);
+	public static IPermissionService permissionService = SpringUtil.getBean(IPermissionService.class);
+	
+	//存放权限的url
+	public static Map<String,String> urlMap = new HashMap<>();
 
 	/**
 	 * {@link org.apache.shiro.session.Session Session} key used to save a request
@@ -181,6 +190,8 @@ public class ShiroUtil {
 		}
 		ShiroUtil.setSessionAttribute(ShiroConstants.SESSION_USER_KEY, sessionUser);
 		ShiroUtil.setSessionAttribute(ShiroConstants.SESSION_PERMISSION_KEY, getPermissions(sessionUser));
+		//保存所有url
+		setAllPermissions();
 	}
 	
 	public static void logout() {
@@ -216,12 +227,29 @@ public class ShiroUtil {
 		List<Permission> list = userService.queryPermissionListByUserId(user.getId());
 		if (null != list && list.size() > 0) {
 			for (Permission p : list) {
-				info.addStringPermission(p.getVcCode());
+				//不是目录才放进去
+				if(!p.getcResourceType().equals(ResourceTypeEnum.CATALOG.getCode())) {
+					info.addStringPermission(p.getVcCode());
+				}
 			}
 		}
 		return info;
 	}
 
+	private static void setAllPermissions() {
+		List<Permission> list = permissionService.queryList(null);
+		if(CollectionUtils.isEmpty(list)) {
+			return;
+		}
+		for(Permission p : list) {
+			if(StringUtils.isBlank(p.getVcUrl())) {
+				continue;
+			}else {
+				urlMap.put(p.getVcUrl(), p.getVcCode());
+			}
+		}
+	}
+	
 	private static Subject getSubject() {
 		return SecurityUtils.getSubject();
 	}

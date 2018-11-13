@@ -28,6 +28,7 @@ import top.zylsite.cheetah.web.backstage.common.shiro.CustomCredentialsMatcher;
 import top.zylsite.cheetah.web.backstage.common.shiro.CustomFormAuthenticationFilter;
 import top.zylsite.cheetah.web.backstage.common.shiro.CustomModularRealmAuthenticator;
 import top.zylsite.cheetah.web.backstage.common.shiro.CustomShiroFilterFactoryBean;
+import top.zylsite.cheetah.web.backstage.common.shiro.URLPathMatchingFilter;
 import top.zylsite.cheetah.web.backstage.common.shiro.ShiroConstants;
 import top.zylsite.cheetah.web.backstage.common.shiro.ThirdAccountCredentialsMatcher;
 import top.zylsite.cheetah.web.backstage.common.shiro.ThirdAccountRealm;
@@ -153,6 +154,7 @@ public class ShiroConfiguration {
 		ShiroFilterFactoryBean factoryBean = new CustomShiroFilterFactoryBean();
 		Map<String, Filter> filters = factoryBean.getFilters();
 		filters.put("authc", new CustomFormAuthenticationFilter());
+		filters.put("requestUrl", new URLPathMatchingFilter());
 		factoryBean.setFilters(filters);
 		factoryBean.setSecurityManager(securityManager);
 		// 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面

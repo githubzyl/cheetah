@@ -24,55 +24,56 @@ import top.zylsite.cheetah.web.backstage.common.annotation.ControllerLogs;
 @RestController
 @RequestMapping("/dataDictionary")
 public class DataDictionaryController extends BaseRequestController<DataDictionary> {
-	
+
 	@Autowired
 	private IDataDictionaryService dataDictionaryService;
-	
+
 	@Override
 	protected BaseService<DataDictionary> getService() {
 		return dataDictionaryService;
 	}
-	
-	@ControllerLogs(description="查询数据字典列表")
+
+	@ControllerLogs(description = "查询数据字典列表")
 	@GetMapping("/list")
 	public Object list(QueryParameter queryParameter, DataDictionaryVO dataDictionaryVO, HttpServletRequest request) {
 		PageInfo<DataDictionaryVO> pageInfo = dataDictionaryService.queryForPage(queryParameter, dataDictionaryVO);
 		return this.ajaxSuccess(pageInfo);
 	}
-	
+
 	@GetMapping("/{id}")
 	public Object queryById(@PathVariable Integer id) {
-	    return super.queryByPrimaryKey(id);
+		return super.queryByPrimaryKey(id);
 	}
-	
-	@ControllerLogs(description="删除单个数据字典")
+
+	@ControllerLogs(description = "删除单个数据字典")
 	@GetMapping("/remove/{id}")
 	public Object remove(@PathVariable Integer id) {
 		return super.removeByPrimaryKey(id);
 	}
-	
-	@ControllerLogs(description="保存数据字典")
-	@PostMapping("/save")
-	public Object save(DataDictionary entity) {
-		if (null == entity.getId()) {
-			super.insert(entity);
-		} else {
-			super.update(entity);
-		}
-		return this.ajaxSuccess(null);
+
+	@ControllerLogs(description = "新增数据字典")
+	@PostMapping("/add")
+	public Object add(DataDictionary entity) {
+		return this.save(entity);
 	}
 	
-	@ControllerLogs(description="批量数据字典")
+	@ControllerLogs(description = "编辑数据字典")
+	@PostMapping("/edit")
+	public Object edit(DataDictionary entity) {
+		return this.save(entity);
+	}
+
+	@ControllerLogs(description = "批量数据字典")
 	@GetMapping("/remove")
 	public Object remove(Integer[] ids) {
 		return super.remove(ids);
 	}
-	
+
 	@GetMapping("/list/{dictCode}")
 	public Object queryByDictCode(@PathVariable String dictCode) {
 		return this.ajaxSuccess(dataDictionaryService.queryByDictCode(dictCode));
 	}
-	
+
 	@Override
 	protected Example getExample(QueryParameter queryParameter, HttpServletRequest request) {
 		String lDictType = request.getParameter("lDictType");
@@ -88,4 +89,13 @@ public class DataDictionaryController extends BaseRequestController<DataDictiona
 		return example;
 	}
 	
+	private Object save(DataDictionary entity) {
+		if (null == entity.getId()) {
+			super.insert(entity);
+		} else {
+			super.update(entity);
+		}
+		return this.ajaxSuccess(null);
+	}
+
 }

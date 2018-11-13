@@ -14,6 +14,7 @@ import top.zylsite.cheetah.backstage.mapper.master.extend.PermissionExtendMapper
 import top.zylsite.cheetah.backstage.model.master.Permission;
 import top.zylsite.cheetah.backstage.model.master.RolePermission;
 import top.zylsite.cheetah.backstage.model.vo.PermissionVO;
+import top.zylsite.cheetah.backstage.service.common.enums.ResourceTypeEnum;
 import top.zylsite.cheetah.backstage.service.master.IPermissionService;
 import top.zylsite.cheetah.base.common.BaseMapper;
 import top.zylsite.cheetah.base.common.BaseServiceImpl;
@@ -78,6 +79,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
 		if (async) {
 			node.setParent(hasChildren(node.getId()));
 		}
+		node.setResourceType(permission.getcResourceType());
 		return node;
 	}
 	
@@ -97,7 +99,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
 		ZTreeNode node = null;
 		for (Permission permission : permissionList) {
 			if (!containButton) {
-				if (!"2".equals(permission.getcResourceType())) {
+				if (!ResourceTypeEnum.BUTTON.getCode().equals(permission.getcResourceType())) {
 					node = (ZTreeNode) createNode(permission, false);
 					node.setChecked(getChecked(node, rolePermissions));
 					nodes.add(node);// 添加到节点容

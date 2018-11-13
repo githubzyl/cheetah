@@ -1,7 +1,7 @@
 <ul id="sidePermissionTree" class="ztree" style="height: 100%;"></ul>
 <script type="text/javascript">
-    var treeId = 'sidePermissionTree';
-	var setting = {
+    var sidePermissionTreeId = 'sidePermissionTree';
+	var setting2 = {
 			async: {
 				enable: true,
 				url: getUrl,
@@ -50,13 +50,13 @@
 			zTree.selectNode(treeNode.children[0]);
 		}
 		function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
-			var zTree = $.fn.zTree.getZTreeObj(treeId);
+			var zTree = $.fn.zTree.getZTreeObj(sidePermissionTreeId);
 			treeNode.icon = "";
 			zTree.updateNode(treeNode);
 			showError("权限["+treeNode.name+"]的子权限加载失败");
 		}
 		function ajaxGetNodes(treeNode, reloadType) {
-			var zTree = $.fn.zTree.getZTreeObj(treeId);
+			var zTree = $.fn.zTree.getZTreeObj(sidePermissionTreeId);
 			if (reloadType == "refresh") {
 				treeNode.icon = contextPath + "/plugins/zTree_v3/css/zTreeStyle/img/loading.gif";
 				zTree.updateNode(treeNode);
@@ -73,13 +73,13 @@
     	$('#searchForm').find('#parentId').val(treeNode.id);
 		btnSearch();
     }
-	function renderPermissionTree(){
+	function renderPermissionTree2(){
 		var url = '/permission/queryByParentId';
 		asyncAjax(url,null,null,
 			function(result){
 				if(result.status == 1){
 					var data = result.data;
-					$.fn.zTree.init($("#"+treeId), setting, data);
+					$.fn.zTree.init($("#"+sidePermissionTreeId), setting2, data);
 				}else{
 					showError('权限加载失败');
 				}
@@ -91,11 +91,12 @@
 	}
 	//刷新权限树（重新加载）
 	function refreshPermissionTree(){
-		var zTreeObj = $.fn.zTree.getZTreeObj(treeId);
+		debugger;
+		var zTreeObj = $.fn.zTree.getZTreeObj(sidePermissionTreeId);
 		zTreeObj.destroy();
-		renderPermissionTree();
+		renderPermissionTree2();
 	}
 	$(document).ready(function(){
-		renderPermissionTree();
+		renderPermissionTree2();
 	});
 </script>

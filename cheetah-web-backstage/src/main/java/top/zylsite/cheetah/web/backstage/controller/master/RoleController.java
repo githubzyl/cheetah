@@ -49,15 +49,16 @@ public class RoleController extends BaseRequestController<Role> {
 		return super.removeByPrimaryKey(id);
 	}
 
-	@ControllerLogs(description="保存角色信息")
-	@PostMapping("/save")
-	public Object save(Role entity) {
-		if (null == entity.getId()) {
-			super.insert(entity);
-		} else {
-			super.update(entity);
-		}
-		return this.ajaxSuccess(null);
+	@ControllerLogs(description="新增角色信息")
+	@PostMapping("/add")
+	public Object add(Role entity) {
+		return this.save(entity);
+	}
+	
+	@ControllerLogs(description="编辑角色信息")
+	@PostMapping("/edit")
+	public Object edit(Role entity) {
+		return this.save(entity);
 	}
 
 	@ControllerLogs(description="批量删除角色")
@@ -99,6 +100,15 @@ public class RoleController extends BaseRequestController<Role> {
 		super.andFullLike(criteria, "vcCode", vcCode);
 		super.andFullLike(criteria, "vcName", vcName);
 		return example;
+	}
+	
+	public Object save(Role entity) {
+		if (null == entity.getId()) {
+			super.insert(entity);
+		} else {
+			super.update(entity);
+		}
+		return this.ajaxSuccess(null);
 	}
 
 }

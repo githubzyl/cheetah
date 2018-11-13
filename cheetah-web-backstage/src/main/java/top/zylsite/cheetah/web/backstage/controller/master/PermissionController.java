@@ -62,19 +62,18 @@ public class PermissionController extends BaseRequestController<Permission> {
 		return super.removeByPrimaryKey(id);
 	}
 
-	@ControllerLogs(description="保存权限信息")
-	@PostMapping("/save")
-	public Object save(Permission entity) {
-		entity.setParentIds(getParent(entity.getParentId()));
-		if (null == entity.getId()) {
-			entity.setcEnable(EnableOrDisableEnum.ENABLE.code());
-			super.insert(entity);
-		} else {
-			super.update(entity);
-		}
-		return this.ajaxSuccess(null);
+	@ControllerLogs(description="新增权限信息")
+	@PostMapping("/add")
+	public Object add(Permission entity) {
+		return this.save(entity);
 	}
-
+	
+	@ControllerLogs(description="编辑权限信息")
+	@PostMapping("/edit")
+	public Object edit(Permission entity) {
+		return this.save(entity);
+	}
+	
 	@ControllerLogs(description="批量删除权限")
 	@GetMapping("/remove")
 	public Object remove(Integer[] ids) {
@@ -104,7 +103,7 @@ public class PermissionController extends BaseRequestController<Permission> {
 			rolePermissions.add(rolePermission);
 		}
 		// 生成菜单树
-		List<? extends BaseTree> tree = permissionService.getPermissionTreeWithPermissions(permissionList, rolePermissions, false);
+		List<? extends BaseTree> tree = permissionService.getPermissionTreeWithPermissions(permissionList, rolePermissions, true);
 		if(!CollectionUtils.isEmpty(tree)) {
 			return this.ajaxSuccess(tree.get(0));
 		}
@@ -157,6 +156,17 @@ public class PermissionController extends BaseRequestController<Permission> {
 		}
 		example.orderBy("lSort").asc();
 		return example;
+	}
+	
+	private Object save(Permission entity) {
+		entity.setParentIds(getParent(entity.getParentId()));
+		if (null == entity.getId()) {
+			entity.setcEnable(EnableOrDisableEnum.ENABLE.code());
+			super.insert(entity);
+		} else {
+			super.update(entity);
+		}
+		return this.ajaxSuccess(null);
 	}
 
 	private String getParent(Integer parentId) {

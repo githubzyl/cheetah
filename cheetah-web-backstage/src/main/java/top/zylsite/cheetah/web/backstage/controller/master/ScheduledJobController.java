@@ -52,37 +52,18 @@ public class ScheduledJobController extends BaseRequestController<ScheduledJob> 
 		return super.removeByPrimaryKey(id);
 	}
 
-	@ControllerLogs(description="保存定时任务")
-	@PostMapping("/save")
-	public Object save(ScheduledJob entity, HttpServletRequest request) throws Exception {
-		boolean startNow = Boolean.parseBoolean(StringUtils.defaultIfBlank(request.getParameter("startNow"), "false"));
-		if (null == entity.getId()) {
-			// 任务名称不能重复验证
-			if (isExistJobName(entity.getVcJobName())) {
-				return this.ajaxParamError("任务名称已经存在");
-			}
-			// 任务执行类和cron表达式不能同时相同的校验
-			if (checkJobClassAndCron(entity.getVcJobclassName(), entity.getVcCronExpression())) {
-				return this.ajaxParamError("任务执行类和cron表达式不能同时相同");
-			}
-			entity.setcStatus(BaseQuartzJob.JOB_STATUS_RUNNING);
-			super.insertAndGetId(entity);
-			int id = entity.getId();
-			// 将任务添加到quartz中
-			updateJob(id, entity, true);
-		} else {
-			super.update(entity);
-			if (BaseQuartzJob.JOB_STATUS_RUNNING.equals(entity.getcStatus()) || startNow) {
-				updateJob(entity.getId(), entity, false);
-				if (startNow) {
-					scheduledJobService.updateStatus(new Integer[] { entity.getId() },
-							BaseQuartzJob.JOB_STATUS_RUNNING);
-				}
-			}
-		}
-		return this.ajaxSuccess(null);
+	@ControllerLogs(description="新增定时任务")
+	@PostMapping("/add")
+	public Object add(ScheduledJob entity, HttpServletRequest request) throws Exception {
+		return this.save(entity, request);
 	}
-
+	
+	@ControllerLogs(description="编辑定时任务")
+	@PostMapping("/edit")
+	public Object edit(ScheduledJob entity, HttpServletRequest request) throws Exception {
+		return this.save(entity, request);
+	}
+	
 	@ControllerLogs(description="批量删除定时任务")
 	@GetMapping("/remove")
 	public Object remove(Integer[] ids) {
@@ -226,6 +207,35 @@ public class ScheduledJobController extends BaseRequestController<ScheduledJob> 
 			}
 			QuartzManager.removeAllJob(jobNames);
 		}
+	}
+	
+	private Object save(ScheduledJob entity, HttpServletRequest request) throws Exception {
+		boolean startNow = Boolean.parseBoolean(StringUtils.defaultIfBlank(request.getParameter("startNow"), "false"));
+		if (null == entity.getId()) {
+			// 任务名称不能重复验证
+			if (isExistJobName(entity.getVcJobName())) {
+				return this.ajaxParamError("任务名称已经存在");
+			}
+			// 任务执行类和cron表达式不能同时相同的校验
+			if (checkJobClassAndCron(entity.getVcJobclassName(), entity.getVcCronExpression())) {
+				return this.ajaxParamError("任务执行类和cron表达式不能同时相同");
+			}
+			entity.setcStatus(BaseQuartzJob.JOB_STATUS_RUNNING);
+			super.insertAndGetId(entity);
+			int id = entity.getId();
+			// 将任务添加到quartz中
+			updateJob(id, entity, true);
+		} else {
+			super.update(entity);
+			if (BaseQuartzJob.JOB_STATUS_RUNNING.equals(entity.getcStatus()) || startNow) {
+				updateJob(entity.getId(), entity, false);
+				if (startNow) {
+					scheduledJobService.updateStatus(new Integer[] { entity.getId() },
+							BaseQuartzJob.JOB_STATUS_RUNNING);
+				}
+			}
+		}
+		return this.ajaxSuccess(null);
 	}
 	
 }

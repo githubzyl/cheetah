@@ -17,6 +17,7 @@ public class ZTreeNode extends BaseTree {
 	private String parentNames;//父节点名称
 	private boolean parent;//是否父节点
 	private boolean open;//是否展开
+	private String resourceType;//节点类型
 
 	public ZTreeNode() {
 		this.children = new ArrayList<ZTreeNode>();
@@ -54,16 +55,12 @@ public class ZTreeNode extends BaseTree {
 				// 向根添加一个节点
 				root.getChildren().add(node);
 			}
-			if(null != root.getChildren() && root.getChildren().size() > 0) {
-				root.setParent(true);
-			}
 		}
+		setIsParent(root);
 		// 将所有节点添加到多叉树中
 		for (ZTreeNode node : root.getChildren()) {
 			node.setChildren(getChild(node.getId(), nodes));
-			if(null != node.getChildren() && node.getChildren().size() > 0) {
-				node.setParent(true);
-			}
+			setIsParent(node);
 		}
 		return root;
 	}
@@ -83,11 +80,18 @@ public class ZTreeNode extends BaseTree {
 		for (ZTreeNode node : childList) {// 没有url子菜单还有子菜单
 			// 递归
 			node.setChildren(getChild(node.getId(), nodes));
+			setIsParent(node);
 		} // 递归退出条件
 		if (childList.size() == 0) {
 			return null;
 		}
 		return childList;
+	}
+	
+	private void setIsParent(ZTreeNode node) {
+		if(null != node.getChildren() && node.getChildren().size() > 0) {
+			node.setParent(true);
+		}
 	}
 
 	public Integer getpId() {
@@ -172,6 +176,14 @@ public class ZTreeNode extends BaseTree {
 
 	public void setOpen(boolean open) {
 		this.open = open;
+	}
+
+	public String getResourceType() {
+		return resourceType;
+	}
+
+	public void setResourceType(String resourceType) {
+		this.resourceType = resourceType;
 	}
 
 }

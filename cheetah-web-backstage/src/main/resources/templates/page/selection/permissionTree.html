@@ -43,10 +43,12 @@
     
     
     function onBeforeCheck(treeId, treeNode){
+    	/*
     	if(treeNode.href){
     		showWarn('已设置页面链接的权限不能被选做父节点');
     		return false;
     	}
+    	*/
     	return true;
     }
 	function renderPermissionTree(){
@@ -65,6 +67,7 @@
 		asyncAjax(url,null,null,
 			function(result){
 				if(result.status == 1){
+					debugger;
 					var data = result.data;
 					$.fn.zTree.init($("#"+treeId), setting, data);
 					expandAll();
