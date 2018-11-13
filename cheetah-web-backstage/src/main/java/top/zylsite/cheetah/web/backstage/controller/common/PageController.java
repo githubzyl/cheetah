@@ -23,7 +23,7 @@ public class PageController{
 	
 	@GetMapping("/home")
 	public String home() {
-		return PAGE_ROOT_PATH + "/home/home";
+		return PAGE_ROOT_PATH + "home/home";
 	}
 	
 	@GetMapping("/page/{parent}/{filename}")
