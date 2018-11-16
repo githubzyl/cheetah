@@ -4,7 +4,8 @@ let table = $('#'+Component.TABLE_ID),
      requestRoot = '/scheduledJob',
      searchUrl = requestRoot + '/list',
      removeUrl = requestRoot + '/remove',
-     saveUrl = requestRoot + '/save',
+     addUrl = requestRoot + '/add',
+     editUrl = requestRoot + '/edit',
      editPageUrl = "/job/jobEdit",
      editFormId = 'jobForm',
      formDialogStyle = 'width:500px;';
@@ -147,6 +148,7 @@ function removeItem() {
 }
 // 跳转到编辑页面
 function goToEditPage(isEdit, title, row, searchUrl) {
+	let saveUrl = isEdit ? editUrl : addUrl;
 	openEditDialog(
 		isEdit, 
 		title, 

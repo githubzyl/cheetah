@@ -4,7 +4,8 @@ let table = $('#'+Component.TABLE_ID),
      requestRoot = '/permission',
      searchUrl = requestRoot + '/list',
      removeUrl = requestRoot + '/remove',
-     saveUrl = requestRoot + '/save',
+     addUrl = requestRoot + '/add',
+     editUrl = requestRoot + '/edit',
      editPageUrl = "/permission/permissionEdit",
      editFormId = 'permissionForm',
      formDialogStyle = 'width:500px;';
@@ -24,13 +25,13 @@ function initTable(table){
 			field : 'vcCode',
 			align : 'center',
 			valign : 'middle',
-			width: 130
+			width: 150
 		},{
 			title : '权限名称',
 			field : 'vcName',
 			align : 'center',
 			valign : 'middle',
-			width: 140
+			width: 120
 		}, {
 			title : '资源URL',
 			field : 'vcUrl',
@@ -48,7 +49,7 @@ function initTable(table){
 			valign : 'middle',
 			width: 80,
 			formatter: function(value, row, index){
-				return value == 1 ? '菜单' : '按钮';
+				return value == '0' ? '<span class="badge badge-primary">目录</span>' : (value == 1 ? '<span class="badge badge-success">菜单</span>' : '<span class="badge badge-warning">按钮</span>');
 			}
 		}, {
 			title : '是否启用',
@@ -103,7 +104,9 @@ function btnSearch(){
 }
 // 重置
 function btnClear(){
-	clearForm(searchForm,table);
+	clearForm(searchForm,table,function(){
+		$(searchForm).find('#parentId').val('');
+	});
 }
 // 新增
 function addItem(){
@@ -122,6 +125,7 @@ function removeItem() {
 }
 // 跳转到编辑页面
 function goToEditPage(isEdit, title, row, searchUrl) {
+	let saveUrl = isEdit ? editUrl : addUrl;
 	openEditDialog(
 		isEdit, 
 		title, 
@@ -132,8 +136,39 @@ function goToEditPage(isEdit, title, row, searchUrl) {
 		searchUrl,
 		saveUrl,
 		editPageUrl,
-		null,
-		initFormValidator
+		onshownBefore,
+		initFormValidator,
+		true
+	);
+}
+function onshownBefore(editForm,isEdit,searchUrl){
+	asyncAjax('/enum/resourceType',null,null,
+	    function(result){
+	    	if(result.status == ServerStatus.SUCCESS){
+	    		let resourceTypeDiv = editForm.find('#resourceTypeDiv');
+	    		let openWayDiv = editForm.find('#openWay');
+	    		setRadioValues(resourceTypeDiv,'cResourceType', result.data);
+	    		setYesOrNoRadioValues(openWayDiv.find('#openWayDiv'),'cTargetBlank');
+	    		editForm.find('input[name=cResourceType]').change(function() {
+					let val = $(this).val();
+					if ('1' == val) {
+						openWayDiv.show();
+					} else {
+						openWayDiv.hide();
+					}
+				});
+    			setEditFormData(isEdit, searchUrl, editForm,function(editForm, data){
+    				if('1' == data.cResourceType){
+    					openWayDiv.show();
+    				}
+    			});
+			}else{
+				toastrError(result.msg);
+			}
+	    },
+	    function(res){
+	    	toastrError(ajaxError(res));
+	    }
 	);
 }
 // 初始化验证规则

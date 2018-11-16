@@ -67,9 +67,7 @@
 			targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
-		<table tableName="t_user" domainObjectName="User">
-			<generatedKey column="id" sqlStatement="JDBC"/>
-		</table>
+		<!-- 
 		<table tableName="t_role" domainObjectName="Role"></table>
 		<table tableName="t_user_role" domainObjectName="UserRole"></table>
 		<table tableName="t_permission" domainObjectName="Permission"></table>
@@ -84,5 +82,11 @@
 			<generatedKey column="id" sqlStatement="JDBC"/>
 		</table>
 		<table tableName="t_user_view_log" domainObjectName="UserViewLog"></table>
+		<table tableName="t_user" domainObjectName="User">
+			<generatedKey column="id" sqlStatement="JDBC"/>
+		</table>
+		 -->
+		<table tableName="t_tenant" domainObjectName="Tenant"></table>
+		<table tableName="t_department" domainObjectName="Department"></table>
 	</context>
 </generatorConfiguration>

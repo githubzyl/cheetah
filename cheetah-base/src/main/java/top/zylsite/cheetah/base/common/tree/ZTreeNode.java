@@ -3,10 +3,14 @@ package top.zylsite.cheetah.base.common.tree;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.util.CollectionUtils;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ZTreeNode extends BaseTree {
 
+	private static final long serialVersionUID = 1L;
+	
 	private Integer pId; // 树的节点Id，区别于数据库中保存的数据Id。
 	private String name; // 节点名称
 	private String iconClass;// 图标
@@ -17,6 +21,7 @@ public class ZTreeNode extends BaseTree {
 	private String parentNames;//父节点名称
 	private boolean parent;//是否父节点
 	private boolean open;//是否展开
+	private String resourceType;//节点类型
 
 	public ZTreeNode() {
 		this.children = new ArrayList<ZTreeNode>();
@@ -45,25 +50,20 @@ public class ZTreeNode extends BaseTree {
 	}
 
 	public ZTreeNode createTree(List<ZTreeNode> nodes, ZTreeNode root) {
-		if (nodes == null || nodes.size() < 0) {
-			return null;
-		}
-		// 添加一级菜单
-		for (ZTreeNode node : nodes) {
-			if (null == node.getpId() || 0 == node.getpId()) {// 根节点自定义，但是要和pid对应好
-				// 向根添加一个节点
-				root.getChildren().add(node);
-			}
-			if(null != root.getChildren() && root.getChildren().size() > 0) {
-				root.setParent(true);
+		if (!CollectionUtils.isEmpty(nodes)) {
+			// 添加一级菜单
+			for (ZTreeNode node : nodes) {
+				if (null == node.getpId() || 0 == node.getpId()) {// 根节点自定义，但是要和pid对应好
+					// 向根添加一个节点
+					root.getChildren().add(node);
+				}
 			}
 		}
+		setIsParent(root);
 		// 将所有节点添加到多叉树中
 		for (ZTreeNode node : root.getChildren()) {
 			node.setChildren(getChild(node.getId(), nodes));
-			if(null != node.getChildren() && node.getChildren().size() > 0) {
-				node.setParent(true);
-			}
+			setIsParent(node);
 		}
 		return root;
 	}
@@ -83,11 +83,18 @@ public class ZTreeNode extends BaseTree {
 		for (ZTreeNode node : childList) {// 没有url子菜单还有子菜单
 			// 递归
 			node.setChildren(getChild(node.getId(), nodes));
+			setIsParent(node);
 		} // 递归退出条件
 		if (childList.size() == 0) {
 			return null;
 		}
 		return childList;
+	}
+	
+	private void setIsParent(ZTreeNode node) {
+		if(null != node.getChildren() && node.getChildren().size() > 0) {
+			node.setParent(true);
+		}
 	}
 
 	public Integer getpId() {
@@ -172,6 +179,14 @@ public class ZTreeNode extends BaseTree {
 
 	public void setOpen(boolean open) {
 		this.open = open;
+	}
+
+	public String getResourceType() {
+		return resourceType;
+	}
+
+	public void setResourceType(String resourceType) {
+		this.resourceType = resourceType;
 	}
 
 }

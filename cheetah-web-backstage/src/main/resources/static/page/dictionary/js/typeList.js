@@ -4,7 +4,8 @@ let table = $('#'+Component.TABLE_ID),
      requestRoot = '/dictionaryType',
      searchUrl = requestRoot + '/list',
      removeUrl = requestRoot + '/remove',
-     saveUrl = requestRoot + '/save',
+     addUrl = requestRoot + '/add',
+     editUrl = requestRoot + '/edit',
      editPageUrl = "/dictionary/typeEdit",
      editFormId = 'dictionaryTypeForm',
      formDialogStyle = 'width:500px;';
@@ -43,7 +44,8 @@ function initTable(table){
             valign: 'middle',
             width: 150,
             events: operateEvents,
-			formatter : operateFormatter
+			formatter : operateFormatter,
+			visible: false
 		}]
 	};
 	renderBootstrapTable(tableOption, table);
@@ -87,6 +89,7 @@ function removeItem() {
 }
 // 跳转到编辑页面
 function goToEditPage(isEdit, title, row, searchUrl) {
+	let saveUrl = isEdit ? editUrl : addUrl;
 	openEditDialog(
 		isEdit, 
 		title, 

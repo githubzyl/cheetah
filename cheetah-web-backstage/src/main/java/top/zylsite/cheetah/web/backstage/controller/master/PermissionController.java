@@ -35,7 +35,7 @@ public class PermissionController extends BaseRequestController<Permission> {
 
 	@Autowired
 	private IPermissionService permissionService;
-	
+
 	@Autowired
 	private IRolePermissionService rolePermissionService;
 
@@ -44,7 +44,7 @@ public class PermissionController extends BaseRequestController<Permission> {
 		return permissionService;
 	}
 
-	@ControllerLogs(description="查询权限列表")
+	@ControllerLogs(description = "查询权限列表")
 	@GetMapping("/list")
 	public Object list(QueryParameter queryParameter, HttpServletRequest request) {
 		return super.list(queryParameter, request);
@@ -56,47 +56,48 @@ public class PermissionController extends BaseRequestController<Permission> {
 		return this.ajaxSuccess(permissionVO);
 	}
 
-	@ControllerLogs(description="删除单个权限")
+	@ControllerLogs(description = "删除单个权限")
 	@GetMapping("/remove/{id}")
 	public Object remove(@PathVariable Integer id) {
 		return super.removeByPrimaryKey(id);
 	}
 
-	@ControllerLogs(description="保存权限信息")
-	@PostMapping("/save")
-	public Object save(Permission entity) {
-		entity.setParentIds(getParent(entity.getParentId()));
-		if (null == entity.getId()) {
-			entity.setcEnable(EnableOrDisableEnum.ENABLE.code());
-			super.insert(entity);
-		} else {
-			super.update(entity);
-		}
-		return this.ajaxSuccess(null);
+	@ControllerLogs(description = "新增权限信息")
+	@PostMapping("/add")
+	public Object add(Permission entity) {
+		return this.save(entity);
 	}
 
-	@ControllerLogs(description="批量删除权限")
+	@ControllerLogs(description = "编辑权限信息")
+	@PostMapping("/edit")
+	public Object edit(Permission entity) {
+		return this.save(entity);
+	}
+
+	@ControllerLogs(description = "批量删除权限")
 	@GetMapping("/remove")
 	public Object remove(Integer[] ids) {
 		return super.remove(ids);
 	}
 
 	@GetMapping("/tree")
-	public Object permissionTree(@RequestParam(required=false) Integer roleId, @RequestParam(required=false) Integer permissionId) {
+	public Object permissionTree(@RequestParam(required = false) Integer roleId,
+			@RequestParam(required = false) Integer permissionId,
+			@RequestParam(defaultValue = "true") String containBtn) {
 		// 查询所有的菜单集合
 		Example example = new Example(Permission.class);
 		example.setOrderByClause("l_sort asc");
 		List<Permission> permissionList = permissionService.queryList(example);
-		//查找角色对应的权限
+		// 查找角色对应的权限
 		List<RolePermission> rolePermissions = null;
-		if(null != roleId) {
+		if (null != roleId) {
 			Example example2 = new Example(RolePermission.class);
 			example2.createCriteria().andEqualTo("roleId", roleId);
 			rolePermissions = rolePermissionService.queryList(example2);
 		}
-		//如果权限id不为空，那么要设置为选中状态
-		if(null != permissionId) {
-			if(null == rolePermissions) {
+		// 如果权限id不为空，那么要设置为选中状态
+		if (null != permissionId) {
+			if (null == rolePermissions) {
 				rolePermissions = new ArrayList<>();
 			}
 			RolePermission rolePermission = new RolePermission();
@@ -104,8 +105,9 @@ public class PermissionController extends BaseRequestController<Permission> {
 			rolePermissions.add(rolePermission);
 		}
 		// 生成菜单树
-		List<? extends BaseTree> tree = permissionService.getPermissionTreeWithPermissions(permissionList, rolePermissions, false);
-		if(!CollectionUtils.isEmpty(tree)) {
+		List<? extends BaseTree> tree = permissionService.getPermissionTreeWithPermissions(permissionList,
+				rolePermissions, Boolean.parseBoolean(containBtn));
+		if (!CollectionUtils.isEmpty(tree)) {
 			return this.ajaxSuccess(tree.get(0));
 		}
 		return this.ajaxSuccess(tree);
@@ -121,10 +123,10 @@ public class PermissionController extends BaseRequestController<Permission> {
 		for (Permission entity : list) {
 			nodeList.add((ZTreeNode) permissionService.createNode(entity, true));
 		}
-		if("0".equals(parentId)) {
+		if ("0".equals(parentId)) {
 			ZTreeNode root = permissionService.getRootNode();
 			root.setChildren(nodeList);
-			if(!CollectionUtils.isEmpty(nodeList)) {
+			if (!CollectionUtils.isEmpty(nodeList)) {
 				root.setParent(true);
 				root.setOpen(true);
 			}
@@ -132,8 +134,8 @@ public class PermissionController extends BaseRequestController<Permission> {
 		}
 		return this.ajaxSuccess(nodeList);
 	}
-	
-	@ControllerLogs(description="修改权限状态")
+
+	@ControllerLogs(description = "修改权限状态")
 	@PostMapping("/status")
 	public Object saveStatus(Integer permissionId, String status) {
 		permissionService.changeStatus(permissionId, status);
@@ -157,6 +159,17 @@ public class PermissionController extends BaseRequestController<Permission> {
 		}
 		example.orderBy("lSort").asc();
 		return example;
+	}
+
+	private Object save(Permission entity) {
+		entity.setParentIds(getParent(entity.getParentId()));
+		if (null == entity.getId()) {
+			entity.setcEnable(EnableOrDisableEnum.ENABLE.code());
+			super.insert(entity);
+		} else {
+			super.update(entity);
+		}
+		return this.ajaxSuccess(null);
 	}
 
 	private String getParent(Integer parentId) {

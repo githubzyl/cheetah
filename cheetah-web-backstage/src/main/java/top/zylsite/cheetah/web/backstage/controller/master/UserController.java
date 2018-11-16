@@ -54,19 +54,16 @@ public class UserController extends BaseRequestController<User> {
 		return super.removeByPrimaryKey(id);
 	}
 	
-	@ControllerLogs(description="保存用户信息")
-	@PostMapping("/save")
-	public Object save(User entity) {
-		if (null == entity.getId()) {
-			entity.setVcPassword(getInitPassword());
-			entity.setcLockStatus("0");
-			entity.setcStatus("0");
-			super.insert(entity);
-		} else {
-			entity.setVcUserName(null);
-			super.update(entity);
-		}
-		return this.ajaxSuccess(null);
+	@ControllerLogs(description="新增用户信息")
+	@PostMapping("/add")
+	public Object add(User entity) {
+		return this.save(entity);
+	}
+	
+	@ControllerLogs(description="编辑用户信息")
+	@PostMapping("/edit")
+	public Object edit(User entity) {
+		return this.save(entity);
 	}
 	
 	@ControllerLogs(description="批量删除用户")
@@ -145,6 +142,19 @@ public class UserController extends BaseRequestController<User> {
 		super.andFullLike(criteria, "vcEmail", vcEmail);
 		super.andFullLike(criteria, "vcMobile", vcMobile);
 		return example;
+	}
+	
+	private Object save(User entity) {
+		if (null == entity.getId()) {
+			entity.setVcPassword(getInitPassword());
+			entity.setcLockStatus("0");
+			entity.setcStatus("0");
+			super.insert(entity);
+		} else {
+			entity.setVcUserName(null);
+			super.update(entity);
+		}
+		return this.ajaxSuccess(null);
 	}
 	
 	private String getInitPassword() {

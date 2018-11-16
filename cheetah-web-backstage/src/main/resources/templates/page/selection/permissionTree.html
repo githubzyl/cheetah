@@ -8,6 +8,7 @@
     var async = /*[[${async}]]*/;
     var chkStyle = /*[[${chkStyle}]]*/;
     var onClickCallBack = /*[[${onClickCallBack}]]*/;
+    var containBtn = /*[[${containBtn}]]*/;
     /*]]>*/
 	var setting = {};
     //判断是不是异步加载
@@ -43,24 +44,19 @@
     
     
     function onBeforeCheck(treeId, treeNode){
-    	if(treeNode.href){
-    		showWarn('已设置页面链接的权限不能被选做父节点');
+    	if(treeNode.resourceType == '2'){
+    		showWarn('按钮不能被选做父节点');
     		return false;
     	}
     	return true;
     }
 	function renderPermissionTree(){
-		var url = '/permission/tree';
+		var url = '/permission/tree?containBtn='+ (null == containBtn ? true : false);
 		if(roleId){
-			url += '?roleId='+roleId;
+			url += '&roleId='+roleId;
 		}
 		if(permissionId){
-			if(url.indexOf('?') == -1){
-				url += '?';
-			}else{
-				url += '&';
-			}
-			url += 'permissionId='+permissionId;
+			url += '&permissionId='+permissionId;
 		}
 		asyncAjax(url,null,null,
 			function(result){

@@ -4,8 +4,8 @@
 		<label for="parentId" class="col-sm-3 control-label">父级权限</label>
 		<div class="col-sm-9">
 			<input type="text" class="form-control" id="parentName"
-				name="parentName" readonly="readonly"> <input type="hidden" id="parentId"
-				name="parentId">
+				name="parentName" readonly="readonly"> <input type="hidden"
+				id="parentId" name="parentId">
 		</div>
 	</div>
 	<div class="form-group">
@@ -34,31 +34,11 @@
 	</div>
 	<div class="form-group">
 		<label for="cResourceType" class="col-sm-3 control-label">资源类型</label>
-		<div class="col-sm-9">
-			<div class="radio3 radio-check radio-success radio-inline">
-				<input type="radio" id="cResourceType1" name="cResourceType"
-					value="1" checked> <label for="cResourceType1">菜单</label>
-			</div>
-			<div class="radio3 radio-check radio-danger radio-inline">
-				<input type="radio" id="cResourceType2" name="cResourceType"
-					value="2"> <label for="cResourceType2">按钮</label>
-			</div>
-		</div>
+		<div class="col-sm-9" id="resourceTypeDiv"></div>
 	</div>
-	<div class="form-group" id="openWay"
-		th:style="${cResourceType != '1'} ? 'display:none;'">
-		<label for="cTargetBlank" class="col-sm-3 control-label"
-			style="margin-left: 40px; width: 120px !important;">在新窗口打开</label>
-		<div class="col-sm-9">
-			<div class="radio3 radio-check radio-success radio-inline">
-				<input type="radio" id="cTargetBlank0" name="cTargetBlank" value="0"
-					checked> <label for="cTargetBlank0">否</label>
-			</div>
-			<div class="radio3 radio-check radio-danger radio-inline">
-				<input type="radio" id="cTargetBlank1" name="cTargetBlank" value="1">
-				<label for="cTargetBlank1">是</label>
-			</div>
-		</div>
+	<div class="form-group" id="openWay" style="display: none;">
+		<label for="cTargetBlank" class="col-sm-3 control-label">在新窗口打开</label>
+		<div class="col-sm-9" id="openWayDiv"></div>
 	</div>
 	<div class="form-group">
 		<label for="lSort" class="col-sm-3 control-label">排序</label>
@@ -67,48 +47,50 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-	    $(function(){
-	    	$('#parentName').click(function(){
-	    		showPermissionTree();
-	    	});
-	    	
-	    	$('input[name=cResourceType]').change(function(){
-	    		let val = $(this).val();
-	    		if('1' == val){
-	    			$('#openWay').show();
-	    		}else{
-	    			$('#openWay').hide();
-	    		}
-	    	});
-	    	
-	    });
-		function showPermissionTree(){
-		    let treeId = 'selectParentPermissionTree';
-		    let permissionId = $('#permissionForm').find('#parentId').val();
-	        let url = contextPath + '/page/selection/permissionTree?chkStyle=radio&treeId='+treeId+'&permissionId='+permissionId;
-	        showDialog(url,{
-	        	type: BootstrapDialog.TYPE_SUCCESS,
-	            title : '选择父级菜单',
-	            style: 'width:400px;',
-	            modelBodyStyle: 'max-height:370px;overflow-y:auto;overflow-x:hidden;padding: 0px;',
-	            buttons: [{
-	                label: '取消',
-	                action: function(dialog) {
-	                    dialog.close();
-	                }
-	            }, {
-	                label: '确定',
-	                cssClass: 'btn-success',
-	                action: function(dialog) {
-	                	let permission = $.fn.zTree.getZTreeObj(treeId).getCheckedNodes(true);
-	                    if(permission.length == 1){
-                    	   $('#permissionForm').find('#parentName').val(permission[0].name);
-                    	   $('#permissionForm').find('#parentId').val(permission[0].id);
-	                    }
-	                    dialog.close();
-	                }
-	            }]
-	        });
-	    }
+		$(function() {
+			$('#parentName').click(function() {
+				showPermissionTree();
+			});
+		});
+		function showPermissionTree() {
+			let treeId = 'selectParentPermissionTree';
+			let permissionId = $('#permissionForm').find('#parentId').val();
+			let url = contextPath
+					+ '/page/selection/permissionTree?chkStyle=radio&containBtn=false&treeId='
+					+ treeId + '&permissionId=' + permissionId;
+			showDialog(
+					url,
+					{
+						type : BootstrapDialog.TYPE_SUCCESS,
+						title : '选择父级菜单',
+						style : 'width:400px;',
+						modelBodyStyle : 'max-height:370px;overflow-y:auto;overflow-x:hidden;padding: 0px;',
+						buttons : [
+								{
+									label : '取消',
+									action : function(dialog) {
+										dialog.close();
+									}
+								},
+								{
+									label : '确定',
+									cssClass : 'btn-success',
+									action : function(dialog) {
+										let permission = $.fn.zTree
+												.getZTreeObj(treeId)
+												.getCheckedNodes(true);
+										if (permission.length == 1) {
+											$('#permissionForm').find(
+													'#parentName').val(
+													permission[0].name);
+											$('#permissionForm').find(
+													'#parentId').val(
+													permission[0].id);
+										}
+										dialog.close();
+									}
+								} ]
+					});
+		}
 	</script>
 </form>

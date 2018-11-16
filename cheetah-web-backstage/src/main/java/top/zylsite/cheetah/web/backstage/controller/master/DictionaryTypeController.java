@@ -46,15 +46,16 @@ public class DictionaryTypeController extends BaseRequestController<DictionaryTy
 		return super.removeByPrimaryKey(id);
 	}
 	
-	@ControllerLogs(description="保存字典类型")
-	@PostMapping("/save")
-	public Object save(DictionaryType entity) {
-		if (null == entity.getId()) {
-			super.insert(entity);
-		} else {
-			super.update(entity);
-		}
-		return this.ajaxSuccess(null);
+	@ControllerLogs(description="新增字典类型")
+	@PostMapping("/add")
+	public Object add(DictionaryType entity) {
+		return this.save(entity);
+	}
+	
+	@ControllerLogs(description="编辑字典类型")
+	@PostMapping("/edit")
+	public Object edit(DictionaryType entity) {
+		return this.save(entity);
 	}
 	
 	@ControllerLogs(description="批量删除字典类型")
@@ -77,6 +78,15 @@ public class DictionaryTypeController extends BaseRequestController<DictionaryTy
 		super.andFullLike(criteria, "vcCode", vcCode);
 		super.andFullLike(criteria, "vcName", vcName);
 		return example;
+	}
+	
+	private Object save(DictionaryType entity) {
+		if (null == entity.getId()) {
+			super.insert(entity);
+		} else {
+			super.update(entity);
+		}
+		return this.ajaxSuccess(null);
 	}
 	
 }

@@ -97,12 +97,15 @@ function initDialogEditForm(dialog, isEdit, editFormId, searchUrl, beforeRender,
 	}
 }
 //给编辑的form表单赋值
-function setEditFormData(isEdit, searchUrl, editForm){
+function setEditFormData(isEdit, searchUrl, editForm, afterSetData){
 	if(isEdit){
 		asyncAjax(searchUrl,null,null,
 	    	function(result){
 	    		if(result.status == ServerStatus.SUCCESS){
 	    			setFormData(editForm, result.data);
+	    			if(afterSetData && afterSetData instanceof Function){
+	    				afterSetData(editForm, result.data);
+	    			}
 				}else{
 					showError(result.msg);
 				}
@@ -150,4 +153,40 @@ function openEditDialog(isEdit, title, row, dialogStyle, editFormId, table, sear
             }
         }]
 	});
+}
+//遍历radio
+function setRadioValues(ele, inputName, data){
+	let types = ['primary', 'success', 'warning', 'danger'];
+	let radioType = "default";
+	let radioVal = {}, inputId = inputName;
+	for(let i = 0, length = data.length; i < length; i++){
+		radioVal = data[i];
+		if(radioVal.type){
+			radioType = radioVal.type;
+		}else{
+			if(i <= types.length - 1){
+				radioType = types[i];
+			}
+		}
+		inputId += radioVal.code;
+		let radio = '<div class="radio3 radio-check radio-'+radioType+' radio-inline">';
+		if(i == 0){
+			radio += '<input type="radio" id="'+inputId+'" name="'+inputName+'" value="'+radioVal.code+'" checked><label for="'+inputId+'">'+radioVal.name+'</label>';
+		}else{
+			radio += '<input type="radio" id="'+inputId+'" name="'+inputName+'" value="'+radioVal.code+'"> <label for="'+inputId+'">'+radioVal.name+'</label>';
+		}
+		ele.append(radio);
+		inputId = inputName;
+	}
+}
+function setYesOrNoRadioValues(ele, inputName){
+	let radio = '<div class="radio3 radio-check radio-success radio-inline">';
+	radio += '<input type="radio" id="'+inputName+'1" name="'+inputName+'" value="1"><label for="'+inputName+'1">是</label>';	
+	radio += "</div>";
+	ele.append(radio);
+	radio = '';
+	radio = '<div class="radio3 radio-check radio-default radio-inline">';
+	radio += '<input type="radio" id="'+inputName+'0" name="'+inputName+'" value="0" checked><label for="'+inputName+'0">否</label>';	
+	radio += "</div>";
+	ele.append(radio);
 }

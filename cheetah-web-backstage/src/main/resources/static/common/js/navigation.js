@@ -6,7 +6,7 @@ $(function(){
 function loadIndex(){
 	getMenuUL().children("li.active").removeClass("active");
 	setTopActiveMeunTitle(null, "首页");
-    viewPage("/page/home/home", "首页","home", '0');
+    viewPage("/home", "首页","home", '0');
 }
 function loadMenus(){
 	let url = contextPath + "/user/userMenus";

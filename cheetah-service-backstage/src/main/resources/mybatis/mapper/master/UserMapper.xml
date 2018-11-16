@@ -16,5 +16,6 @@
     <result column="c_sys_admin" jdbcType="CHAR" property="cSysAdmin" />
     <result column="c_gender" jdbcType="CHAR" property="cGender" />
     <result column="vc_photo" jdbcType="VARCHAR" property="vcPhoto" />
+    <result column="l_department_id" jdbcType="INTEGER" property="lDepartmentId" />
   </resultMap>
 </mapper>
