@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ZTreeNode extends BaseTree {
 
+	private static final long serialVersionUID = 1L;
+	
 	private Integer pId; // 树的节点Id，区别于数据库中保存的数据Id。
 	private String name; // 节点名称
 	private String iconClass;// 图标

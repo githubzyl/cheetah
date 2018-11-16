@@ -38,6 +38,7 @@ import top.zylsite.cheetah.backstage.service.master.IUserLoginLogService;
 import top.zylsite.cheetah.backstage.service.master.IUserService;
 import top.zylsite.cheetah.base.utils.LoggerFactoryUtil;
 import top.zylsite.cheetah.base.utils.MessageSourceUtil;
+import top.zylsite.cheetah.base.utils.ReflectionUtilEX;
 import top.zylsite.cheetah.base.utils.SpringUtil;
 
 public class ShiroUtil {
@@ -117,7 +118,8 @@ public class ShiroUtil {
 	public static SessionUser getSessionUser() {
 		Object obj = ShiroUtil.getSessionAttribute(ShiroConstants.SESSION_USER_KEY);
 		if (null != obj) {
-			SessionUser user = (SessionUser) obj;
+			Map<String,Object> map = ReflectionUtilEX.convertEntityToMap(obj);
+			SessionUser user = ReflectionUtilEX.convertMapToEntity(map, SessionUser.class);
 			return user;
 		}
 		return null;
