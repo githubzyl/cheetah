@@ -5,8 +5,8 @@
 	th:replace="common/common_head :: common_head(#{system.name},~{},~{})">
 </head>
 <body class="flat-blue body-container">
-	<div class="col-sm-2 panel panel-default main-panel" style="padding: 0px;overflow:auto;">
-		<div class="panel-heading main-panel-head">权限树
+    <div class="col-sm-2 panel panel-default main-panel" style="padding: 0px;overflow:auto;">
+		<div class="panel-heading main-panel-head">部门树
 		<span style="float: right;">
                <a href="javascript:refreshPermissionTree();"> 
                    <span class="glyphicon glyphicon-refresh" style="font-size: 15px;"></span>
@@ -14,22 +14,21 @@
 		</span>
 		</div>
 		<div class="panel-body main-panel-body">
-			<div th:replace="page/permission/sidePermissionTree"></div>
+			<div th:replace="page/department/sideDepartmentTree"></div>
 		</div>
 	</div>
 	<div class="col-sm-10 panel panel-default main-panel" style="padding: 0px;">
 		<div class="panel-heading main-panel-head">
-			<h3 class="panel-title">权限管理</h3>
+			<h3 class="panel-title">部门管理</h3>
 		</div>
 		<div class="panel-body main-panel-body">
 			<div class="search-condition-container">
 				<form id="searchForm" class="form-inline" role="form">
 					<div class="form-group">
-						<label for="vcName" class="control-label">权限名称</label> <input
-							type="text" class="form-control" id="vcName" name="vcName"
-							placeholder="请输入权限名称">
+						<label for="vcName" class="control-label">部门名称</label> 
+						<input type="text" class="form-control" id="vcName" name="vcName" placeholder="请输入部门名称">
 					</div>
-					<input id="parentId" name="parentId" type="hidden">
+					<input id="pid" name="pid" type="hidden">
 					<div th:replace="common/search_button"></div>
 				</form>
 			</div>
@@ -44,7 +43,6 @@
 	</div>
 	<div th:replace="common/common_foot :: common_foot(~{::script})">
 		<!-- Javascript -->
-		<script type="text/javascript"
-			th:src="@{/page/permission/js/permissionList.js}"></script>
+		<script type="text/javascript" th:src="@{/page/department/js/departmentList.js}"></script>
 	</div>
 </body>

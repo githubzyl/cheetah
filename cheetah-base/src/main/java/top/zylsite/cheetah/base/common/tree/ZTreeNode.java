@@ -3,6 +3,8 @@ package top.zylsite.cheetah.base.common.tree;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.util.CollectionUtils;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ZTreeNode extends BaseTree {
@@ -48,14 +50,13 @@ public class ZTreeNode extends BaseTree {
 	}
 
 	public ZTreeNode createTree(List<ZTreeNode> nodes, ZTreeNode root) {
-		if (nodes == null || nodes.size() < 0) {
-			return null;
-		}
-		// 添加一级菜单
-		for (ZTreeNode node : nodes) {
-			if (null == node.getpId() || 0 == node.getpId()) {// 根节点自定义，但是要和pid对应好
-				// 向根添加一个节点
-				root.getChildren().add(node);
+		if (!CollectionUtils.isEmpty(nodes)) {
+			// 添加一级菜单
+			for (ZTreeNode node : nodes) {
+				if (null == node.getpId() || 0 == node.getpId()) {// 根节点自定义，但是要和pid对应好
+					// 向根添加一个节点
+					root.getChildren().add(node);
+				}
 			}
 		}
 		setIsParent(root);

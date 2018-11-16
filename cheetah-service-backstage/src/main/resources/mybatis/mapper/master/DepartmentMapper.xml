@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zylsite.cheetah.backstage.mapper.master.DepartmentMapper">
+  <resultMap id="BaseResultMap" type="top.zylsite.cheetah.backstage.model.master.Department">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="vc_code" jdbcType="VARCHAR" property="vcCode" />
+    <result column="vc_name" jdbcType="VARCHAR" property="vcName" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="pids" jdbcType="VARCHAR" property="pids" />
+    <result column="l_tenant_id" jdbcType="INTEGER" property="lTenantId" />
+    <result column="l_sort" jdbcType="INTEGER" property="lSort" />
+    <result column="c_enable" jdbcType="CHAR" property="cEnable" />
+  </resultMap>
+</mapper>

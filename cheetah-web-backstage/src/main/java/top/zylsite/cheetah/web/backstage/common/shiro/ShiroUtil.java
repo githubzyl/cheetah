@@ -199,7 +199,8 @@ public class ShiroUtil {
 	public static void logout() {
 		Subject subject = SecurityUtils.getSubject();
 		if (null != subject) {
-			SessionUser sessionUser = (SessionUser) subject.getPrincipal();
+			Map<String,Object> map = ReflectionUtilEX.convertEntityToMap(subject.getPrincipal());
+			SessionUser sessionUser = ReflectionUtilEX.convertMapToEntity(map, SessionUser.class);
 			if (null != sessionUser && null != sessionUser.getLoginLogId()) {
 				UserLoginLog userLoginLog = new UserLoginLog();
 				userLoginLog.setId(sessionUser.getLoginLogId());

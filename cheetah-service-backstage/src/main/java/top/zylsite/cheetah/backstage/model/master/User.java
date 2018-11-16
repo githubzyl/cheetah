@@ -72,6 +72,12 @@ public class User implements Serializable {
     @Column(name = "vc_photo")
     private String vcPhoto;
 
+    /**
+     * 部门ID
+     */
+    @Column(name = "l_department_id")
+    private Integer lDepartmentId;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -272,6 +278,24 @@ public class User implements Serializable {
         this.vcPhoto = vcPhoto == null ? null : vcPhoto.trim();
     }
 
+    /**
+     * 获取部门ID
+     *
+     * @return l_department_id - 部门ID
+     */
+    public Integer getlDepartmentId() {
+        return lDepartmentId;
+    }
+
+    /**
+     * 设置部门ID
+     *
+     * @param lDepartmentId 部门ID
+     */
+    public void setlDepartmentId(Integer lDepartmentId) {
+        this.lDepartmentId = lDepartmentId;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -294,7 +318,8 @@ public class User implements Serializable {
             && (this.getcLockStatus() == null ? other.getcLockStatus() == null : this.getcLockStatus().equals(other.getcLockStatus()))
             && (this.getcSysAdmin() == null ? other.getcSysAdmin() == null : this.getcSysAdmin().equals(other.getcSysAdmin()))
             && (this.getcGender() == null ? other.getcGender() == null : this.getcGender().equals(other.getcGender()))
-            && (this.getVcPhoto() == null ? other.getVcPhoto() == null : this.getVcPhoto().equals(other.getVcPhoto()));
+            && (this.getVcPhoto() == null ? other.getVcPhoto() == null : this.getVcPhoto().equals(other.getVcPhoto()))
+            && (this.getlDepartmentId() == null ? other.getlDepartmentId() == null : this.getlDepartmentId().equals(other.getlDepartmentId()));
     }
 
     @Override
@@ -312,6 +337,7 @@ public class User implements Serializable {
         result = prime * result + ((getcSysAdmin() == null) ? 0 : getcSysAdmin().hashCode());
         result = prime * result + ((getcGender() == null) ? 0 : getcGender().hashCode());
         result = prime * result + ((getVcPhoto() == null) ? 0 : getVcPhoto().hashCode());
+        result = prime * result + ((getlDepartmentId() == null) ? 0 : getlDepartmentId().hashCode());
         return result;
     }
 
@@ -332,6 +358,7 @@ public class User implements Serializable {
         sb.append(", cSysAdmin=").append(cSysAdmin);
         sb.append(", cGender=").append(cGender);
         sb.append(", vcPhoto=").append(vcPhoto);
+        sb.append(", lDepartmentId=").append(lDepartmentId);
         sb.append("]");
         return sb.toString();
     }

@@ -1,6 +1,6 @@
-<ul id="sidePermissionTree" class="ztree" style="height: 100%;"></ul>
+<ul id="sideDepartmentTree" class="ztree" style="height: 100%;"></ul>
 <script type="text/javascript">
-    var sidePermissionTreeId = 'sidePermissionTree';
+    var sideDepartmentTreeId = 'sideDepartmentTree';
 	var setting2 = {
 			async: {
 				enable: true,
@@ -28,7 +28,7 @@
 			}
 		};
 		function getUrl(treeId, treeNode) {
-			return contextPath + '/permission/queryByParentId?parentId=' + (undefined ==  treeNode ? 0 : treeNode.id);
+			return contextPath + '/department/queryByParentId?parentId=' + (undefined ==  treeNode ? 0 : treeNode.id);
 		}
 		function beforeExpand(treeId, treeNode) {
 			if (!treeNode.isAjaxing) {
@@ -50,13 +50,13 @@
 			zTree.selectNode(treeNode.children[0]);
 		}
 		function onAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
-			var zTree = $.fn.zTree.getZTreeObj(sidePermissionTreeId);
+			var zTree = getSideDepartmentTree();
 			treeNode.icon = "";
 			zTree.updateNode(treeNode);
-			showError("权限["+treeNode.name+"]的子权限加载失败");
+			showError("部门["+treeNode.name+"]的子部门加载失败");
 		}
 		function ajaxGetNodes(treeNode, reloadType) {
-			var zTree = $.fn.zTree.getZTreeObj(sidePermissionTreeId);
+			var zTree = getSideDepartmentTree();
 			if (reloadType == "refresh") {
 				treeNode.icon = contextPath + "/plugins/zTree_v3/css/zTreeStyle/img/loading.gif";
 				zTree.updateNode(treeNode);
@@ -70,18 +70,18 @@
 		    return [];
 		};
     function onClickCallBack(event, treeId, treeNode){
-    	$('#searchForm').find('#parentId').val(treeNode.id);
+    	$('#searchForm').find('#pid').val(treeNode.id);
 		btnSearch();
     }
-	function renderPermissionTree2(){
-		var url = '/permission/queryByParentId';
+	function renderDepartmentTree2(){
+		var url = '/department/queryByParentId';
 		asyncAjax(url,null,null,
 			function(result){
 				if(result.status == 1){
 					var data = result.data;
-					$.fn.zTree.init($("#"+sidePermissionTreeId), setting2, data);
+					$.fn.zTree.init($("#"+sideDepartmentTreeId), setting2, data);
 				}else{
-					showError('权限加载失败');
+					showError('部门加载失败');
 				}
 			},
 			function(res){
@@ -91,11 +91,14 @@
 	}
 	//刷新权限树（重新加载）
 	function refreshPermissionTree(){
-		var zTreeObj = $.fn.zTree.getZTreeObj(sidePermissionTreeId);
+		var zTreeObj = getSideDepartmentTree();
 		zTreeObj.destroy();
-		renderPermissionTree2();
+		renderDepartmentTree2();
+	}
+	function getSideDepartmentTree(){
+		return $.fn.zTree.getZTreeObj(sideDepartmentTreeId);
 	}
 	$(document).ready(function(){
-		renderPermissionTree2();
+		renderDepartmentTree2();
 	});
 </script>

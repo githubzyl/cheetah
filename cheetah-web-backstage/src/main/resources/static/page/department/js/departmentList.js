@@ -1,13 +1,13 @@
 let table = $('#'+Component.TABLE_ID), 
      searchForm = $('#'+Component.SEARCH_FORM_ID),
-     title = '权限',
-     requestRoot = '/permission',
+     title = '部门',
+     requestRoot = '/department',
      searchUrl = requestRoot + '/list',
      removeUrl = requestRoot + '/remove',
      addUrl = requestRoot + '/add',
      editUrl = requestRoot + '/edit',
-     editPageUrl = "/permission/permissionEdit",
-     editFormId = 'permissionForm',
+     editPageUrl = "/department/departmentEdit",
+     editFormId = 'departmentForm',
      formDialogStyle = 'width:500px;';
 $(function(){
 	resizeTable(table, initTable, table);
@@ -21,36 +21,17 @@ function initTable(table){
 			field : 'checked',
 			checkbox : true
 		}, {
-			title : '权限编码',
+			title : '部门编码',
 			field : 'vcCode',
 			align : 'center',
 			valign : 'middle',
-			width: 150
-		},{
-			title : '权限名称',
+			width: 300
+		}, {
+			title : '部门名称',
 			field : 'vcName',
 			align : 'center',
 			valign : 'middle',
-			width: 120
-		}, {
-			title : '资源URL',
-			field : 'vcUrl',
-			align : 'center',
-			valign : 'middle'
-		}, {
-			title : '资源图标',
-			field : 'vcIcon',
-			align : 'center',
-			valign : 'middle'
-		}, {
-			title : '资源类型',
-			field : 'cResourceType',
-			align : 'center',
-			valign : 'middle',
-			width: 80,
-			formatter: function(value, row, index){
-				return value == '0' ? '<span class="badge badge-primary">目录</span>' : (value == 1 ? '<span class="badge badge-success">菜单</span>' : '<span class="badge badge-warning">按钮</span>');
-			}
+			width: 300
 		}, {
 			title : '是否启用',
 			field : 'cEnable',
@@ -104,8 +85,8 @@ function btnSearch(){
 }
 // 重置
 function btnClear(){
-	clearForm(searchForm,table,function(){
-		$(searchForm).find('#parentId').val('');
+	clearForm(searchForm,table, function(){
+		$(searchForm).find('#pid').val('');
 	});
 }
 // 新增
@@ -125,7 +106,7 @@ function removeItem() {
 }
 // 跳转到编辑页面
 function goToEditPage(isEdit, title, row, searchUrl) {
-	let saveUrl = isEdit ? editUrl : addUrl;
+    let saveUrl = isEdit ? editUrl : addUrl;
 	openEditDialog(
 		isEdit, 
 		title, 
@@ -136,40 +117,12 @@ function goToEditPage(isEdit, title, row, searchUrl) {
 		searchUrl,
 		saveUrl,
 		editPageUrl,
-		onshownBefore,
-		initFormValidator,
-		true
+		beforeRender,
+		initFormValidator
 	);
 }
-function onshownBefore(editForm,isEdit,searchUrl){
-	asyncAjax('/enum/resourceType',null,null,
-	    function(result){
-	    	if(result.status == ServerStatus.SUCCESS){
-	    		let resourceTypeDiv = editForm.find('#resourceTypeDiv');
-	    		let openWayDiv = editForm.find('#openWay');
-	    		setRadioValues(resourceTypeDiv,'cResourceType', result.data);
-	    		setYesOrNoRadioValues(openWayDiv.find('#openWayDiv'),'cTargetBlank');
-	    		editForm.find('input[name=cResourceType]').change(function() {
-					let val = $(this).val();
-					if ('1' == val) {
-						openWayDiv.show();
-					} else {
-						openWayDiv.hide();
-					}
-				});
-    			setEditFormData(isEdit, searchUrl, editForm,function(editForm, data){
-    				if('1' == data.cResourceType){
-    					openWayDiv.show();
-    				}
-    			});
-			}else{
-				toastrError(result.msg);
-			}
-	    },
-	    function(res){
-	    	toastrError(ajaxError(res));
-	    }
-	);
+function beforeRender(editForm,isEdit){
+	
 }
 // 初始化验证规则
 function initFormValidator(form){
@@ -181,38 +134,18 @@ function initFormValidator(form){
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-        	parentName: {
-                message: '父级权限不合法',
-                validators: {
-                    notEmpty: {
-                        message: '请选择父级权限'
-                    }
-                }
-            },
-        	vcName: {
-                message: '权限名称不合法',
-                validators: {
-                    notEmpty: {
-                        message: '权限名称不能为空'
-                    },
-                    stringLength: {
-                        min: 2,
-                        max: 20,
-                        message: '请输入2到20个字符'
-                    }
-                }
-            }
+        	
         }
     });
 }
 //启用或禁用
-function enableOrDisable(permissionId, status){
+function enableOrDisable(departmentId, status){
 	let message = status == 0 ? '禁用' : '启用';
-	let data = 'permissionId='+permissionId+'&status='+status;
-	asyncAjax('/permission/status', 'post', data,
+	let data = 'departmentId='+departmentId+'&status='+status;
+	asyncAjax('/department/status', 'post', data,
 	    function(result){
 	    	if(result.status == ServerStatus.SUCCESS){
-    			toastrInfo('权限'+message+'成功');
+    			toastrInfo('部门'+message+'成功');
     			btnSearch();
 			}else{
 				toastrError(result.msg);

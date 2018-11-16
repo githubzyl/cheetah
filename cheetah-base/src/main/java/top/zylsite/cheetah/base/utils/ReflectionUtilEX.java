@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.cglib.beans.BeanCopier;
+
 /**
  * 反射工具类
  * 
@@ -122,6 +124,11 @@ public class ReflectionUtilEX {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static void copyProperities(Object source, Object target) {
+		BeanCopier copier = BeanCopier.create(source.getClass(), target.getClass(), false);
+		copier.copy(source, target, null);
 	}
 
 	private static Field[] getAllFields(Class<?> clazz) {

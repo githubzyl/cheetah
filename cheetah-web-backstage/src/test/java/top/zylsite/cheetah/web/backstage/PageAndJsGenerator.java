@@ -2,6 +2,8 @@ package top.zylsite.cheetah.web.backstage;
 
 import org.junit.Test;
 
+import top.zylsite.cheetah.base.utils.generator.MyGeneratorTool;
+
 public class PageAndJsGenerator {
 
 	@Test
@@ -13,6 +15,8 @@ public class PageAndJsGenerator {
 //		MyGeneratorTool.createPageAndJs(null, null, "dataDictionary", "数据字典", "数据字典", "dataDictionary", false);
 //		MyGeneratorTool.createPageAndJs(null, null, "userLoginLog", "登录日志", "登录日志", "userLoginLog", false);
 //		MyGeneratorTool.createPageAndJs(null, null, "userViewLog", "访问日志", "访问日志", "userViewLog", false);
+		MyGeneratorTool.createPageAndJs(null, null, "tenant", "租户管理", "租户", "tenant", false);
+		MyGeneratorTool.createPageAndJs(null, null, "department", "部门管理", "部门", "department", false);
 	}
 	
 }
