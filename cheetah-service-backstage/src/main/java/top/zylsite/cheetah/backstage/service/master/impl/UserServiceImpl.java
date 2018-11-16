@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import tk.mybatis.mapper.entity.Example;
@@ -127,6 +128,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 		return null;
 	}
 
+	@Transactional
 	@Override
 	public void saveRoleInfo(Integer userId, Integer[] roles) {
 		deletRoleById(userId);
