@@ -44,7 +44,8 @@ function initTable(table){
             valign: 'middle',
             width: 150,
             events: operateEvents,
-			formatter : operateFormatter
+			formatter : operateFormatter,
+			visible: false
 		}]
 	};
 	renderBootstrapTable(tableOption, table);
