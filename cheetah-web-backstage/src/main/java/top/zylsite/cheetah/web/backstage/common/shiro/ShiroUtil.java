@@ -192,8 +192,6 @@ public class ShiroUtil {
 		}
 		ShiroUtil.setSessionAttribute(ShiroConstants.SESSION_USER_KEY, sessionUser);
 		ShiroUtil.setSessionAttribute(ShiroConstants.SESSION_PERMISSION_KEY, getPermissions(sessionUser));
-		//保存所有url
-		setAllPermissions();
 	}
 	
 	public static void logout() {
@@ -239,7 +237,10 @@ public class ShiroUtil {
 		return info;
 	}
 
-	private static void setAllPermissions() {
+	public static void setAllPermissions() {
+		if(!CollectionUtils.isEmpty(ShiroUtil.urlMap)) {
+			return;
+		}
 		List<Permission> list = permissionService.queryList(null);
 		if(CollectionUtils.isEmpty(list)) {
 			return;
@@ -248,7 +249,7 @@ public class ShiroUtil {
 			if(StringUtils.isBlank(p.getVcUrl())) {
 				continue;
 			}else {
-				urlMap.put(p.getVcUrl(), p.getVcCode());
+				ShiroUtil.urlMap.put(p.getVcUrl(), p.getVcCode());
 			}
 		}
 	}

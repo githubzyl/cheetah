@@ -29,15 +29,22 @@ function initTable(table){
 			title : '真实姓名',
 			field : 'vcRealName',
 			align : 'center',
-			valign : 'middle'
+			valign : 'middle',
+			width: 120
 		}, {
 			title : '手机号码',
 			field : 'vcMobile',
 			align : 'center',
-			valign : 'middle'
+			valign : 'middle',
+			width: 120
 		}, {
 			title : '邮箱地址',
 			field : 'vcEmail',
+			align : 'center',
+			valign : 'middle'
+		}, {
+			title : '所属部门',
+			field : 'deptName',
 			align : 'center',
 			valign : 'middle'
 		}, {
@@ -45,7 +52,7 @@ function initTable(table){
 			field : 'cLockStatus',
 			align : 'center',
 			valign : 'middle',
-			width: 150,
+			width: 100,
 			formatter: function(value, row, index){
 				let text = (value == 0 ? '未锁定' : '已锁定');
 				let color = (value == 0 ? 'green' : 'red');

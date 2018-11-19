@@ -32,6 +32,7 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
 		if (ShiroUtil.getSessionUser().isSysadmin()) {
 			return true;
 		}
+		ShiroUtil.setAllPermissions();
 		boolean flag = true;
 		String permissionCode = ShiroUtil.urlMap.get(url);
 		if (StringUtils.isNotBlank(permissionCode)) {

@@ -52,6 +52,10 @@
 								<label class="pull-left">邮箱地址</label>
 								<div class="pull-left" th:text="*{null == vcEmail ? '未设置' : vcEmail }"></div>
 							</div>
+							<div class="info-box clearfix">
+								<label class="pull-left">所属部门</label>
+								<div class="pull-left" th:text="*{null == deptName ? '未设置' : deptName }"></div>
+							</div>
 						</div>
 					</div>
 				</div>

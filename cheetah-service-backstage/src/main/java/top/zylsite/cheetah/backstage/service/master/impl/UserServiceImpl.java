@@ -8,18 +8,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import tk.mybatis.mapper.entity.Example;
+import top.zylsite.cheetah.backstage.mapper.master.DepartmentMapper;
 import top.zylsite.cheetah.backstage.mapper.master.UserMapper;
 import top.zylsite.cheetah.backstage.mapper.master.UserRoleMapper;
 import top.zylsite.cheetah.backstage.mapper.master.extend.UserInfoExtendMapper;
 import top.zylsite.cheetah.backstage.model.dto.SessionUser;
+import top.zylsite.cheetah.backstage.model.master.Department;
 import top.zylsite.cheetah.backstage.model.master.Permission;
 import top.zylsite.cheetah.backstage.model.master.User;
 import top.zylsite.cheetah.backstage.model.master.UserRole;
+import top.zylsite.cheetah.backstage.model.vo.UserVO;
 import top.zylsite.cheetah.backstage.service.master.IPermissionService;
 import top.zylsite.cheetah.backstage.service.master.IUserService;
 import top.zylsite.cheetah.base.common.BaseMapper;
 import top.zylsite.cheetah.base.common.BaseServiceImpl;
+import top.zylsite.cheetah.base.common.QueryParameter;
 import top.zylsite.cheetah.base.common.enums.YesOrNoEnum;
 import top.zylsite.cheetah.base.common.tree.BaseTree;
 import top.zylsite.cheetah.base.common.tree.ZTreeNode;
@@ -36,6 +43,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 
 	@Autowired
 	private UserInfoExtendMapper userInfoExtendMapper;
+
+	@Autowired
+	private DepartmentMapper departmentMapper;
 
 	@Autowired
 	private IPermissionService permissionService;
@@ -82,7 +92,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 		Example example = new Example(Permission.class);
 		example.setOrderByClause("l_sort asc");
 		List<Permission> permissions = permissionService.queryList(example);
-		if(!sessionUser.isSysadmin()) {
+		if (!sessionUser.isSysadmin()) {
 			permissions = this.queryPermissionListByUserId(sessionUser.getId());
 		}
 		if (!CollectionUtils.isEmpty(permissions)) {
@@ -108,18 +118,18 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 				String[] pNames = new String[pIds.length - 1];
 				Permission permission = null;
 				for (int i = 0, length = pIds.length; i < length; i++) {
-					if(pIds[i].equals("0")) {
+					if (pIds[i].equals("0")) {
 						continue;
-					}else {
+					} else {
 						permission = permissionService.queryInfoByPrimaryKey(Integer.parseInt(pIds[i]));
-						if(null == permission) {
-							
-						}else {
+						if (null == permission) {
+
+						} else {
 							pNames[pNames.length - 1] = permission.getVcName();
 						}
 					}
 				}
-				for(int j = 0, length = pNames.length ; j < length ; j++) {
+				for (int j = 0, length = pNames.length; j < length; j++) {
 					pName.append(",").append(pNames[j]);
 				}
 				return pName.substring(1);
@@ -152,7 +162,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 	public void updatePassword(Integer userId, String password) {
 		userInfoExtendMapper.updatePassword(userId, password);
 	}
-	
+
 	private void deletRoleById(Integer userId) {
 		Example example = new Example(UserRole.class);
 		Example.Criteria criteria = example.createCriteria();
@@ -170,16 +180,41 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
 		List<User> list = userMapper.selectByExample(example);
 		return getSessionUser(list);
 	}
-	
+
 	private SessionUser getSessionUser(List<User> list) {
 		if (null != list && !list.isEmpty()) {
 			User user = list.get(0);
 			SessionUser sessionUser = new SessionUser();
 			ReflectionUtilEX.copyProperities(user, sessionUser);
-			sessionUser.setSysadmin(StringUtils.defaultIfBlank(user.getcSysAdmin(), YesOrNoEnum.NO.code()).equals(YesOrNoEnum.YES.code()));
+			sessionUser.setSysadmin(StringUtils.defaultIfBlank(user.getcSysAdmin(), YesOrNoEnum.NO.code())
+					.equals(YesOrNoEnum.YES.code()));
 			return sessionUser;
 		}
 		return null;
+	}
+
+	@Override
+	public UserVO queryById(Integer id) {
+		User user = userMapper.selectByPrimaryKey(id);
+		UserVO userVO = new UserVO();
+		ReflectionUtilEX.copyProperities(user, userVO);
+		if (null == userVO.getlDepartmentId()) {
+			return userVO;
+		}
+		Department department = departmentMapper.selectByPrimaryKey(userVO.getlDepartmentId());
+		if (null == department || StringUtils.isBlank(department.getVcName())) {
+			return userVO;
+		}
+		userVO.setDeptName(department.getVcName());
+		return userVO;
+	}
+
+	@Override
+	public PageInfo<UserVO> queryForPage(QueryParameter queryParameter, UserVO userVO) {
+		PageHelper.startPage(queryParameter.getPageNumber(), queryParameter.getPageSize());
+		List<UserVO> list = userInfoExtendMapper.selectForPage(userVO);
+		PageInfo<UserVO> pageInfo = new PageInfo<>(list);
+		return pageInfo;
 	}
 
 }

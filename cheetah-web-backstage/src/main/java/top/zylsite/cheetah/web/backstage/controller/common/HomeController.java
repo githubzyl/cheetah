@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import top.zylsite.cheetah.backstage.model.master.User;
+import top.zylsite.cheetah.backstage.model.vo.UserVO;
 import top.zylsite.cheetah.backstage.service.master.IUserService;
 import top.zylsite.cheetah.base.common.BaseController;
 import top.zylsite.cheetah.base.utils.EncdDecd;
@@ -61,8 +62,8 @@ public class HomeController extends BaseController {
 		return this.ajaxSuccess(null);
 	}
 	
-	private User getUserInfo() {
-		return userService.queryInfoByPrimaryKey(ShiroUtil.getSessionUser().getId());
+	private UserVO getUserInfo() {
+		return userService.queryById(ShiroUtil.getSessionUser().getId());
 	}
 	
 }

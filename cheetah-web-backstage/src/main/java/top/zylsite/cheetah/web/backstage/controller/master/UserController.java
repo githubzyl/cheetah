@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.PageInfo;
+
 import tk.mybatis.mapper.entity.Example;
 import top.zylsite.cheetah.backstage.model.master.User;
 import top.zylsite.cheetah.backstage.model.master.UserRole;
+import top.zylsite.cheetah.backstage.model.vo.UserVO;
 import top.zylsite.cheetah.backstage.service.master.IUserService;
 import top.zylsite.cheetah.base.common.BaseRequestController;
 import top.zylsite.cheetah.base.common.BaseService;
@@ -39,13 +42,14 @@ public class UserController extends BaseRequestController<User> {
 	
 	@ControllerLogs(description="查询用户列表")
 	@GetMapping("/list")
-	public Object list(QueryParameter queryParameter, HttpServletRequest request) {
-		return super.list(queryParameter, request);
+	public Object list(QueryParameter queryParameter, UserVO userVO, HttpServletRequest request) {
+		PageInfo<UserVO>  pageInfo = userService.queryForPage(queryParameter, userVO);
+		return this.ajaxSuccess(pageInfo);
 	}
 	
 	@GetMapping("/{id}")
 	public Object queryById(@PathVariable Integer id) {
-	    return super.queryByPrimaryKey(id);
+		return this.ajaxSuccess(userService.queryById(id));
 	}
 	
 	@ControllerLogs(description="删除单个用户")

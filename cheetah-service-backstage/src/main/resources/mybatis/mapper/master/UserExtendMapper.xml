@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zylsite.cheetah.backstage.mapper.master.extend.UserInfoExtendMapper">
+  <resultMap id="BaseResultMap" type="top.zylsite.cheetah.backstage.model.vo.UserVO">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="vc_user_name" jdbcType="VARCHAR" property="vcUserName" />
+    <result column="vc_password" jdbcType="VARCHAR" property="vcPassword" />
+    <result column="vc_real_name" jdbcType="VARCHAR" property="vcRealName" />
+    <result column="vc_mobile" jdbcType="VARCHAR" property="vcMobile" />
+    <result column="vc_email" jdbcType="VARCHAR" property="vcEmail" />
+    <result column="c_status" jdbcType="CHAR" property="cStatus" />
+    <result column="c_lock_status" jdbcType="CHAR" property="cLockStatus" />
+    <result column="c_sys_admin" jdbcType="CHAR" property="cSysAdmin" />
+    <result column="c_gender" jdbcType="CHAR" property="cGender" />
+    <result column="vc_photo" jdbcType="VARCHAR" property="vcPhoto" />
+    <result column="l_department_id" jdbcType="INTEGER" property="lDepartmentId" />
+    <result column="deptName" jdbcType="VARCHAR" property="deptName" />
+  </resultMap>
+  
+  <select id="selectForPage" parameterType="top.zylsite.cheetah.backstage.model.vo.UserVO" resultType="top.zylsite.cheetah.backstage.model.vo.UserVO">
+  	select t.*, d.vc_name deptName from t_user t
+  	left join t_department d on t.l_department_id = d.id
+  	<where>
+  		<if test="vcUserName != null and vcUserName != ''">
+  			and t.vc_user_name like concat('%', #{vcUserName}, '%')
+  		</if>
+  		<if test="vcMobile != null and vcMobile != ''">
+  			and t.vc_mobile like concat('%', #{vcMobile}, '%')
+  		</if>
+  		<if test="vcEmail != null and vcEmail != ''">
+  			and t.vc_email like concat('%', #{vcEmail}, '%')
+  		</if>
+  		<if test="lDepartmentId != null and lDepartmentId != ''">
+  			and t.l_department_id = #{lDepartmentId}
+  		</if>
+  	</where>
+  </select>
+  
+</mapper>

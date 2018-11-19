@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import top.zylsite.cheetah.backstage.model.master.Permission;
+import top.zylsite.cheetah.backstage.model.vo.UserVO;
 
 public interface UserInfoExtendMapper {
 
@@ -23,5 +24,7 @@ public interface UserInfoExtendMapper {
 
 	@Update("update t_user set c_lock_status = #{lockStatus} where id = #{userId}")
 	void updateLockStatus(@Param("userId") Integer userId, @Param("lockStatus") String lockStatus);
-
+	
+	List<UserVO> selectForPage(UserVO userVO);
+	
 }
