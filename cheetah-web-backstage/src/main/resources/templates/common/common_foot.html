@@ -4,15 +4,7 @@
 <div th:fragment="common_foot(scripts)">
     <!-- 框架自带的js -->
 	<script type="text/javascript" th:src="@{/flat-admin/lib/js/bootstrap.min.js}"></script>
-	<script type="text/javascript" th:src="@{/flat-admin/lib/js/Chart.min.js}"></script>
 	<script type="text/javascript" th:src="@{/flat-admin/lib/js/bootstrap-switch.min.js}"></script>
-	<script type="text/javascript" th:src="@{/flat-admin/lib/js/jquery.matchHeight-min.js}"></script>
-	<script type="text/javascript" th:src="@{/flat-admin/lib/js/jquery.dataTables.min.js}"></script>
-	<script type="text/javascript" th:src="@{/flat-admin/lib/js/dataTables.bootstrap.min.js}"></script>
-	<script type="text/javascript" th:src="@{/flat-admin/lib/js/select2.full.min.js}"></script>
-	<script type="text/javascript" th:src="@{/flat-admin/lib/js/ace/ace.js}"></script>
-	<script type="text/javascript" th:src="@{/flat-admin/lib/js/ace/mode-html.js}"></script>
-	<script type="text/javascript" th:src="@{/flat-admin/lib/js/ace/theme-github.js}"></script>
 	<!-- 引入的插件js -->
 	<script type="text/javascript" th:src="@{/plugins/bootstrap-table/bootstrap-table-extend.js}"></script>
 	<script type="text/javascript" th:src="@{/plugins/bootstrap-table/bootstrap-table-zh-CN.js}"></script>
@@ -34,6 +26,7 @@
 	<script type="text/javascript" th:src="@{/common/js/common.js}"></script>
 	<script type="text/javascript" th:src="@{/common/js/table.js}"></script>
 	<script type="text/javascript" th:src="@{/common/js/form.js}"></script>
+	<script type="text/javascript" th:src="@{/common/js/page.js}"></script>
 	
 	<!-- 页面引入的js -->
     <th:block th:replace="${scripts}" />

@@ -5,38 +5,37 @@
 	th:replace="common/common_head :: common_head(#{system.name},~{},~{})">
 </head>
 <body class="flat-blue body-container">
-	<div class="panel panel-default main-panel">
+	<div id="app" class="panel panel-default main-panel">
 		<div class="panel-heading main-panel-head">
 			<h3 class="panel-title">定时任务</h3>
 		</div>
 		<div class="panel-body main-panel-body">
 			<div class="search-condition-container">
-				<form id="searchForm" class="form-inline" role="form">
+				<form id="searchForm" class="form-inline" role="form"
+					style="float: left;">
 					<div class="form-group">
 						<label for="vcJobName" class="control-label">任务名称</label> <input
-							type="text" class="form-control" id="vcJobName"
-							name="vcJobName" placeholder="请输入任务名称">
+							type="text" class="form-control" id="vcJobName" name="vcJobName"
+							placeholder="请输入任务名称">
 					</div>
-					<div th:replace="common/search_button"></div>
 				</form>
+				<div th:replace="common/search_button"></div>
 			</div>
 			<div id="toolbar" style="margin-left: 5px;">
 				<div th:replace="common/toolbar_button"></div>
+				<button type="button" class="btn btn-default" v-on:click="startup">
+					<span class="iconfont icon-plus-start" aria-hidden="true"></span> <span
+						th:text="#{startup}"></span>
+				</button>
+				<button type="button" class="btn btn-default" v-on:click="stop">
+					<span class="iconfont icon-plus-stop" aria-hidden="true"></span> <span
+						th:text="#{stop}"></span>
+				</button>
 				<button type="button" class="btn btn-default"
-                    onclick="startup();">
-                    <span class="iconfont icon-plus-start" aria-hidden="true"></span>
-                    <span th:text="#{startup}"></span>
-                </button>
-                <button type="button" class="btn btn-default"
-                    onclick="stop();">
-                    <span class="iconfont icon-plus-stop" aria-hidden="true"></span>
-                    <span th:text="#{stop}"></span>
-                </button>
-                <button type="button" class="btn btn-default"
-                    onclick="executeNow();">
-                    <span class="iconfont icon-plus-start" aria-hidden="true"></span>
-                    <span th:text="#{executeNow}"></span>
-                </button>
+					v-on:click="executeNow">
+					<span class="iconfont icon-plus-start" aria-hidden="true"></span> <span
+						th:text="#{executeNow}"></span>
+				</button>
 			</div>
 			<div class="content-container-table">
 				<table id="table"

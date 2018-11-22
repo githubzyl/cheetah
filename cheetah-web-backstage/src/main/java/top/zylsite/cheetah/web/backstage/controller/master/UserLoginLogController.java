@@ -25,32 +25,32 @@ import top.zylsite.cheetah.web.backstage.common.annotation.ControllerLogs;
 @RestController
 @RequestMapping("/userLoginLog")
 public class UserLoginLogController extends BaseRequestController<UserLoginLog> {
-	
+
 	@Autowired
 	private IUserLoginLogService userLoginLogService;
-	
+
 	@Override
 	protected BaseService<UserLoginLog> getService() {
 		return userLoginLogService;
 	}
-	
-	@ControllerLogs(description="查询登录日志列表")
+
+	@ControllerLogs(description = "查询登录日志列表")
 	@GetMapping("/list")
 	public Object list(QueryParameter queryParameter, HttpServletRequest request) {
-		if(!queryParameter.isNeedOrder()) {
+		if (!queryParameter.isNeedOrder()) {
 			queryParameter.setSortName("d_login_time");
 			queryParameter.setSortOrder("desc");
 		}
 		PageInfo<UserLoginLog> pageInfo = getPageInfo(queryParameter, request);
 		List<UserLoginLog> list = pageInfo.getList();
-		if(!CollectionUtils.isEmpty(list)) {
-			for(UserLoginLog entity : list) {
+		if (!CollectionUtils.isEmpty(list)) {
+			for (UserLoginLog entity : list) {
 				entity.setcLoginType(LoginWayEnum.getNameByCode(entity.getcLoginType()));
 			}
 		}
 		return this.ajaxSuccess(pageInfo);
 	}
-	
+
 	@Override
 	protected Example getExample(QueryParameter queryParameter, HttpServletRequest request) {
 		String loginType = request.getParameter("loginType");
@@ -59,19 +59,19 @@ public class UserLoginLogController extends BaseRequestController<UserLoginLog> 
 		String loginEndTime = request.getParameter("loginEndTime");
 		Example example = new Example(UserLoginLog.class);
 		Example.Criteria criteria = example.createCriteria();
-		if(StringUtils.isNotBlank(loginType)) {
+		if (StringUtils.isNotBlank(loginType)) {
 			criteria.andEqualTo("cLoginType", loginType);
 		}
-		if(StringUtils.isNotBlank(userName)) {
-			criteria.andEqualTo("vcUserName", Integer.parseInt(userName));
+		if (StringUtils.isNotBlank(userName)) {
+			criteria.andEqualTo("vcUserName", userName);
 		}
-		if(StringUtils.isNotBlank(loginStartTime)) {
+		if (StringUtils.isNotBlank(loginStartTime)) {
 			criteria.andGreaterThan("dLoginTime", loginStartTime);
 		}
-		if(StringUtils.isNotBlank(loginEndTime)) {
+		if (StringUtils.isNotBlank(loginEndTime)) {
 			criteria.andLessThan("dLoginTime", loginEndTime);
 		}
 		return example;
 	}
-	
+
 }

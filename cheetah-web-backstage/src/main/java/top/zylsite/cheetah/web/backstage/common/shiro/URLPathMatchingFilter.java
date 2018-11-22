@@ -19,26 +19,20 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
 		// 请求的url
 		String requestURI = request.getRequestURI();
-		boolean hasPermission = checkPermission(requestURI);
-		if (hasPermission) {
-			return true;
-		} else {
-			WebUtils.issueRedirect(request, response, ShiroConstants.UNAUTHORIZED_URL);
+		if (null == ShiroUtil.getSessionUser()) {
+			WebUtils.issueRedirect(request, response, ShiroConstants.LOGIN_URL);
 			return false;
 		}
-	}
-
-	private boolean checkPermission(String url) {
 		if (ShiroUtil.getSessionUser().isSysadmin()) {
 			return true;
 		}
 		ShiroUtil.setAllPermissions();
-		boolean flag = true;
-		String permissionCode = ShiroUtil.urlMap.get(url);
-		if (StringUtils.isNotBlank(permissionCode)) {
-			flag = SecurityUtils.getSubject().isPermitted(permissionCode);
+		String permissionCode = ShiroUtil.urlMap.get(requestURI);
+		if (StringUtils.isNotBlank(permissionCode) && SecurityUtils.getSubject().isPermitted(permissionCode)) {
+			return true;
 		}
-		return flag;
+		WebUtils.issueRedirect(request, response, ShiroConstants.UNAUTHORIZED_URL);
+		return false;
 	}
 
 }

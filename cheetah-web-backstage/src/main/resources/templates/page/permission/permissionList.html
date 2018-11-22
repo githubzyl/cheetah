@@ -5,33 +5,33 @@
 	th:replace="common/common_head :: common_head(#{system.name},~{},~{})">
 </head>
 <body class="flat-blue body-container">
-	<div class="col-sm-2 panel panel-default main-panel" style="padding: 0px;overflow:auto;">
+	<div id="sidePermissionTreePanel" class="col-sm-2 panel panel-default main-panel" style="padding: 0px;overflow:auto;">
 		<div class="panel-heading main-panel-head">权限树
 		<span style="float: right;">
-               <a href="javascript:refreshPermissionTree();"> 
+               <a href="javascript:void(0);" v-on:click="refreshPermissionTree"> 
                    <span class="glyphicon glyphicon-refresh" style="font-size: 15px;"></span>
                </a>
 		</span>
 		</div>
 		<div class="panel-body main-panel-body">
-			<div th:replace="page/permission/sidePermissionTree"></div>
+			<ul id="sidePermissionTree" class="ztree" style="height: 100%;"></ul>
 		</div>
 	</div>
-	<div class="col-sm-10 panel panel-default main-panel" style="padding: 0px;">
+	<div id="app" class="col-sm-10 panel panel-default main-panel" style="padding: 0px;">
 		<div class="panel-heading main-panel-head">
 			<h3 class="panel-title">权限管理</h3>
 		</div>
 		<div class="panel-body main-panel-body">
 			<div class="search-condition-container">
-				<form id="searchForm" class="form-inline" role="form">
+				<form id="searchForm" class="form-inline" role="form" style="float: left;">
 					<div class="form-group">
 						<label for="vcName" class="control-label">权限名称</label> <input
 							type="text" class="form-control" id="vcName" name="vcName"
 							placeholder="请输入权限名称">
 					</div>
 					<input id="parentId" name="parentId" type="hidden">
-					<div th:replace="common/search_button"></div>
 				</form>
+				<div th:replace="common/search_button"></div>
 			</div>
 			<div id="toolbar" style="margin-left: 5px;">
 				<div th:replace="common/toolbar_button"></div>
@@ -44,7 +44,7 @@
 	</div>
 	<div th:replace="common/common_foot :: common_foot(~{::script})">
 		<!-- Javascript -->
-		<script type="text/javascript"
-			th:src="@{/page/permission/js/permissionList.js}"></script>
+		<script type="text/javascript" th:src="@{/page/permission/js/sidePermissionTree.js}"></script>
+		<script type="text/javascript" th:src="@{/page/permission/js/permissionList.js}"></script>
 	</div>
 </body>

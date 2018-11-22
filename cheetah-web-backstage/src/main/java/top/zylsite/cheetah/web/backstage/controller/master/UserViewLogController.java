@@ -19,25 +19,25 @@ import top.zylsite.cheetah.web.backstage.common.annotation.ControllerLogs;
 @RestController
 @RequestMapping("/userViewLog")
 public class UserViewLogController extends BaseRequestController<UserViewLog> {
-	
+
 	@Autowired
 	private IUserViewLogService userViewLogService;
-	
+
 	@Override
 	protected BaseService<UserViewLog> getService() {
 		return userViewLogService;
 	}
-	
-	@ControllerLogs(description="查询访问日志列表")
+
+	@ControllerLogs(description = "查询访问日志列表")
 	@GetMapping("/list")
 	public Object list(QueryParameter queryParameter, HttpServletRequest request) {
-		if(!queryParameter.isNeedOrder()) {
+		if (!queryParameter.isNeedOrder()) {
 			queryParameter.setSortName("d_visit_time");
 			queryParameter.setSortOrder("desc");
 		}
 		return super.list(queryParameter, request);
 	}
-	
+
 	@Override
 	protected Example getExample(QueryParameter queryParameter, HttpServletRequest request) {
 		String userName = request.getParameter("userName");
@@ -45,16 +45,16 @@ public class UserViewLogController extends BaseRequestController<UserViewLog> {
 		String viewEndTime = request.getParameter("viewEndTime");
 		Example example = new Example(UserViewLog.class);
 		Example.Criteria criteria = example.createCriteria();
-		if(StringUtils.isNotBlank(userName)) {
-			criteria.andEqualTo("vcUserName", Integer.parseInt(userName));
+		if (StringUtils.isNotBlank(userName)) {
+			criteria.andEqualTo("vcUserName", userName);
 		}
-		if(StringUtils.isNotBlank(viewStartTime)) {
+		if (StringUtils.isNotBlank(viewStartTime)) {
 			criteria.andGreaterThan("dVisitTime", viewStartTime + "00:00:00");
 		}
-		if(StringUtils.isNotBlank(viewEndTime)) {
+		if (StringUtils.isNotBlank(viewEndTime)) {
 			criteria.andLessThan("dVisitTime", viewEndTime + "23:59:59");
 		}
 		return example;
 	}
-	
+
 }

@@ -2,10 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
-<head th:replace="common/common_head :: common_head(#{system.name},~{::link},~{})">
-    <!-- CSS App -->
-    <link rel="stylesheet" type="text/css" th:href="@{/flat-admin/css/style.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/flat-admin/css/themes/flat-blue.css}">
+<head th:replace="common/common_head :: common_head(#{system.name},~{},~{})">
 </head>
 <body class="flat-blue" style="height: 100%; overflow: hidden;">
     <div class="app-container" style="height: 100%;padding-bottom: 0px;">
@@ -21,8 +18,7 @@
         </div>
     </div>
     <div th:replace="common/common_foot :: common_foot(~{::script})">
-     	  <!-- Javascript -->
-	      <script type="text/javascript" th:src="@{/flat-admin/js/app.js}"></script>
+	      <script type="text/javascript" th:src="@{/common/js/app.js}"></script>
 	      <script type="text/javascript" th:src="@{/common/js/navigation.js}"></script>
      </div>
 </body>

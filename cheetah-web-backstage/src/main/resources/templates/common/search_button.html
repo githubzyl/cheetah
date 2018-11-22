@@ -1,8 +1,9 @@
-<div class="form-group">
-	<button class="btn btn-success" onclick="btnSearch();return false;">
+<div style="float: left; margin-top: -5px; margin-left: 10px;">
+	<button class="btn btn-success" v-on:click="btnSearch">
 		<span th:text="#{query}"></span>
 	</button>
-	<button class="btn btn-default" onclick="btnClear();return false;">
+	<button class="btn btn-default" v-on:click="btnClear">
 		<span th:text="#{clear}"></span>
 	</button>
 </div>
+<div style="clear: both;"></div>

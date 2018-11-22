@@ -1,104 +1,86 @@
-$(function() {
-	if(error_message && error_message != ""){
-		setError(error_message);
-	}
-	
-	$(document).keydown(function(event){ 
-		let code = event.keyCode;
-		if(code == 13){ 
-			realLogin();
+var loginPageDiv = new Vue({
+	el: '#loginPageDiv',
+	data : {
+		username: '',
+		password: '',
+		remeberMe: false,
+		error: error_message,
+		showError: false
+	},
+	methods : {
+		realLogin: function(){
+			if(this.username == ''){
+				this.error = '用户名不能为空';
+				this.showError = true;
+			}else if(this.password == ''){
+				this.error = '密码不能为空';
+				this.showError = true;
+			}else{
+				this.remeber();//记住我
+				this.$refs.loginForm.submit();
+			}
+		},
+		setCookieValue: function (){
+			let value = this.getCookie();
+			if(this.isEmpty(value)){
+				return;
+			}
+			let array = value.split(';');
+			for(let i = 0, length = array.length; i < length ; i++){
+				let str = array[i];
+				let attr = str.split("=");
+				if(attr[0] == 'username'){
+					this.username = attr[1];
+				}else if(attr[0] == 'password'){
+					this.password = attr[1];
+				}else{
+					this.remeberMe = attr[1];
+				}
+			}
+		},
+		remeber: function(){
+			let isRember=this.remeberMe;
+			if(isRember){ //如果记住
+				let cookieValue = "username="+this.username+";password="+this.password+";remeberMe="+isRember;
+				this.setCookie(this.getCookieName(), cookieValue, { expires: 7 });
+			}else{
+				this.removeCookie(this.getCookieName());
+			}
+		},
+		getCookie: function(){
+			let value = $.cookie(this.getCookieName());
+			return this.decode(value);
+		},
+		setCookie: function(name,value,option){
+			value = this.encode(value);
+			$.cookie(name, value, option);
+		},
+		removeCookie: function(name){
+			$.cookie(name, '', { expires: -1 }); 
+		},
+		getCookieName: function (){
+			return this.encode('remeber');
+		},
+		encode: function(value){
+			if(this.isEmpty(value)){
+				return null;
+			}
+			val = $.base64.btoa(value);//加密
+			return val;
+		},
+		decode: function(value){
+			if(this.isEmpty(value)){
+				return null;
+			}
+			let val = $.base64.atob(value);
+			return val;
+		},
+		isEmpty: function(str){
+			return (undefined == str || null == str || '' === str);
 		}
-    }); 
-	setCookieValue();
+	},
+	mounted: function(){
+		this.showError = !this.isEmpty(this.error);
+		this.setCookieValue();
+	}
 });
-function realLogin(){
-	let error = checkForm();
-	if(error && error != ""){
-		setError(error);
-	}else{
-		remeberMe();//记住我
-		$('#loginForm').submit();
-	}
-}
-function checkForm(){
-	// 校验用户名
-	let error = checkInput('username', '用户名');
-	if(error && error != ""){
-		return error;
-	}
-	// 校验密码
-	error = checkInput('password', '密码');
-	if(error && error != ""){
-		return error;
-	}
-}
-function checkInput(inputId, inputName){
-	let inputVal =  $.trim($("#"+inputId).val());
-	if(inputVal.length == 0){
-		return inputName + "不能为空";
-	}
-	$("#"+inputId).val(inputVal);
-}
-function setError(error){
-	$("div#error").removeAttr("class");
-	$("div#error").addClass("show_error");
-	$("div#error span").html(error);
-}
-function setCookieValue(){
-	let value = getCookie();
-	if(isEmpty(value)){
-		return;
-	}
-	let array = value.split(';');
-	for(let i = 0, length = array.length; i < length ; i++){
-		let str = array[i];
-		let attr = str.split("=");
-		if(attr[0] == 'username'){
-			$("#username").val(attr[1]);
-		}else if(attr[0] == 'password'){
-			$("#password").val(attr[1]);
-		}else{
-			$("#remeberMe").prop('checked', attr[1]);
-		}
-	}
-}
-function remeberMe(){
-	let isRember=$('#remeberMe').prop('checked');
-	if(isRember){ //如果记住
-		let cookieValue = "username="+$("#username").val()+";password="+$("#password").val()+";remeberMe="+isRember;
-		setCookie(getCookieName(), cookieValue, { expires: 7 });
-	}else{
-		removeCookie(getCookieName());
-	}
-}
-function getCookie(){
-	let value = $.cookie(getCookieName());
-	return decode(value);
-}
-function setCookie(name,value,option){
-	value = encode(value);
-	$.cookie(name, value, option);
-}
-function removeCookie(name){
-	$.cookie(name, '', { expires: -1 }); 
-}
-function getCookieName(){
-	return encode('remeber');
-}
-function encode(value){
-	if(isEmpty(value)){
-		return null;
-	}
-	val = $.base64.btoa(value);//加密
-	return val;
-}
-function decode(value){
-	if(isEmpty(value)){
-		return null;
-	}
-	let val = $.base64.atob(value);
-	return val;
-}
-function isEmpty(str){
-	return (undefined == str || null == str || '' === str);
-}

@@ -2,16 +2,16 @@
 	<div th:id="${treeId}"  class="ztree"></div>
 	<script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/
-    var departmentId =  /*[[${departmentId}]]*/;
-    var treeId = /*[[${treeId}]]*/;
-    var async = /*[[${async}]]*/;
-    var chkStyle = /*[[${chkStyle}]]*/;
-    var onClickCallBack = /*[[${onClickCallBack}]]*/;
+    let departmentId =  /*[[${departmentId}]]*/;
+    let treeId = /*[[${treeId}]]*/;
+    let async = /*[[${async}]]*/;
+    let chkStyle = /*[[${chkStyle}]]*/;
+    let onClickCallBack = /*[[${onClickCallBack}]]*/;
     /*]]>*/
-	var setting = {};
+	let setting = {};
     //判断是不是异步加载
     if(null != async && async == true){
-    	var async =  {
+    	let async =  {
 			enable: true,
 			url: getUrl,
 			type:'get',
@@ -22,14 +22,14 @@
     }
     //判断是不是可以进行多选或单选
     if(chkStyle){
-    	var check = {
+    	let check = {
 			enable: true,
 			chkStyle: chkStyle,
 			radioType: "all"
 		};
 		setting.check = check;
     }
-    var callback = {};
+    let callback = {};
     //设置节点单击事件
     if(onClickCallBack){
     	callback.onClick = onClickCallBack;	
@@ -45,14 +45,14 @@
     	return true;
     }
 	function renderDepartmentTree(){
-		var url = '/department/tree';
+		let url = '/department/tree';
 		if(departmentId){
 			url += '?departmentId='+departmentId;
 		}
 		asyncAjax(url,null,null,
 			function(result){
 				if(result.status == 1){
-					var data = result.data;
+					let data = result.data;
 					$.fn.zTree.init($("#"+treeId), setting, data);
 					expandAll();
 				}else{
@@ -66,7 +66,7 @@
 	}
 	//展开所有节点
 	function expandAll(){
-		var treeObj = $.fn.zTree.getZTreeObj(treeId);
+		let treeObj = $.fn.zTree.getZTreeObj(treeId);
 		treeObj.expandAll(true);
 	}
 	$(document).ready(function(){

@@ -81,8 +81,7 @@ function getFormData(form){
  * @param execSetFormDataAfterBeforeRender true:执行完beforeRender成功后再执行setEditFormData,false:需要在执行完beforeRender后手动调用setEditFormData
  * @returns
  */
-function initDialogEditForm(dialog, isEdit, editFormId, searchUrl, beforeRender, afterRender, execSetFormDataAfterBeforeRender){
-	let editForm = getDialogForm(dialog, editFormId);
+function initDialogEditForm(isEdit, editForm, searchUrl, beforeRender, afterRender, execSetFormDataAfterBeforeRender){
 	//渲染前
 	if(beforeRender && beforeRender instanceof Function){
 		beforeRender(editForm,isEdit,searchUrl);
@@ -138,7 +137,8 @@ function openEditDialog(isEdit, title, row, dialogStyle, editFormId, table, sear
 		title : title,
 		style: dialogStyle,
 		onshown: function(dialog){
-			initDialogEditForm(dialog,isEdit, editFormId, searchUrl, beforeRender,initFormValidator);
+			let editForm = getDialogForm(dialog, editFormId);
+			initDialogEditForm(isEdit, editForm, searchUrl, beforeRender,afterRender);
 		},
 		buttons: [{
             label: '取消',

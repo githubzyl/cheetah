@@ -15,7 +15,7 @@
 	</script>
 </head>
 <body class="flat-blue login-page" th:style="'background: url(' + @{/flat-admin/img/app-header-bg.jpg} + ') no-repeat center center fixed;'">
-    <div class="container">
+    <div id="loginPageDiv" class="container">
         <div class="login-box">
             <div>
                 <div class="login-form row">
@@ -25,24 +25,24 @@
                     </div>
                     <div class="col-sm-12">
                         <div class="login-body">
-                            <form th:action="@{/login}" name="loginForm" id="loginForm" method="post">
+                            <form th:action="@{/login}" name="loginForm" ref="loginForm" method="post">
                                 <input type="hidden" id="loginType" name="loginType" th:value="${loginType}">
                                 <div class="control">
-                                    <input type="text" class="form-control" id="username" name="username"  placeholder="请输入用户名/手机号/邮箱" autocomplete="off" required/>
+                                    <input type="text" class="form-control"  @keyup.enter="realLogin"  v-model="username" name="username"  placeholder="请输入用户名/手机号/邮箱" autocomplete="off" required/>
                                 </div>
                                 <div class="control">
-                                    <input type="password" class="form-control" id="password" name="password"  placeholder="请输入密码" autocomplete="off" required/>
+                                    <input type="password" class="form-control" @keyup.enter="realLogin" v-model="password" name="password"  placeholder="请输入密码" autocomplete="off" required/>
                                 </div>
                                 <div class="input-wrapper">
-			                        <label class="auto-login"><input type="checkbox" id="remeberMe" name="remeberMe">记住我</label>
+			                        <label class="auto-login"><input type="checkbox" v-model="remeberMe" name="remeberMe">记住我</label>
 <!-- 			                        <label class="forgot-password"><a href="/resetpassword" target="_parent">忘记密码？</a></label> -->
 			                        <div style="clear: both;"></div>
 			                    </div>
-                                <div id="error" class="hide_error" style="text-align: center;color: red;">
-									<span></span>
+                                <div id="error" v-show="showError" style="text-align: center;color: red;">
+									<span>{{ error }}</span>
 								</div>
                                 <div class="control login-button text-center">
-                                    <button class="btn btn-primary" onclick="realLogin();" style="width: 100%;">登录</button>
+                                    <button class="btn btn-primary" v-on:click="realLogin" style="width: 100%;">登录</button>
                                 </div>
                             </form>
                             <div class="oauth-wrapper">
@@ -68,12 +68,12 @@
         </div>
     </div>
     <div th:replace="common/common_foot :: common_foot(~{::script})">
-	      <script type="text/javascript" th:src="@{/page/login/js/login.js}"></script>
 	      <script th:inline="javascript">
-		        /*<![CDATA[*/
-		        var error_message = /*[[${error_message}]]*/;
-		        /*]]>*/
-		    </script>
+	        /*<![CDATA[*/
+	        var error_message = /*[[${error_message}]]*/;
+	        /*]]>*/
+	      </script>
+		  <script type="text/javascript" th:src="@{/page/login/js/login.js}"></script>
      </div>
 </body>
 </html>
