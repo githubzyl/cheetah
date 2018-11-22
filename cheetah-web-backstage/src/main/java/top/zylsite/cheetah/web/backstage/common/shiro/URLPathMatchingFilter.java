@@ -28,11 +28,15 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
 		}
 		ShiroUtil.setAllPermissions();
 		String permissionCode = ShiroUtil.urlMap.get(requestURI);
-		if (StringUtils.isNotBlank(permissionCode) && SecurityUtils.getSubject().isPermitted(permissionCode)) {
+		if(StringUtils.isBlank(permissionCode)) {
 			return true;
 		}
-		WebUtils.issueRedirect(request, response, ShiroConstants.UNAUTHORIZED_URL);
-		return false;
+		if (SecurityUtils.getSubject().isPermitted(permissionCode)) {
+			return true;
+		}else {
+			WebUtils.issueRedirect(request, response, ShiroConstants.UNAUTHORIZED_URL);
+			return false;
+		}
 	}
 
 }

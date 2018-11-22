@@ -9,12 +9,19 @@ function loadIndex(){
     viewPage("/home", "首页","home", '0');
 }
 function loadMenus(){
-	let url = contextPath + "/user/userMenus";
-	$.getJSON(url,function(result){
-		if(result.status == 1){
-			getMenus(result.data);
+	let url =  "/user/userMenus";
+	asyncAjax(url,null,null,
+		function(result){
+			if(result.status == ServerStatus.SUCCESS){
+				getMenus(result.data);
+			}else{
+				showError(result.msg);
+			}
+		},
+		function(res){
+			showError(ajaxError(res));
 		}
-	});
+	);
 }
 function getMenus(result){
 	let menus = result;
