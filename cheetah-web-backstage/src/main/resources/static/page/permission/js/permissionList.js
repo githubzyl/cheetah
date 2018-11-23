@@ -5,6 +5,7 @@ var app = new Vue({
 		requestRoot : '/permission',
 		editPageUrl : "/permission/permissionEdit",
 		editFormId : 'permissionForm',
+		resourceType: [],
 		operateEvents : {
 			'click .EnableOrDisable' : function(e, value, row, index) {
 				app.enableOrDisable(row.id, row.cEnable == '1' ? '0' : '1');
@@ -18,20 +19,47 @@ var app = new Vue({
 				field : 'checked',
 				checkbox : true
 			}, {
-				title : '角色编码',
+				title : '权限编码',
 				field : 'vcCode',
 				align : 'center',
 				valign : 'middle'
-			}, {
-				title : '角色名称',
+			},{
+				title : '权限名称',
 				field : 'vcName',
 				align : 'center',
+				valign : 'middle',
+				width: 130
+			},{
+				title : '权限URL',
+				field : 'vcUrl',
+				align : 'center',
 				valign : 'middle'
+			},{
+				title : '资源类型',
+				field : 'cResourceType',
+				align : 'center',
+				valign : 'middle',
+				width: 100,
+				formatter: function(value,row,index){
+					if(value == 0){
+						return '<span class="badge badge-primary">目录</span>';
+					}else if(value == 1){
+						return '<span class="badge badge-success">菜单</span>';
+					}
+					return '<span class="badge badge-warning">按钮</span>';
+				}
+			},{
+				title : '排序',
+				field : 'lSort',
+				align : 'center',
+				valign : 'middle',
+				width: 100
 			}, {
 				title : '是否启用',
 				field : 'cEnable',
 				align : 'center',
 				valign : 'middle',
+				width: 100,
 				formatter: function(value, row, index){
 					let icon = 'iconfont ';
 					icon += (value == 1 ? 'icon-enable' : 'icon-disable');
@@ -63,35 +91,29 @@ var app = new Vue({
 				$('#parentId').val('');
 			});
 		},
-		beforeRenderEditForm : function(editForm, isEdit) {
-			asyncAjax('/enum/resourceType',null,null,
-				    function(result){
-				    	if(result.status == ServerStatus.SUCCESS){
-				    		let resourceTypeDiv = editForm.find('#resourceTypeDiv');
-				    		let openWayDiv = editForm.find('#openWay');
-				    		setRadioValues(resourceTypeDiv,'cResourceType', result.data);
-				    		setYesOrNoRadioValues(openWayDiv.find('#openWayDiv'),'cTargetBlank');
-				    		editForm.find('input[name=cResourceType]').change(function() {
-								let val = $(this).val();
-								if ('1' == val) {
-									openWayDiv.show();
-								} else {
-									openWayDiv.hide();
-								}
-							});
-			    			setEditFormData(isEdit, searchUrl, editForm,function(editForm, data){
-			    				if('1' == data.cResourceType){
-			    					openWayDiv.show();
-			    				}
-			    			});
-						}else{
-							toastrError(result.msg);
-						}
-				    },
-				    function(res){
-				    	toastrError(ajaxError(res));
-				    }
-				);
+		beforeRenderEditForm : function(editForm, isEdit,searchUrl) {
+    		let resourceTypeDiv = editForm.find('#resourceTypeDiv');
+    		let openWayDiv = editForm.find('#openWay');
+    		if(isBlankArray(this.resourceType)){
+    			this.loadResourceType();
+    		}
+    		setRadioValues(resourceTypeDiv,'cResourceType', this.resourceType);
+    		setYesOrNoRadioValues(openWayDiv.find('#openWayDiv'),'cTargetBlank');
+    		editForm.find('input[name=cResourceType]').change(function() {
+				let val = $(this).val();
+				if ('1' == val) {
+					openWayDiv.show();
+				} else {
+					openWayDiv.hide();
+				}
+			});
+    		if(isEdit){
+    			setEditFormData(isEdit, searchUrl, editForm,function(editForm, data){
+    				if('1' == data.cResourceType){
+    					openWayDiv.show();
+    				}
+    			});
+    		}
 		},
 		initFormValidator : function(form) {
 			form.bootstrapValidator({
@@ -126,55 +148,6 @@ var app = new Vue({
 				}
 			});
 		},
-		assignPermission : function() {
-			let row = getEditRow(this.table, '请选择需要分配权限的角色');
-			let treeId = 'assignPermissionTree';
-			if(row){
-				let url = contextPath + '/page/selection/permissionTree?roleId='+row.id+'&treeId='+treeId+'&chkStyle=checkbox';
-				showDialog(url,{
-					type: BootstrapDialog.TYPE_SUCCESS,
-					title : '分配权限',
-					style: 'width:400px;',
-					modelBodyStyle: 'max-height:370px;overflow-y:auto;overflow-x:hidden;padding: 0px;',
-					onshown: function(dialog){
-						 let assignPermissionForm = getDialogForm(dialog, 'assignPermissionForm');
-					},
-					buttons: [{
-			            label: '取消',
-			            action: function(dialog) {
-			                dialog.close();
-			            }
-			        }, {
-			            label: '保存',
-			            cssClass: 'btn-success',
-			            action: function(dialog) {
-			            	let permissions = $.fn.zTree.getZTreeObj(treeId).getCheckedNodes(true);
-		                	if(permissions.length == 0){
-		                		
-		                	}else{
-		                		let data = 'roleId='+roleId;
-		            			for(let i = 0, length = permissions.length; i < length ; i++){
-		            				data += '&permissions=' +permissions[i].id;
-		            			}
-		                		asyncAjax('/role/savePermission', 'post', data,
-		            			    function(result){
-		            			    	if(result.status == ServerStatus.SUCCESS){
-		            		    			toastrInfo('权限分配成功');
-		            		    			dialog.close();
-		            					}else{
-		            						toastrError(result.msg);
-		            					}
-		            			    },
-		            			    function(res){
-		            			    	toastrError(ajaxError(res));
-		            			    }
-		            			);
-		                	}
-			            }
-			        }]
-				});
-			}
-		},
 		enableOrDisable: function(permissionId, status){
 			let message = (status == '1' ? '禁用' : '启用');
 			let data = 'permissionId='+permissionId+'&status='+status;
@@ -184,6 +157,24 @@ var app = new Vue({
 			    	if(result.status == ServerStatus.SUCCESS){
 		    			toastrInfo('权限'+message+'成功');
 		    			that.btnSearch();
+					}else{
+						toastrError(result.msg);
+					}
+			    },
+			    function(res){
+			    	toastrError(ajaxError(res));
+			    }
+			);
+		},
+		beforeRenderTable: function(){
+			this.loadResourceType();
+		},
+		loadResourceType: function(){
+			let that = this;
+			asyncAjax('/enum/resourceType',null,null,
+			    function(result){
+			    	if(result.status == ServerStatus.SUCCESS){
+			    		that.resourceType = result.data;
 					}else{
 						toastrError(result.msg);
 					}

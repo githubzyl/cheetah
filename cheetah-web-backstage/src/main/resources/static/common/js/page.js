@@ -74,7 +74,7 @@ var CompPage = {
 					this.editPageUrl, this.beforeRenderEditForm, this.initFormValidator);
 		},
 		//渲染编辑的表单之前触发
-		beforeRenderEditForm : function(editForm, isEdit) {
+		beforeRenderEditForm : function(editForm, isEdit,searchUrl) {
 
 		},
 		//初始化表单验证
