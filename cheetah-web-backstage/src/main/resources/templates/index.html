@@ -5,7 +5,7 @@
 <head th:replace="common/common_head :: common_head(#{system.name},~{},~{})">
 </head>
 <body class="flat-blue" style="height: 100%; overflow: hidden;">
-    <div class="app-container" style="height: 100%;padding-bottom: 0px;">
+    <div id="indexContainer" class="app-container" style="height: 100%;padding-bottom: 0px;">
         <div class="row content-container" style="height: 100%;">
             <div th:replace="common/top_nav"></div>
             <div th:replace="common/side_menu"></div>
@@ -20,6 +20,7 @@
     <div th:replace="common/common_foot :: common_foot(~{::script})">
 	      <script type="text/javascript" th:src="@{/common/js/app.js}"></script>
 	      <script type="text/javascript" th:src="@{/common/js/navigation.js}"></script>
+	      <script type="text/javascript" th:src="@{/common/js/index.js}"></script>
      </div>
 </body>
 </html>

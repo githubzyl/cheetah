@@ -66,13 +66,13 @@
 				<ul class="dropdown-menu animated fadeInDown" style="min-width: 0px;width: 157px;border: 1px solid #EEE;">
 					<li>
 						<ul class="list-group notifications">
-							<a href="javascript:profile();">
+							<a href="javascript:void(0);" @click="profile">
 								<li class="list-group-item" style="min-width: 0px;">个人信息</li>
 							</a>
-							<a href="javascript:modifyPwd();">
+							<a href="javascript:void(0);" @click="modifyPwd">
 								<li class="list-group-item" style="min-width: 0px;">修改密码</li>
 							</a>
-							<a href="javascript:logout();">
+							<a href="javascript:void(0);" @click="logout">
 								<li class="list-group-item" style="min-width: 0px;">安全退出</li>
 							</a>
 						</ul>
@@ -80,19 +80,4 @@
 				</ul></li>
 		</ul>
 	</div>
-	<script type="text/javascript">
-		function logout() {
-			window.location.href = contextPath + "/logout";
-		}
-		function profile(){
-			setTopActiveMeunTitle(null,'个人信息');
-			//跳转页面
-			viewPage('/profile','个人信息',null,null);
-		}
-		function modifyPwd(){
-			setTopActiveMeunTitle(null,'修改密码');
-			//跳转页面
-			viewPage('/profile/modifyPwd','修改密码',null,null);
-		}
-	</script>
 </nav>

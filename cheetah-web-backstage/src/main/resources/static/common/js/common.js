@@ -163,3 +163,32 @@ function setBaseSelectOptions(select, data, valueField, nameField, warnField, sh
 		}
 	}
 }
+//产生随机数函数
+function RndNum(n){
+    var rnd="";
+    for(var i=0;i<n;i++)
+        rnd+=Math.floor(Math.random()*10);
+    return rnd;
+}
+function isBlankStr(str){
+	if(isBlank(str) || Object.prototype.toString.call(str) != "[object String]"){
+		return true;
+	}
+	str = $.trim(str);
+	if("" == str){
+		return true;
+	}
+	return false;
+}
+function isBlankArray(arr){
+	if(isBlank(arr) || (arr instanceof Array) == false || arr.length <= 0){
+		return true;
+	}
+	return false;
+}
+function isBlank(obj){
+	if(null == obj || undefined == obj){
+		return true;
+	}
+	return false;
+}
