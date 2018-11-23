@@ -52,6 +52,7 @@ public class HomeController extends BaseController {
 	@ResponseBody
 	public Object savePwd(String oldPwd, String newPwd, String repeatNewPwd) {
 		User user = getUserInfo();
+		oldPwd = EncdDecd.MD5String(oldPwd);
 		if(!oldPwd.equals(user.getVcPassword())) {
 			return this.ajaxParamError("原密码不正确");
 		}
