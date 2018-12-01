@@ -15,7 +15,7 @@ public final class ShiroConstants {
 	/**
 	 * 首页的url
 	 */
-	public final static String SUCCESS_URL = "/index";
+	public final static String SUCCESS_URL = "";
 	/**
 	 * 没权限的url
 	 */

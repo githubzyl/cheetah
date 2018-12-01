@@ -1,4 +1,4 @@
-package top.zylsite.cheetah.web.backstage.common.shiro;
+package top.zylsite.cheetah.web.backstage.common.shiro.credentials;
 
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

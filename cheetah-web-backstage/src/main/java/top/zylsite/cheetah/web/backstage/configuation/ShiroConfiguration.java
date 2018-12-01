@@ -24,15 +24,15 @@ import org.springframework.context.annotation.Configuration;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import top.zylsite.cheetah.base.utils.ResourceReader;
-import top.zylsite.cheetah.web.backstage.common.shiro.CustomCredentialsMatcher;
-import top.zylsite.cheetah.web.backstage.common.shiro.CustomFormAuthenticationFilter;
-import top.zylsite.cheetah.web.backstage.common.shiro.CustomModularRealmAuthenticator;
-import top.zylsite.cheetah.web.backstage.common.shiro.CustomShiroFilterFactoryBean;
-import top.zylsite.cheetah.web.backstage.common.shiro.URLPathMatchingFilter;
+import top.zylsite.cheetah.web.backstage.common.shiro.config.CheetahFormAuthenticationFilter;
+import top.zylsite.cheetah.web.backstage.common.shiro.config.CheetahModularRealmAuthenticator;
+import top.zylsite.cheetah.web.backstage.common.shiro.config.CheetahShiroFilterFactoryBean;
+import top.zylsite.cheetah.web.backstage.common.shiro.credentials.UserCredentialsMatcher;
+import top.zylsite.cheetah.web.backstage.common.shiro.filter.URLPathMatchingFilter;
+import top.zylsite.cheetah.web.backstage.common.shiro.realm.ThirdAccountRealm;
+import top.zylsite.cheetah.web.backstage.common.shiro.realm.UserRealm;
+import top.zylsite.cheetah.web.backstage.common.shiro.credentials.ThirdAccountCredentialsMatcher;
 import top.zylsite.cheetah.web.backstage.common.shiro.ShiroConstants;
-import top.zylsite.cheetah.web.backstage.common.shiro.ThirdAccountCredentialsMatcher;
-import top.zylsite.cheetah.web.backstage.common.shiro.ThirdAccountRealm;
-import top.zylsite.cheetah.web.backstage.common.shiro.UserRealm;
 
 /**
  * Description: shiro配置
@@ -80,8 +80,8 @@ public class ShiroConfiguration {
 
 	// 配置自定义的密码比较器
 	@Bean(name = "credentialsMatcher")
-	public CustomCredentialsMatcher credentialsMatcher() {
-		return new CustomCredentialsMatcher(getEhCacheManager());
+	public UserCredentialsMatcher credentialsMatcher() {
+		return new UserCredentialsMatcher(getEhCacheManager());
 	}
 
 	// 配置第三方账号自定义的密码比较器
@@ -108,7 +108,7 @@ public class ShiroConfiguration {
 
 	@Bean(name = "authenticator")
 	public ModularRealmAuthenticator authenticator() {
-		CustomModularRealmAuthenticator authenticator = new CustomModularRealmAuthenticator();
+		CheetahModularRealmAuthenticator authenticator = new CheetahModularRealmAuthenticator();
 		authenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
 		return authenticator;
 	}
@@ -151,9 +151,9 @@ public class ShiroConfiguration {
 	@Bean(name = "shiroFilter")
 	public ShiroFilterFactoryBean shiroFilterFactoryBean(
 			@Qualifier("securityManager") DefaultWebSecurityManager securityManager) {
-		ShiroFilterFactoryBean factoryBean = new CustomShiroFilterFactoryBean();
+		ShiroFilterFactoryBean factoryBean = new CheetahShiroFilterFactoryBean();
 		Map<String, Filter> filters = factoryBean.getFilters();
-		filters.put("authc", new CustomFormAuthenticationFilter());
+		filters.put("authc", new CheetahFormAuthenticationFilter());
 		filters.put("requestUrl", new URLPathMatchingFilter());
 		factoryBean.setFilters(filters);
 		factoryBean.setSecurityManager(securityManager);

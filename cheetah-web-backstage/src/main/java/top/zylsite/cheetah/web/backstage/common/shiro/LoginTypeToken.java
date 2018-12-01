@@ -8,7 +8,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
  * @author jason 2018年10月31日
  * @version 1.0
  */
-public class UsernamePasswordLoginTypeToken extends UsernamePasswordToken {
+public class LoginTypeToken extends UsernamePasswordToken {
 
 	private static final long serialVersionUID = 1L;
 
@@ -17,7 +17,7 @@ public class UsernamePasswordLoginTypeToken extends UsernamePasswordToken {
 	 */
 	private String loginType;
 
-	public UsernamePasswordLoginTypeToken(String username, String password, boolean rememberMe, String host,
+	public LoginTypeToken(String username, String password, boolean rememberMe, String host,
 			String loginType) {
 		super(username, password, rememberMe, host);
 		this.loginType = loginType;

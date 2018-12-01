@@ -1,4 +1,4 @@
-package top.zylsite.cheetah.web.backstage.common.shiro;
+package top.zylsite.cheetah.web.backstage.common.shiro.config;
 
 import java.io.IOException;
 
@@ -18,8 +18,11 @@ import top.zylsite.cheetah.base.common.ResponseStatus;
 import top.zylsite.cheetah.base.utils.MessageSourceUtil;
 import top.zylsite.cheetah.base.utils.RequestUtil;
 import top.zylsite.cheetah.base.utils.ResponseUtil;
+import top.zylsite.cheetah.web.backstage.common.shiro.ShiroConstants;
+import top.zylsite.cheetah.web.backstage.common.shiro.ShiroUtil;
+import top.zylsite.cheetah.web.backstage.common.shiro.LoginTypeToken;
 
-public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
+public class CheetahFormAuthenticationFilter extends FormAuthenticationFilter {
 
 	private String loginTypeParamName = ShiroConstants.DEFAULT_LOGIN_TYPE_PARAM;
 	
@@ -36,8 +39,8 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
 	protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request,
 			ServletResponse response) throws Exception {
 		String loginType = null;
-		if (token instanceof UsernamePasswordLoginTypeToken) {
-			UsernamePasswordLoginTypeToken loginTypeToken = (UsernamePasswordLoginTypeToken) token;
+		if (token instanceof LoginTypeToken) {
+			LoginTypeToken loginTypeToken = (LoginTypeToken) token;
 			loginType = loginTypeToken.getLoginType();
 		}
 		ShiroUtil.onLoginSuccess((HttpServletRequest) request, subject, loginType);
@@ -75,7 +78,7 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
 
 	private AuthenticationToken createToken(String username, String password, boolean rememberMe, String host,
 			String loginType) {
-		return new UsernamePasswordLoginTypeToken(username, password, rememberMe, host, loginType);
+		return new LoginTypeToken(username, password, rememberMe, host, loginType);
 	}
 
 	private String getLoginType(ServletRequest request) {

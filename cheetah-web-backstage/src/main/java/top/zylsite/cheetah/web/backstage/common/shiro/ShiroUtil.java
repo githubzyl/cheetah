@@ -45,14 +45,6 @@ public class ShiroUtil {
 
 	public static Logger logger = LoggerFactoryUtil.getLogger(ShiroUtil.class);
 
-	public static boolean CHECK_PASSWORD = true;// 校验密码
-	public static boolean CHECK_VALIDATECODE = false;// 校验验证码
-	public static String VALIDATECODE_ATTR_NAME = "validateCode";// 验证码的属性名
-	public static int VCODE_EFFECTIVETIME = 15;// 验证码有效时间,单位分钟
-	public static boolean ENABLE_GOTO_BEFORE_LOGIN_URL = true;// 开启登陆之后直接跳转到登录之前的url
-	public static IUserLoginLogService userLoginLogService = SpringUtil.getBean(IUserLoginLogService.class);
-	public static IPermissionService permissionService = SpringUtil.getBean(IPermissionService.class);
-	
 	//存放权限的url
 	public static Map<String,String> urlMap = new HashMap<>();
 
@@ -148,7 +140,7 @@ public class ShiroUtil {
 
 	public static Subject login(String username, String password, String loginType) {
 		// 验证
-		UsernamePasswordLoginTypeToken token = new UsernamePasswordLoginTypeToken(username, password, false, null,
+		LoginTypeToken token = new LoginTypeToken(username, password, false, null,
 				loginType);
 		// 获取当前的Subject
 		Subject subject = SecurityUtils.getSubject();
@@ -204,6 +196,7 @@ public class ShiroUtil {
 				userLoginLog.setId(sessionUser.getLoginLogId());
 				userLoginLog.setdLogoutTime(new Date());
 				try {
+					IUserLoginLogService userLoginLogService = SpringUtil.getBean(IUserLoginLogService.class);
 					userLoginLogService.updateInfoByPrimaryKey(userLoginLog, true);
 				} catch (Exception e) {
 					logger.error(" 登出日志记录更新数据库失败:", e);
@@ -241,6 +234,7 @@ public class ShiroUtil {
 		if(!CollectionUtils.isEmpty(ShiroUtil.urlMap)) {
 			return;
 		}
+		IPermissionService permissionService = SpringUtil.getBean(IPermissionService.class);
 		List<Permission> list = permissionService.queryList(null);
 		if(CollectionUtils.isEmpty(list)) {
 			return;

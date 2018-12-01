@@ -1,4 +1,4 @@
-package top.zylsite.cheetah.web.backstage.common.shiro;
+package top.zylsite.cheetah.web.backstage.common.shiro.credentials;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -10,20 +10,22 @@ import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 
 import top.zylsite.cheetah.base.utils.EncdDecd;
+import top.zylsite.cheetah.web.backstage.common.shiro.ShiroConstants;
+import top.zylsite.cheetah.web.backstage.common.shiro.LoginTypeToken;
 
-public class CustomCredentialsMatcher extends SimpleCredentialsMatcher {
+public class UserCredentialsMatcher extends SimpleCredentialsMatcher {
 
 	private Cache<String, AtomicInteger> passwordRetryCache;
 
-	public CustomCredentialsMatcher(CacheManager cacheManager) {
+	public UserCredentialsMatcher(CacheManager cacheManager) {
 		passwordRetryCache = cacheManager.getCache("passwordRetryCache");
 	}
 
 	@Override
 	public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
 		char[] password = null;
-		if(token instanceof UsernamePasswordLoginTypeToken) {
-			UsernamePasswordLoginTypeToken loginTypeToken = (UsernamePasswordLoginTypeToken) token;
+		if(token instanceof LoginTypeToken) {
+			LoginTypeToken loginTypeToken = (LoginTypeToken) token;
 			password = loginTypeToken.getPassword();
 		}
 		// 获取用户名

@@ -1,4 +1,4 @@
-package top.zylsite.cheetah.web.backstage.common.shiro;
+package top.zylsite.cheetah.web.backstage.common.shiro.filter;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -9,6 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.web.filter.PathMatchingFilter;
 import org.apache.shiro.web.util.WebUtils;
+
+import top.zylsite.cheetah.web.backstage.common.shiro.ShiroConstants;
+import top.zylsite.cheetah.web.backstage.common.shiro.ShiroUtil;
 
 public class URLPathMatchingFilter extends PathMatchingFilter {
 

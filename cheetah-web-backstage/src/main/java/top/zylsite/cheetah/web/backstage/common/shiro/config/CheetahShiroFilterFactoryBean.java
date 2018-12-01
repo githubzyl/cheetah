@@ -1,4 +1,4 @@
-package top.zylsite.cheetah.web.backstage.common.shiro;
+package top.zylsite.cheetah.web.backstage.common.shiro.config;
 
 import org.apache.shiro.mgt.SecurityManager;  
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;  
@@ -20,11 +20,11 @@ import java.util.Set;
 /**  
  * Created by sun on 2017-4-2.  
  */  
-public class CustomShiroFilterFactoryBean extends ShiroFilterFactoryBean {  
+public class CheetahShiroFilterFactoryBean extends ShiroFilterFactoryBean {  
     // ShiroFilter将直接忽略的请求  
     private Set<String> ignoreExt;  
   
-    public CustomShiroFilterFactoryBean(){  
+    public CheetahShiroFilterFactoryBean(){  
         super();  
         ignoreExt = new HashSet<String>();  
         ignoreExt.add(".jpg");  
