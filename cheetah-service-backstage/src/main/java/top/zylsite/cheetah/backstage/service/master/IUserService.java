@@ -30,12 +30,6 @@ public interface IUserService extends BaseService<User> {
 
 	void updatePassword(Integer userId, String password);
 
-	/**
-	 * 根据用户名，手机号，邮箱查询用户
-	 * 
-	 * @param account
-	 * @return
-	 */
 	SessionUser findUser(String account);
 
 	UserVO queryById(Integer id);
