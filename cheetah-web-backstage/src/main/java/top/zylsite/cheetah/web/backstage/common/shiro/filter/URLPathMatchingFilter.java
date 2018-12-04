@@ -5,13 +5,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.web.filter.PathMatchingFilter;
 import org.apache.shiro.web.util.WebUtils;
 
 import top.zylsite.cheetah.web.backstage.common.shiro.ShiroConstants;
 import top.zylsite.cheetah.web.backstage.common.shiro.ShiroUtil;
+import top.zylsite.cheetah.web.backstage.common.shiro.config.UrlPermission;
 
 public class URLPathMatchingFilter extends PathMatchingFilter {
 
@@ -30,11 +30,10 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
 			return true;
 		}
 		ShiroUtil.setAllPermissions();
-		String permissionCode = ShiroUtil.urlMap.get(requestURI);
-		if(StringUtils.isBlank(permissionCode)) {
+		if(!ShiroUtil.urlMap.containsKey(requestURI)) {
 			return true;
 		}
-		if (SecurityUtils.getSubject().isPermitted(permissionCode)) {
+		if (SecurityUtils.getSubject().isPermitted(new UrlPermission(requestURI))) {
 			return true;
 		}else {
 			WebUtils.issueRedirect(request, response, ShiroConstants.UNAUTHORIZED_URL);

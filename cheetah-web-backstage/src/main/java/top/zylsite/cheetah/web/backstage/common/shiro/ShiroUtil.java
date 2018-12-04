@@ -2,8 +2,10 @@ package top.zylsite.cheetah.web.backstage.common.shiro;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -46,7 +48,7 @@ public class ShiroUtil {
 	public static Logger logger = LoggerFactoryUtil.getLogger(ShiroUtil.class);
 
 	//存放权限的url
-	public static Map<String,String> urlMap = new HashMap<>();
+	public static Map<String,Boolean> urlMap = new HashMap<>();
 
 	/**
 	 * {@link org.apache.shiro.session.Session Session} key used to save a request
@@ -219,14 +221,20 @@ public class ShiroUtil {
 			}
 		}
 		List<Permission> list = userService.queryPermissionListByUserId(user.getId());
+		Set<String> urlSet = new HashSet<>();
 		if (null != list && list.size() > 0) {
 			for (Permission p : list) {
 				//不是目录才放进去
 				if(!p.getcResourceType().equals(ResourceTypeEnum.CATALOG.getCode())) {
 					info.addStringPermission(p.getVcCode());
 				}
+				//url验证
+				if(StringUtils.isNotBlank(p.getVcUrl())) {
+					urlSet.add(p.getVcUrl());
+				}
 			}
 		}
+		info.setStringPermissions(urlSet);
 		return info;
 	}
 
@@ -243,7 +251,7 @@ public class ShiroUtil {
 			if(StringUtils.isBlank(p.getVcUrl())) {
 				continue;
 			}else {
-				ShiroUtil.urlMap.put(p.getVcUrl(), p.getVcCode());
+				ShiroUtil.urlMap.put(p.getVcUrl(), Boolean.TRUE);
 			}
 		}
 	}

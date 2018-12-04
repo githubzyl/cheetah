@@ -27,6 +27,7 @@ import top.zylsite.cheetah.base.utils.ResourceReader;
 import top.zylsite.cheetah.web.backstage.common.shiro.config.CheetahFormAuthenticationFilter;
 import top.zylsite.cheetah.web.backstage.common.shiro.config.CheetahModularRealmAuthenticator;
 import top.zylsite.cheetah.web.backstage.common.shiro.config.CheetahShiroFilterFactoryBean;
+import top.zylsite.cheetah.web.backstage.common.shiro.config.UrlPermissionResolver;
 import top.zylsite.cheetah.web.backstage.common.shiro.credentials.UserCredentialsMatcher;
 import top.zylsite.cheetah.web.backstage.common.shiro.filter.URLPathMatchingFilter;
 import top.zylsite.cheetah.web.backstage.common.shiro.realm.ThirdAccountRealm;
@@ -90,11 +91,17 @@ public class ShiroConfiguration {
 		return new ThirdAccountCredentialsMatcher();
 	}
 
+	@Bean("permissionResolver")
+	public UrlPermissionResolver permissionResolver() {
+		return new UrlPermissionResolver();
+	}
+	
 	// 配置自定义的权限登录器
 	@Bean(name = "userAuthRealm")
 	public UserRealm userAuthRealm() {
 		UserRealm authRealm = new UserRealm(getEhCacheManager());
 		authRealm.setCredentialsMatcher(credentialsMatcher());
+		authRealm.setPermissionResolver(permissionResolver());
 		return authRealm;
 	}
 
@@ -103,6 +110,7 @@ public class ShiroConfiguration {
 	public ThirdAccountRealm thirdAccountRealm() {
 		ThirdAccountRealm authRealm = new ThirdAccountRealm();
 		authRealm.setCredentialsMatcher(thirdAccountCredentialsMatcher());
+		authRealm.setPermissionResolver(permissionResolver());
 		return authRealm;
 	}
 
