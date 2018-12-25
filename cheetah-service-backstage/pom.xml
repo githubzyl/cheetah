@@ -23,6 +23,7 @@
 		<java.version>1.8</java.version>
 		<alipay-sdk-java.version>3.0.0</alipay-sdk-java.version>
 		<quartz.version>2.2.3</quartz.version>
+		<liquibase.version>3.5.5</liquibase.version>
 	</properties>
 
 	<dependencies>
@@ -51,6 +52,42 @@
 			<artifactId>quartz</artifactId>
 			<version>${quartz.version}</version>
 		</dependency>
+		<!-- liquibase -->
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
 	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>${liquibase.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.liquibase</groupId>
+						<artifactId>liquibase-core</artifactId>
+						<version>${liquibase.version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<!--下一行为liquibase的配置文件路径 -->
+					<propertyFile>${basedir}/src/main/resources/liquibase/liquibase.properties</propertyFile>
+					<!--配置参数，以禁用弹出的对话框，该对话框将确认非本地数据库上的迁移 -->
+					<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>update</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

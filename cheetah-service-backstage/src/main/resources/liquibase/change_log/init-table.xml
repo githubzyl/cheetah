@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+	<changeSet id="20181219194405-1" author="jason">
+		<createTable tableName="t_user" remarks="用户表">
+			<column name="id"  type="int" autoIncrement="true" remarks="自增ID">
+				<constraints primaryKey="true"  nullable="false" primaryKeyName="pk_id"/>
+			</column>
+			<column name="vc_user_name" type="varchar(50)" remarks="用户名">
+				<constraints unique="true"  nullable="false" uniqueConstraintName="ak_username"/>
+			</column>
+			<column name="vc_password" type="varchar(32)" remarks="登陆密码" >
+				<constraints nullable="false" />
+			</column>
+			<column name="vc_real_name" type="varchar(50)" remarks="真实姓名" >
+				<constraints nullable="false" />
+			</column>
+			<column name="vc_mobile" type="varchar(11)" remarks="手机号码" >
+				<constraints unique="true"  nullable="false" uniqueConstraintName="ak_mobile"/>
+			</column>
+			<column name="vc_email" type="varchar(50)" remarks="邮箱地址" >
+				<constraints unique="true"  nullable="false" uniqueConstraintName="ak_email"/>
+			</column>
+			<column name="c_status" type="char(1)" remarks="用户状态(0：正常，1：禁用，默认正常)"  defaultValue="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="c_lock_status" type="char(1)" remarks="锁定状态0：非锁定，1：锁定，默认非锁定)"  defaultValue="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="c_sys_admin" type="char(1)" remarks="是否系统管理员(0：否，1：是，默认否)"  defaultValue="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="c_gender" type="char(1)" remarks="性别(男：'0',女：'1')" ></column>
+			<column name="vc_photo" type="varchar(255)" remarks="头像" ></column>
+			<column name="l_department_id" type="int" remarks="部门ID" ></column>
+		</createTable>
+		<createTable tableName="t_department" remarks="部门表">
+			<column name="id"  type="int" autoIncrement="true" remarks="自增ID">
+				<constraints primaryKey="true"  nullable="false" primaryKeyName="pk_id"/>
+			</column>
+			<column name="vc_code" type="varchar(50)" remarks="部门编码">
+				<constraints nullable="false" />
+			</column>
+			<column name="vc_name" type="varchar(100)" remarks="部门名称" >
+				<constraints nullable="false" />
+			</column>
+			<column name="pid" type="int" remarks="父节点ID" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+			<column name="pids" type="varchar(255)" remarks="父节点ID集合,以英文逗号隔开" >
+				<constraints nullable="false" />
+			</column>
+			<column name="l_tenant_id" type="int" remarks="租户ID" defaultValue="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="l_sort" type="int" remarks="排序"  defaultValue="999999"></column>
+			<column name="c_enable" type="char(1)" remarks="是否启用(0：禁用，1：启用，默认是1)"  defaultValue="1">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<createTable tableName="t_role" remarks="角色表">
+			<column name="id"  type="int" autoIncrement="true" remarks="自增ID">
+				<constraints primaryKey="true"  nullable="false" primaryKeyName="pk_id"/>
+			</column>
+			<column name="vc_code" type="varchar(20)" remarks="角色编码">
+				<constraints unique="true"  nullable="false" uniqueConstraintName="ak_code"/>
+			</column>
+			<column name="vc_name" type="varchar(50)" remarks="角色名称" >
+				<constraints nullable="false" />
+			</column>
+			<column name="c_enable" type="char(1)" remarks="是否启用(0：禁用，1：启用，默认是1)"  defaultValue="1">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<createTable tableName="t_permission" remarks="权限表">
+			<column name="id"  type="int" autoIncrement="true" remarks="自增ID">
+				<constraints primaryKey="true"  nullable="false" primaryKeyName="pk_id"/>
+			</column>
+			<column name="vc_code" type="varchar(50)" remarks="权限编码">
+				<constraints unique="true"  nullable="false" uniqueConstraintName="ak_code"/>
+			</column>
+			<column name="vc_name" type="varchar(100)" remarks="权限名称" >
+				<constraints nullable="false" />
+			</column>
+			<column name="vc_url" type="varchar(200)" remarks="资源URL" ></column>
+			<column name="vc_icon" type="varchar(50)" remarks="资源图标" ></column>	
+			<column name="parent_id" type="int" remarks="父节点ID" >
+				<constraints nullable="false" />
+			</column>
+			<column name="c_enable" type="char(1)" remarks="是否启用(0：禁用，1：启用，默认是1)"  defaultValue="1">
+				<constraints nullable="false"/>
+			</column>
+			<column name="l_sort" type="int" remarks="排序"  defaultValue="999999"></column>
+			<column name="c_resource_type" type="char(1)" remarks="0:代表目录，1:代表菜单，2：代表按钮">
+				<constraints nullable="false"/>
+			</column>
+			<column name="parent_ids" type="varchar(255)" remarks="父节点ID集合,以英文逗号隔开" >
+				<constraints nullable="false" />
+			</column>
+			<column name="c_target_blank" type="char(1)" remarks="0:代表当前窗口打开，1:代表新窗口打开" defaultValue="0">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<createTable tableName="t_tenant" remarks="租户表">
+			<column name="id"  type="int" autoIncrement="true" remarks="自增ID">
+				<constraints primaryKey="true"  nullable="false" primaryKeyName="pk_id"/>
+			</column>
+			<column name="vc_code" type="varchar(50)" remarks="租户编码">
+				<constraints unique="true"  nullable="false" uniqueConstraintName="ak_code"/>
+			</column>
+			<column name="vc_name" type="varchar(100)" remarks="租户名称" >
+				<constraints nullable="false" />
+			</column>
+			<column name="l_sort" type="int" remarks="排序"  defaultValue="999999"></column>
+			<column name="c_enable" type="char(1)" remarks="是否启用(0：禁用，1：启用，默认是1)"  defaultValue="1">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<createTable tableName="t_dict_type" remarks="字典类型表">
+			<column name="id"  type="int" autoIncrement="true" remarks="自增ID">
+				<constraints primaryKey="true"  nullable="false" primaryKeyName="pk_id"/>
+			</column>
+			<column name="vc_code" type="varchar(10)" remarks="字典类型编码">
+				<constraints unique="true"  nullable="false" uniqueConstraintName="ak_code"/>
+			</column>
+			<column name="vc_name" type="varchar(30)" remarks="字典类型名称" >
+				<constraints nullable="false" />
+			</column>
+			<column name="vc_description" type="varchar(100)" remarks="描述" ></column>
+		</createTable>
+		<createTable tableName="t_data_dict" remarks="数据字典表">
+			<column name="id"  type="int" autoIncrement="true" remarks="自增ID">
+				<constraints primaryKey="true"  nullable="false" primaryKeyName="pk_id"/>
+			</column>
+			<column name="c_dict_entry" type="char(5)" remarks="数据字典编码">
+				<constraints unique="true"  nullable="false" uniqueConstraintName="ak_code"/>
+			</column>
+			<column name="vc_entry_name" type="varchar(50)" remarks="数据字典名称" >
+				<constraints nullable="false" />
+			</column>
+			<column name="l_dict_type" type="int" remarks="字典类型ID" >
+				<constraints nullable="false" />
+			</column>
+			<column name="l_sort" type="int" remarks="排序"  defaultValue="999999"></column>
+		</createTable>
+		<createTable tableName="t_user_bind_info" remarks="用户与第三方账户绑定表">
+			<column name="id"  type="int" autoIncrement="true" remarks="自增ID">
+				<constraints primaryKey="true"  nullable="false" primaryKeyName="pk_id"/>
+			</column>
+			<column name="l_user_id" type="int" remarks="绑定的用户ID">
+				<constraints nullable="false"/>
+			</column>
+			<column name="vc_account" type="varchar(100)" remarks="第三方账号" >
+				<constraints nullable="false" />
+			</column>
+			<column name="vc_nick_name" type="varchar(100)" remarks="昵称" >
+				<constraints nullable="false" />
+			</column>
+			<column name="vc_photo" type="varchar(300)" remarks="用户头像链接" ></column>
+			<column name="c_type" type="char(2)" remarks="账号类型" ></column>
+		</createTable>
+		<createTable tableName="t_user_role" remarks="用户角色关联表">
+			<column name="user_id" type="int" remarks="用户ID">
+				<constraints nullable="false"/>
+			</column>
+			<column name="role_id" type="int" remarks="角色ID" >
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<createTable tableName="t_role_permission" remarks="角色权限关联表">
+			<column name="role_id" type="int" remarks="角色ID" >
+				<constraints nullable="false" />
+			</column>
+			<column name="permission_id" type="int" remarks="权限ID">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<createTable tableName="t_user_login_log" remarks="用户登录日志表">
+			<column name="id"  type="int" autoIncrement="true" remarks="自增ID">
+				<constraints primaryKey="true"  nullable="false" primaryKeyName="pk_id"/>
+			</column>
+			<column name="l_user_id" type="int" remarks="用户ID" >
+				<constraints nullable="false" />
+			</column>
+			<column name="vc_user_name" type="varchar(100)" remarks="用户名">
+				<constraints nullable="false"/>
+			</column>
+			<column name="d_login_time" type="datetime" remarks="登录时间">
+				<constraints nullable="false"/>
+			</column>
+			<column name="d_logout_time" type="datetime" remarks="登出时间"></column>
+			<column name="c_login_type" type="char(2)" remarks="登录账号类型"></column>
+			<column name="vc_ip" type="varchar(255)" remarks="IP地址"></column>
+			<column name="vc_location" type="varchar(255)" remarks="IP归属地"></column>
+			<column name="vc_device_type" type="varchar(50)" remarks="操作设备类型"></column>
+			<column name="vc_browser_type" type="varchar(50)" remarks="浏览器类型"></column>
+		</createTable>
+		<createTable tableName="t_user_view_log" remarks="用户访问日志表">
+			<column name="id"  type="int" autoIncrement="true" remarks="自增ID">
+				<constraints primaryKey="true"  nullable="false" primaryKeyName="pk_id"/>
+			</column>
+			<column name="l_user_id" type="int" remarks="用户ID" >
+				<constraints nullable="false" />
+			</column>
+			<column name="vc_user_name" type="varchar(100)" remarks="用户名">
+				<constraints nullable="false"/>
+			</column>
+			<column name="vc_operation" type="varchar(100)" remarks="请求描述"></column>
+			<column name="vc_url" type="varchar(300)" remarks="访问的URL"></column>
+			<column name="vc_param" type="text" remarks="请求参数"></column>
+			<column name="vc_method" type="varchar(10)" remarks="请求方式"></column>
+			<column name="vc_ip" type="varchar(255)" remarks="IP地址"></column>
+			<column name="vc_location" type="varchar(255)" remarks="IP归属地"></column>
+			<column name="vc_device_type" type="varchar(50)" remarks="操作设备类型"></column>
+			<column name="vc_browser_type" type="varchar(50)" remarks="浏览器类型"></column>
+			<column name="d_visit_time" type="datetime" remarks="访问时间">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+		<createTable tableName="t_scheduled_job" remarks="定时任务表">
+			<column name="id"  type="int" autoIncrement="true" remarks="自增ID">
+				<constraints primaryKey="true"  nullable="false" primaryKeyName="pk_id"/>
+			</column>
+			<column name="vc_job_name" type="varchar(50)" remarks="任务名称">
+				<constraints nullable="false"/>
+			</column>
+			<column name="vc_jobgroup_name" type="varchar(50)" remarks="任务组名"></column>
+			<column name="vc_trigger_name" type="varchar(50)" remarks="触发器名"></column>
+			<column name="vc_triggergroup_name" type="varchar(50)" remarks="触发器组名"></column>
+			<column name="vc_jobclass_name" type="varchar(100)" remarks="任务执行类">
+				<constraints nullable="false"/>
+			</column>
+			<column name="vc_cron_expression" type="varchar(50)" remarks="cron表达式">
+				<constraints nullable="false"/>
+			</column>
+			<column name="c_status" type="char(1)" remarks="任务状态(0：运行中，1：已停止)" defaultValue="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="c_exec_on_startup" type="char(1)" remarks="程序启动时立即执行(0：否，1：是，默认否)" defaultValue="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="l_last_start_time" type="datetime" remarks="最后一次开始执行时间"></column>
+			<column name="l_last_end_time" type="datetime" remarks="最后一次执行完成时间"></column>
+			<column name="l_last_exec_status" type="char(1)" remarks="最后一次执行状态（0：正常，1：异常）"></column>
+		</createTable>
+		<addUniqueConstraint columnNames="l_user_id,vc_account,c_type" tableName="t_user_bind_info" constraintName="ak_bind"/>
+		<addUniqueConstraint columnNames="user_id,role_id" tableName="t_user_role" constraintName="ak_user_role"/>
+		<addUniqueConstraint columnNames="role_id,permission_id" tableName="t_role_permission" constraintName="ak_role_permission"/>
+		<addUniqueConstraint columnNames="vc_code,l_tenant_id" tableName="t_department" constraintName="ak_code_tenant"/>
+	</changeSet>
+</databaseChangeLog>

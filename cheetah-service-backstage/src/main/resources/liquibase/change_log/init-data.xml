@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+	<changeSet id="20181224112135-2" author="jason">
+		<sql>
+			INSERT INTO `t_user` (`id`, `vc_user_name`, `vc_password`, `vc_real_name`, `vc_mobile`, `vc_email`, `c_status`, `c_lock_status`, `c_sys_admin`, `c_gender`, `vc_photo`, `l_department_id`) VALUES ('1', 'sysadmin', '65FE61D98235E3030245282A419527EB', '系统管理员', '13757417573', '517190473@qq.com', '0', '0', '1', '0', NULL, '9');
+			INSERT INTO `t_user` (`id`, `vc_user_name`, `vc_password`, `vc_real_name`, `vc_mobile`, `vc_email`, `c_status`, `c_lock_status`, `c_sys_admin`, `c_gender`, `vc_photo`, `l_department_id`) VALUES ('2', 'test', 'E10ADC3949BA59ABBE56E057F20F883E', '测试用户', '13131231234', '13131231234@163.com', '0', '0', '0', '0', NULL, '7');
+		</sql>
+	</changeSet>
+	<changeSet id="20181225165923-3" author="jason">
+		<sql>
+			INSERT INTO `t_role` (`id`, `vc_code`, `vc_name`, `c_enable`) VALUES ('1', 'sysadmin', '系统管理员', '1');
+			INSERT INTO `t_role` (`id`, `vc_code`, `vc_name`, `c_enable`) VALUES ('5', 'visitor', '访客用户', '1');
+		</sql>
+		<sql>
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('1', 'system', '系统管理', '', 'iconfont icon-yiji-xitongguanli', '0', '1', '1', '0', '0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('2', 'system:user:view', '用户管理', '/page/user/userList', 'iconfont icon-zhanghu', '1', '1', '1001', '1', '1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('3', 'system:role:view', '角色管理', '/page/role/roleList', 'iconfont icon-jiaoseguanli', '1', '1', '1002', '1', '1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('4', 'system:permission:view', '权限管理', '/page/permission/permissionList', 'iconfont icon-menu', '1', '1', '1003', '1', '1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('5', 'system:dictType:view', '字典类型', '/page/dictionary/typeList', 'iconfont icon-zidianpeizhi', '1', '1', '1004', '1', '1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('6', 'system:dataDict:view', '数据字典', '/page/dictionary/dataList', 'iconfont icon-shujuzidian', '1', '1', '1005', '1', '1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('7', 'system:job:view', '定时任务', '/page/job/jobList', 'iconfont icon-navicon-dsrwpz', '1', '1', '1006', '1', '1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('8', 'system:druidMonitor:view', 'Druid监控', '/druid/index.html', 'iconfont icon-druid', '1', '1', '1007', '1', '1,0', '1');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('31', 'logManager', '日志管理', '', 'iconfont icon-rizhiguanli', '0', '1', '2', '0', '0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('33', 'logManager:loginLog:view', '登录日志', '/page/log/userLoginLog', 'iconfont icon-rizhichaxun', '31', '1', '2001', '1', '31,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('35', 'logManager:viewLog:view', '访问日志', '/page/log/userViewLog', 'iconfont icon-rizhichaxun', '31', '1', '2002', '1', '31,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('37', 'system:user:add', '用户新增', '/user/add', '', '2', '1', '100101', '2', '2,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('39', 'system:user:edit', '用户编辑', '/user/edit', '', '2', '1', '100102', '2', '2,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('41', 'system:user:remove', '用户删除', '/user/remove', '', '2', '1', '100103', '2', '2,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('43', 'system:user:assignRole', '分配角色', '/user/saveRole', '', '2', '1', '100104', '2', '2,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('45', 'system:user:initPassword', '初始化密码', '/user/initPassword', '', '2', '1', '100105', '2', '2,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('47', 'system:user:status', '启用/禁用', '/user/status', '', '2', '1', '100106', '2', '2,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('49', 'system:user:lockStatus', '锁定/解锁', '/user/lockStatus', '', '2', '1', '100107', '2', '2,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('51', 'system:role:add', '角色新增', '/role/add', '', '3', '1', '100201', '2', '3,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('53', 'system:role:edit', '角色编辑', '/role/edit', '', '3', '1', '100202', '2', '3,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('55', 'system:role:remove', '角色删除', '/role/remove', '', '3', '1', '100203', '2', '3,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('57', 'system:role:assignPermission', '分配权限', '/role/savePermission', '', '3', '1', '100204', '2', '3,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('59', 'system:role:status', '启用/禁用', '/role/status', '', '3', '1', '100205', '2', '3,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('61', 'system:permission:add', '权限新增', '/permission/add', '', '4', '1', '100301', '2', '4,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('63', 'system:permission:edit', '权限编辑', '/permission/edit', '', '4', '1', '100302', '2', '4,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('65', 'system:permission:remove', '权限删除', '/permission/remove', '', '4', '1', '100303', '2', '4,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('67', 'system:permission:status', '启用/禁用', '/permission/status', '', '4', '1', '100304', '2', '4,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('69', 'system:dictionaryType:add', '字典类型新增', '/dictionaryType/add', '', '5', '1', '100401', '2', '5,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('71', 'system:dictionaryType:edit', '字典类型编辑', '/dictionaryType/edit', '', '5', '1', '100402', '2', '5,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('73', 'system:dictionaryType:remove', '字典类型删除', '/dictionaryType/remove', '', '5', '1', '100403', '2', '5,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('75', 'system:dataDictionary:add', '数据字典新增', '/dataDictionary/add', '', '6', '1', '100501', '2', '6,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('77', 'system:dataDictionary:edit', '数据字典编辑', '/dataDictionary/edit', '', '6', '1', '100502', '2', '6,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('79', 'system:dataDictionary:remove', '数据字典删除', '/dataDictionary/remove', '', '6', '1', '100503', '2', '6,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('81', 'system:job:add', '任务新增', '/scheduledJob/add', '', '7', '1', '100601', '2', '7,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('83', 'system:job:edit', '任务编辑', '/scheduledJob/edit', '', '7', '1', '100602', '2', '7,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('85', 'system:job:remove', '任务删除', '/scheduledJob/remove', '', '7', '1', '100603', '2', '7,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('87', 'system:job:startJob', '任务启动', '/scheduledJob/startJob', '', '7', '1', '100604', '2', '7,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('89', 'system:job:pauseJob', '任务停止', '/scheduledJob/pauseJob', '', '7', '1', '100605', '2', '7,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('91', 'system:job:executeJobNow', '立即执行', '/scheduledJob/executeJobNow', '', '7', '1', '100606', '2', '7,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('93', 'system:department:view', '部门管理', '/page/department/departmentList', 'iconfont icon-department', '1', '1', '1000', '1', '1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('95', 'system:department:add', '部门新增', '/department/add', '', '93', '1', '100001', '2', '93,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('97', 'system:department:edit', '部门编辑', '/department/edit', '', '93', '1', '100002', '2', '93,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('99', 'system:department:remove', '部门删除', '/department/remove', '', '93', '1', '100003', '2', '93,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('101', 'system:department:list', '部门查询', '/department/list', '', '93', '1', '10000', '2', '93,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('103', 'system:user:list', '用户查询', '/user/list', '', '2', '1', '10010', '2', '2,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('105', 'system:role:list', '角色查询', '/role/list', '', '3', '1', '10020', '2', '3,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('107', 'system:permission:list', '权限查询', '/permission/list', '', '4', '1', '10030', '2', '4,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('109', 'system:dictionaryType:list', '字典类型查询', '/dictionaryType/list', '', '5', '1', '10040', '2', '5,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('111', 'system:dataDictionary:list', '数据字典查询', '/dataDictionary/list', '', '6', '1', '10050', '2', '6,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('113', 'system:job:list', '任务查询', '/scheduledJob/list', '', '7', '1', '10060', '2', '7,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('115', 'system:department:status', '启用/禁用', '/department/status', '', '93', '1', '100004', '2', '93,1,0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('117', 'editProfile', '个人信息', '/profile/save', '', '0', '1', NULL, '2', '0', '0');
+			INSERT INTO `t_permission` (`id`, `vc_code`, `vc_name`, `vc_url`, `vc_icon`, `parent_id`, `c_enable`, `l_sort`, `c_resource_type`, `parent_ids`, `c_target_blank`) VALUES ('119', 'modifyPwd', '修改密码', '/profile/modifyPwd/save', '', '0', '1', NULL, '2', '0', '0');
+		</sql>
+		<sql>
+			INSERT INTO `t_user_role` (`user_id`, `role_id`) VALUES ('1', '1');
+			INSERT INTO `t_user_role` (`user_id`, `role_id`) VALUES ('2', '5');
+		</sql>
+		<sql>
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '0');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '1');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '93');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '101');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '2');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '103');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '3');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '105');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '4');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '107');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '5');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '109');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '6');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '111');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '7');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '113');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '8');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '31');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '33');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('5', '35');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '0');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '117');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '119');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '1');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '93');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '101');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '95');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '97');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '99');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '115');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '2');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '103');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '37');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '39');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '41');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '43');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '45');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '47');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '49');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '3');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '105');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '51');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '53');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '55');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '57');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '59');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '4');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '107');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '61');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '63');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '65');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '67');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '5');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '109');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '69');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '71');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '73');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '6');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '111');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '75');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '77');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '79');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '7');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '113');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '81');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '83');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '85');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '87');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '89');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '91');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '8');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '31');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '33');
+			INSERT INTO `t_role_permission` (`role_id`, `permission_id`) VALUES ('1', '35');
+		</sql>
+		<sql>
+			INSERT INTO `t_department` (`id`, `vc_code`, `vc_name`, `pid`, `pids`, `l_tenant_id`, `l_sort`, `c_enable`) VALUES ('7', '1001', '一级部门', '0', '0', '1', '1', '1');
+			INSERT INTO `t_department` (`id`, `vc_code`, `vc_name`, `pid`, `pids`, `l_tenant_id`, `l_sort`, `c_enable`) VALUES ('9', '100101', '二级部门', '7', '7,0', '1', '2', '1');
+			INSERT INTO `t_department` (`id`, `vc_code`, `vc_name`, `pid`, `pids`, `l_tenant_id`, `l_sort`, `c_enable`) VALUES ('11', '10010101', '三级部门', '9', '9,7,0', '1', '3', '1');
+		</sql>
+	</changeSet>
+</databaseChangeLog>
