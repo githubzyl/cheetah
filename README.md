@@ -9,6 +9,7 @@ Mapper采用的是通用Mapper最新版本，集成spring boot的最新版本为
 安全框架采用的是Shiro1.3.2  
 session采用spring redis session进行管理   
 分布式锁redisson  
+消息中间件kafka  
 页面模板渲染引擎采用的是thymeleaf3.0.0.RELEASE  
 前端框架采用的是Bootstrap3.3.6  
 js框架采用的是Jquery2.1.4和vue2.5       
