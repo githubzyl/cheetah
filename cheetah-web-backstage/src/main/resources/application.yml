@@ -66,6 +66,25 @@ spring:
      maxIdle: 30 #最大空闲连接数
      minIdle: 5 #最小空闲连接数
      maxWait: 3000  #获取连接最大等待时间 ms  #default -1
+kafka:
+    bootstrap-servers: 180.76.106.80:9092
+    consumer:
+      group-id: test
+      client-id: consumer-1
+      enable-auto-commit: true #自动提交
+      auto-offset-reset: latest #实时生产，实时消费，不会从头开始消费
+      auto-commit-interval: 100 
+      max-poll-records: 50
+      heartbeat-interval: 3000
+      session-timeout: 20000 #连接超时时间
+      concurrency: 4 #消费线程数
+    producer:
+      retries: 1
+      batch-size: 65536
+      buffer-memory: 524288
+      linger: 1
+      transactional-id-prefix: first-transactional #设置事务ID前缀
+      enable-idempotence: true #设置幂等性
 session:
   timeout: 60
 logback:
