@@ -151,9 +151,7 @@
 			<column name="id"  type="int" autoIncrement="true" remarks="自增ID">
 				<constraints primaryKey="true"  nullable="false" primaryKeyName="pk_id"/>
 			</column>
-			<column name="l_user_id" type="int" remarks="绑定的用户ID">
-				<constraints nullable="false"/>
-			</column>
+			<column name="l_user_id" type="int" remarks="绑定的用户ID"></column>
 			<column name="vc_account" type="varchar(100)" remarks="第三方账号" >
 				<constraints nullable="false" />
 			</column>
