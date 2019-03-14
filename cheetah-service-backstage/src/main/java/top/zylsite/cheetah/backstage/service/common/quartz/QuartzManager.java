@@ -27,7 +27,15 @@ import org.quartz.spi.TriggerFiredBundle;
 
 public class QuartzManager {
 
-	private static SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+	private static Scheduler sched;
+
+	static {
+		try {
+			sched = new StdSchedulerFactory().getScheduler();
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+	}
 
 	// 线程池
 	private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);
@@ -85,7 +93,6 @@ public class QuartzManager {
 		JobKey jobKey = getJob(jobName);
 		if (null != jobKey) {
 			try {
-				Scheduler sched = schedulerFactory.getScheduler();
 				sched.triggerJob(jobKey);
 				return true;
 			} catch (Exception e) {
@@ -99,7 +106,6 @@ public class QuartzManager {
 		JobKey jobKey = getJob(jobName);
 		if (null != jobKey) {
 			try {
-				Scheduler sched = schedulerFactory.getScheduler();
 				sched.pauseJob(jobKey);
 				return true;
 			} catch (Exception e) {
@@ -112,7 +118,6 @@ public class QuartzManager {
 	public static JobKey getJob(String jobName) {
 		jobName = getJobName(jobName);
 		try {
-			Scheduler sched = schedulerFactory.getScheduler();
 			JobKey jobKey = JobKey.jobKey(jobName, JOB_GROUP_NAME);
 			JobDetail jobDetail = sched.getJobDetail(jobKey);
 			if (null != jobDetail) {
@@ -143,7 +148,6 @@ public class QuartzManager {
 	public static void addJob(String jobName, String jobGroupName, String triggerName, String triggerGroupName,
 			Class<? extends BaseQuartzJob> jobClass, String cron) {
 		try {
-			Scheduler sched = schedulerFactory.getScheduler();
 			// 任务名，任务组，任务执行类
 			JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroupName).build();
 
@@ -184,7 +188,6 @@ public class QuartzManager {
 	public static void modifyJobTime(String jobName, String jobGroupName, String triggerName, String triggerGroupName,
 			String cron, Class<? extends BaseQuartzJob> jobClass) {
 		try {
-			Scheduler sched = schedulerFactory.getScheduler();
 			TriggerKey triggerKey = TriggerKey.triggerKey(triggerName, triggerGroupName);
 			CronTrigger trigger = (CronTrigger) sched.getTrigger(triggerKey);
 			if (trigger == null) {
@@ -220,10 +223,7 @@ public class QuartzManager {
 	 */
 	public static void removeJob(String jobName, String jobGroupName, String triggerName, String triggerGroupName) {
 		try {
-			Scheduler sched = schedulerFactory.getScheduler();
-
 			TriggerKey triggerKey = TriggerKey.triggerKey(triggerName, triggerGroupName);
-
 			sched.pauseTrigger(triggerKey);// 停止触发器
 			sched.unscheduleJob(triggerKey);// 移除触发器
 			sched.deleteJob(JobKey.jobKey(jobName, jobGroupName));// 删除任务
@@ -237,7 +237,6 @@ public class QuartzManager {
 	 */
 	public static void startAllJob() {
 		try {
-			Scheduler sched = schedulerFactory.getScheduler();
 			sched.start();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -249,7 +248,6 @@ public class QuartzManager {
 	 */
 	public static void shutdownAllJob() {
 		try {
-			Scheduler sched = schedulerFactory.getScheduler();
 			if (!sched.isShutdown()) {
 				sched.shutdown();
 			}
